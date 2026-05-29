@@ -26,20 +26,7 @@ app.get('/ping', (req, res) => {
   res.status(200).send('pong');
 });
 
-// MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  console.warn('WARNING: MONGODB_URI is not set. Database will run in offline mode using memory data.');
-} else {
-  mongoose
-    .connect(MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB Atlas successfully.'))
-    .catch((err) => {
-      console.error('MongoDB connection error:', err);
-      console.warn('Database failed to connect. Running backend with memory-fallback.');
-    });
-}
 
 // Define Schema & Model
 const reviewSchema = new mongoose.Schema({
@@ -76,6 +63,33 @@ let memoryReviews = [
     date: "May 2026"
   }
 ];
+
+// MongoDB Connection & Seeding
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.warn('WARNING: MONGODB_URI is not set. Database will run in offline mode using memory data.');
+} else {
+  mongoose
+    .connect(MONGODB_URI)
+    .then(async () => {
+      console.log('Connected to MongoDB Atlas successfully.');
+      try {
+        const count = await Review.countDocuments();
+        if (count === 0) {
+          console.log('MongoDB collection is empty. Seeding default reviews...');
+          await Review.insertMany(memoryReviews);
+          console.log('Database seeded with default reviews successfully.');
+        }
+      } catch (err) {
+        console.error('Error seeding database:', err);
+      }
+    })
+    .catch((err) => {
+      console.error('MongoDB connection error:', err);
+      console.warn('Database failed to connect. Running backend with memory-fallback.');
+    });
+}
 
 // API Endpoints
 app.get('/api/reviews', async (req, res) => {
