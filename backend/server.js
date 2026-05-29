@@ -18,7 +18,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  exposedHeaders: ['X-Database-Connected']
+}));
 app.use(express.json());
 
 // Ping route for keeping server awake
@@ -94,7 +96,9 @@ if (!MONGODB_URI) {
 // API Endpoints
 app.get('/api/reviews', async (req, res) => {
   try {
-    if (mongoose.connection.readyState === 1) {
+    const isDbConnected = mongoose.connection.readyState === 1;
+    res.setHeader('X-Database-Connected', isDbConnected ? 'true' : 'false');
+    if (isDbConnected) {
       const dbReviews = await Review.find().sort({ createdAt: -1 });
       return res.json(dbReviews);
     } else {
@@ -122,7 +126,9 @@ app.post('/api/reviews', async (req, res) => {
   };
 
   try {
-    if (mongoose.connection.readyState === 1) {
+    const isDbConnected = mongoose.connection.readyState === 1;
+    res.setHeader('X-Database-Connected', isDbConnected ? 'true' : 'false');
+    if (isDbConnected) {
       const newReview = new Review(reviewData);
       const savedReview = await newReview.save();
       return res.status(201).json(savedReview);

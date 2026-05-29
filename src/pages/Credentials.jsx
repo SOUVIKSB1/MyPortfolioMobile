@@ -150,7 +150,7 @@ const DEFAULT_REVIEWS = [
   }
 ];
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
 
 export default function Credentials() {
   const [activeTab, setActiveTab] = useState("licenses");
@@ -161,6 +161,7 @@ export default function Credentials() {
     const saved = localStorage.getItem("portfolio_reviews");
     return saved ? JSON.parse(saved) : DEFAULT_REVIEWS;
   });
+  const [dbConnected, setDbConnected] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [rating, setRating] = useState(5);
@@ -178,9 +179,16 @@ export default function Credentials() {
           if (Array.isArray(data)) {
             setReviews(data);
           }
+          const dbStatus = res.headers.get("X-Database-Connected");
+          if (dbStatus === "true") {
+            setDbConnected(true);
+          } else {
+            setDbConnected(false);
+          }
         }
       } catch (err) {
         console.warn("Backend reviews fetch failed. Falling back to local storage.", err);
+        setDbConnected(false);
       }
     };
     fetchReviews();
@@ -212,6 +220,13 @@ export default function Credentials() {
       if (res.ok) {
         const saved = await res.json();
         setReviews((prev) => [saved, ...prev]);
+        
+        const dbStatus = res.headers.get("X-Database-Connected");
+        if (dbStatus === "true") {
+          setDbConnected(true);
+        } else {
+          setDbConnected(false);
+        }
         
         // Also sync local storage for offline fallback consistency
         const updated = [saved, ...reviews];
@@ -317,9 +332,11 @@ export default function Credentials() {
                   <span className="aggregate-count">({reviews.length} ratings)</span>
                 </div>
               </div>
-              <div className="live-pill-wrap">
-                <span className="live-dot-indicator" />
-                <span className="live-feed-label">LOCAL HUB DATA</span>
+              <div className={`live-pill-wrap ${dbConnected ? "connected" : ""}`}>
+                <span className={`live-dot-indicator ${dbConnected ? "connected" : ""}`} />
+                <span className="live-feed-label">
+                  {dbConnected ? "LIVE DATABASE SYNC" : "LOCAL HUB DATA"}
+                </span>
               </div>
             </div>
 

@@ -1,0 +1,22 @@
+name: Keep Render Backend Alive
+
+on:
+  schedule:
+    # Runs every 12 minutes (Render free tier spins down after 15 minutes of inactivity)
+    - cron: '*/12 * * * *'
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Endpoint
+        run: |
+          echo "Sending keepalive ping to Render at $(date)..."
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://myportfoliomobile.onrender.com/ping)
+          echo "Response code: $STATUS_CODE"
+          if [ "$STATUS_CODE" -eq 200 ]; then
+            echo "Success: Render backend is awake!"
+          else
+            echo "Warning: Render backend returned status code $STATUS_CODE"
+          fi
