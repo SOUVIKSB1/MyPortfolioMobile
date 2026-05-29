@@ -1,0 +1,397 @@
+.intro-loader-overlay {
+  position: fixed;
+  inset: 0; /* Pin overlay to all edges of the viewport to prevent mobile toolbar shift bugs */
+  background: #030407;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Consolas', Courier, monospace;
+  color: var(--orange);
+  
+  /* Smooth opacity fade out transition */
+  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  opacity: 1;
+  will-change: opacity;
+}
+
+.intro-loader-overlay.exit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cyber grid background */
+.intro-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(255, 95, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 95, 0, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center;
+  transform: perspective(600px) rotateX(60deg) translateY(-25%);
+  transform-origin: top center;
+  animation: grid-scroll 25s linear infinite;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.5s ease;
+}
+
+.intro-grid.fade-out {
+  opacity: 0;
+}
+
+@keyframes grid-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 1000px;
+  }
+}
+
+/* Emitter particle canvas */
+.intro-particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.intro-particle-canvas.fade-out {
+  opacity: 0;
+}
+
+/* Ambient hacker glows */
+.intro-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  opacity: 0.12;
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+.intro-glow.fade-out {
+  opacity: 0;
+}
+
+.intro-glow-orange {
+  width: 350px;
+  height: 350px;
+  background: var(--orange);
+  top: 15%;
+  left: 15%;
+}
+
+.intro-glow-blue {
+  width: 350px;
+  height: 350px;
+  background: var(--blue);
+  bottom: 15%;
+  right: 15%;
+}
+
+/* Central glowing core behind the logo */
+.intro-glow-center {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255, 95, 0, 0.2) 0%, rgba(0, 176, 255, 0.1) 50%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  animation: core-pulse 4s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes core-pulse {
+  0% { transform: translate(-50%, -60%) scale(0.9); opacity: 0.5; }
+  100% { transform: translate(-50%, -60%) scale(1.15); opacity: 0.85; }
+}
+
+/* CRT Scanlines and subtle hacker flicker */
+.intro-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+  animation: scanline-flicker 0.15s infinite;
+  transition: opacity 0.5s ease;
+}
+
+.intro-scanlines.fade-out {
+  opacity: 0;
+}
+
+@keyframes scanline-flicker {
+  0% { opacity: 0.93; }
+  50% { opacity: 1; }
+  100% { opacity: 0.93; }
+}
+
+/* Centered layout scaled dynamically */
+.intro-content {
+  --scale-factor: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--scale-factor));
+  transform-origin: center center;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 420px;
+  padding: 1.8rem;
+  border-radius: 24px;
+  background: rgba(8, 8, 12, 0.75);
+  border: 1px solid rgba(255, 95, 0, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), inset 0 0 20px rgba(255, 95, 0, 0.03);
+  
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity, transform;
+}
+
+.intro-content.fade-out-content {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(calc(var(--scale-factor) * 0.92));
+}
+
+/* Logo SVG Styles & Animations */
+.intro-logo-svg {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin-bottom: 1.5rem;
+  position: relative;
+  animation: logo-glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes logo-glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 95, 0, 0.4)) drop-shadow(0 0 3px rgba(0, 176, 255, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(255, 95, 0, 0.7)) drop-shadow(0 0 6px rgba(0, 176, 255, 0.4));
+  }
+}
+
+/* Brackets flickering */
+.intro-logo-bracket {
+  animation: bracket-flicker 6s infinite;
+}
+
+@keyframes bracket-flicker {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 1; }
+  46% { opacity: 0.82; }
+  47% { opacity: 1; }
+  82% { opacity: 1; }
+  83% { opacity: 0.88; }
+  84% { opacity: 1; }
+}
+
+/* Chromatic aberration and scanning jitter for text */
+.intro-logo-text {
+  animation: text-glitch 5s infinite;
+  transform-origin: center;
+}
+
+@keyframes text-glitch {
+  0%, 92%, 100% {
+    text-shadow: 0 0 10px rgba(255, 95, 0, 0.5);
+    transform: skew(0deg) translate(0, 0);
+  }
+  93% {
+    text-shadow: -2px 0 #00b0ff, 2px 0 #ff5f00;
+    transform: skew(2.5deg) translate(-1px, 0.5px);
+  }
+  94% {
+    text-shadow: 2px -1px #00b0ff, -2px 1.5px #ff5f00;
+    transform: skew(-2.5deg) translate(1.2px, -0.5px);
+  }
+  95% {
+    text-shadow: 0 0 10px rgba(255, 95, 0, 0.5);
+    transform: skew(0deg) translate(0, 0);
+  }
+}
+
+/* Terminal pulsing cursor dot */
+.intro-logo-dot {
+  animation: dot-pulse 1.2s infinite alternate;
+}
+
+@keyframes dot-pulse {
+  0% {
+    opacity: 0.35;
+    filter: drop-shadow(0 0 2px rgba(0, 176, 255, 0.4));
+  }
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(0, 176, 255, 0.95));
+  }
+}
+
+/* Booting terminal logs */
+.intro-terminal {
+  width: 100%;
+  height: 120px;
+  background: rgba(4, 5, 8, 0.95);
+  border: 1px solid rgba(255, 95, 0, 0.15);
+  border-radius: 12px;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9), 0 8px 30px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: left;
+}
+
+.terminal-line {
+  margin-bottom: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  animation: fade-line-in 0.2s ease-out forwards;
+}
+
+@keyframes fade-line-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.terminal-success {
+  color: #10b981;
+  font-weight: bold;
+}
+
+.terminal-info {
+  color: var(--orange);
+}
+
+.terminal-text {
+  color: #e2e8f0;
+}
+
+/* Progress bar container */
+.intro-progress-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.intro-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+.intro-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  overflow: visible;
+  position: relative;
+  border: 1px solid rgba(255, 95, 0, 0.12);
+}
+
+.intro-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange), var(--blue));
+  box-shadow: 0 0 10px rgba(255, 95, 0, 0.4), 0 0 6px rgba(0, 176, 255, 0.4);
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.1s ease-out;
+  position: relative;
+}
+
+/* Glowing pointer spark on progress bar */
+.intro-progress-spark {
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: var(--blue);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--blue);
+  z-index: 10;
+}
+
+/* SIH status subtext */
+.intro-status-text {
+  margin-top: 1rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════
+   RESPONSIVE DESIGN (UNIFORM ON MOBILE)
+   ═══════════════════════════════════ */
+@media (max-width: 480px) {
+  .intro-content {
+    padding: 1.2rem;
+    max-width: 92%;
+  }
+  
+  .intro-logo-svg {
+    max-width: 220px;
+    margin-bottom: 1rem;
+  }
+
+  .intro-terminal {
+    height: 105px;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 0.68rem;
+  }
+}
+
+/* Viewport height-based media queries to scale down contents uniformly */
+@media (max-height: 680px) {
+  .intro-content {
+    --scale-factor: 0.85;
+  }
+}
+
+@media (max-height: 560px) {
+  .intro-content {
+    --scale-factor: 0.75;
+  }
+}

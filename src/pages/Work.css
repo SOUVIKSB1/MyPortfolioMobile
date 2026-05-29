@@ -1,0 +1,217 @@
+.work-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.projects-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:active {
+  transform: scale(0.97) translateY(2px);
+  border-color: var(--orange-border);
+  background: rgba(255, 95, 0, 0.02);
+}
+
+.proj-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.proj-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.proj-card-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.proj-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.proj-card-role {
+  font-size: 11px;
+  color: var(--blue);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+.proj-card-tagline {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.proj-card-tech-preview {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.tech-pill {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.tech-pill.more {
+  color: var(--orange);
+  background: rgba(255, 95, 0, 0.05);
+  border-color: rgba(255, 95, 0, 0.1);
+}
+
+/* Bottom Sheet Layout Content */
+.project-drawer-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.drawer-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  padding-bottom: 14px;
+}
+
+.drawer-proj-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.drawer-role-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.drawer-tech-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--blue);
+  margin-top: 4px;
+}
+
+.drawer-body-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.drawer-sub-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.drawer-body-text p {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.drawer-highlight-text {
+  background: rgba(255, 95, 0, 0.02);
+  border-left: 3px solid var(--orange);
+  padding: 10px 12px;
+  border-radius: 0 10px 10px 0;
+  font-size: 13px !important;
+  color: var(--text-primary) !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.spark-inline {
+  color: var(--orange);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.drawer-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.drawer-link-btn {
+  flex: 1;
+  font-size: 13px;
+  padding: 12px 16px;
+}
+
+/* Card direct links */
+.proj-card-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.05);
+  padding-top: 10px;
+}
+
+.proj-link-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.proj-link-icon-btn:active {
+  background: rgba(255, 95, 0, 0.08);
+  color: var(--orange);
+  border-color: var(--orange-border);
+}

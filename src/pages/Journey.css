@@ -1,0 +1,232 @@
+.journey-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Journey Segment Selectors */
+.journey-tab-bar {
+  display: flex;
+  padding: 4px;
+  border-radius: 14px;
+  gap: 4px;
+  background: rgba(10, 10, 14, 0.5);
+  margin-bottom: 8px;
+}
+
+.segment-btn {
+  flex: 1;
+  position: relative;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 10px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.segment-btn.active {
+  color: var(--text-primary);
+}
+
+.active-segment-line {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+  border-radius: 2px;
+}
+
+/* Timeline Panel */
+.timeline-panel {
+  position: relative;
+  padding-left: 20px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.timeline-trail {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--orange) 0%, var(--blue) 50%, var(--orange) 100%);
+  opacity: 0.25;
+}
+
+.timeline-node {
+  position: relative;
+  padding-left: 18px;
+}
+
+.node-badge {
+  position: absolute;
+  left: -29px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border: 1px solid var(--border-glow);
+}
+
+.node-badge.education {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 8px var(--blue-border);
+}
+
+.node-badge.experience {
+  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: 0 0 8px var(--orange-border);
+}
+
+.node-card {
+  padding: 14px 16px;
+}
+
+.node-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.inline-icon {
+  flex-shrink: 0;
+}
+
+.node-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.node-institution {
+  font-size: 12px;
+  color: var(--blue);
+  font-weight: 600;
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+.node-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Achievements Panel */
+.achievements-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.achievement-item-card {
+  padding: 14px;
+}
+
+.ach-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.ach-card-icon-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ach-card-emoji {
+  font-size: 24px;
+}
+
+.ach-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.ach-card-org {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+  display: block;
+}
+
+.ach-card-badge {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(255, 95, 0, 0.08);
+  border: 1px solid rgba(255, 95, 0, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.ach-card-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.ach-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ach-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.tag-inline-icon {
+  color: var(--blue);
+  flex-shrink: 0;
+}

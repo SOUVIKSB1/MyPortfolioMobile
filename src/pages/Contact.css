@@ -1,0 +1,149 @@
+.contact-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.direct-contact-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.direct-btn {
+  flex: 1;
+  font-size: 13.5px;
+  padding: 12px 16px;
+}
+
+/* Console Ping Box */
+.ping-console-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  border-color: rgba(255, 95, 0, 0.1);
+}
+
+.console-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.console-input-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.console-input-line input,
+.console-input-line textarea {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-primary);
+  padding: 0;
+  resize: none;
+}
+
+.console-input-line input::placeholder,
+.console-input-line textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.console-send-btn {
+  font-size: 12px;
+  padding: 10px 16px;
+  align-self: flex-end;
+}
+
+.console-logs-feed {
+  background: #040406;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  max-height: 180px;
+  overflow-y: auto;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.log-line {
+  margin-bottom: 4px;
+}
+
+.log-arrow {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* Social Grid Card */
+.socials-grid-card {
+  padding: 16px;
+  text-align: left;
+}
+
+.socials-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.social-links-row {
+  display: flex;
+  gap: 8px;
+}
+
+.social-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px 6px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.social-btn span {
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.social-btn:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.social-btn.github:active {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.social-btn.linkedin:active {
+  color: var(--blue);
+  border-color: var(--blue-border);
+  background: rgba(0, 176, 255, 0.03);
+}
+
+.social-btn.instagram:active {
+  color: var(--orange);
+  border-color: var(--orange-border);
+  background: rgba(255, 95, 0, 0.03);
+}
