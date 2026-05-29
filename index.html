@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Souvik Sinhababu | Mobile Portfolio</title>
     <script>
-      // Redirect to desktop site on initial load if screen is desktop-sized (> 1024px)
-      // Using 1024px prevents loops with desktop-to-mobile redirects on tablets
-      if (window.innerWidth > 1024) {
+      // Redirect to desktop site on initial load if screen width is > 767px
+      // Using 767px ensures mobile users in 'Desktop Mode' are properly redirected,
+      // while staying on mobile layout in normal mode.
+      if (window.innerWidth > 767) {
         window.location.replace("https://souvikportfolio-9igv.onrender.com/");
       }
     </script>
