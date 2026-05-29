@@ -34,7 +34,7 @@ const PROJECTS = [
     description: "An artificial intelligence search model that simulates the 8-puzzle game. It calculates states and solves boards using A* Search heuristics, including Manhattan distance and misplaced tiles calculations.",
     tech: ["Python", "AI Search Heuristics", "State-Space Graphs", "Tkinter"],
     github: "https://github.com/SOUVIKSB1/8_Puzzle",
-    live: "https://github.com/SOUVIKSB1/8_Puzzle",
+    live: "https://eight-puzzle-1swc.onrender.com/",
     role: "Algorithm Developer",
     outcomes: "Solves solvable configurations within milliseconds and details open/closed search nodes."
   },
