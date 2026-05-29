@@ -11,8 +11,8 @@ const PROJECTS = [
     tagline: "Comprehensive clinic billing & management system.",
     description: "An enterprise-grade clinic management suite featuring calendar bookings, electronic patient medical records (EMR), automated prescriptions, and a secure real-time billing dashboard with financial analytical widgets.",
     tech: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-    github: "https://github.com/SOUVIKSB1/clinic-os",
-    live: "https://clinic-os-demo.vercel.app",
+    github: "https://github.com/SOUVIKSB1/CLINIC_OS",
+      live: "https://clinic-os-gamma-one.vercel.app/",
     role: "Full-Stack Developer",
     outcomes: "Streamlines patient check-in times by 40% and aggregates monthly revenue analytics instantly."
   },
