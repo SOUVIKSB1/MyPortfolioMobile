@@ -161,7 +161,6 @@ export default function Credentials() {
     const saved = localStorage.getItem("portfolio_reviews");
     return saved ? JSON.parse(saved) : DEFAULT_REVIEWS;
   });
-  const [isLive, setIsLive] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [rating, setRating] = useState(5);
@@ -178,7 +177,6 @@ export default function Credentials() {
           const data = await res.json();
           if (Array.isArray(data)) {
             setReviews(data);
-            setIsLive(true);
           }
         }
       } catch (err) {
@@ -214,7 +212,6 @@ export default function Credentials() {
       if (res.ok) {
         const saved = await res.json();
         setReviews((prev) => [saved, ...prev]);
-        setIsLive(true);
         
         // Also sync local storage for offline fallback consistency
         const updated = [saved, ...reviews];
@@ -224,7 +221,6 @@ export default function Credentials() {
       }
     } catch (err) {
       console.warn("Backend reviews submission failed. Saving to local storage fallback.", err);
-      setIsLive(false);
       const updated = [reviewData, ...reviews];
       setReviews(updated);
       localStorage.setItem("portfolio_reviews", JSON.stringify(updated));
@@ -321,9 +317,9 @@ export default function Credentials() {
                   <span className="aggregate-count">({reviews.length} ratings)</span>
                 </div>
               </div>
-              <div className={`live-pill-wrap ${isLive ? 'live-sync' : 'local-fallback'}`}>
+              <div className="live-pill-wrap">
                 <span className="live-dot-indicator" />
-                <span className="live-feed-label">{isLive ? "LIVE DATABASE SYNC" : "LOCAL HUB DATA"}</span>
+                <span className="live-feed-label">LOCAL HUB DATA</span>
               </div>
             </div>
 
