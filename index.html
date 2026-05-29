@@ -5,6 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Souvik Sinhababu | Mobile Portfolio</title>
+    <script>
+      function checkRedirect() {
+        if (window.innerWidth > 480) {
+          window.location.replace("https://souvikportfolio-9igv.onrender.com/");
+        }
+      }
+      checkRedirect();
+      window.addEventListener("resize", checkRedirect);
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -48,6 +48,8 @@ export default function App() {
 
   const scrollContainerRef = useRef(null);
 
+
+
   const handleStartExit = () => {
     setIsExitingLoader(true);
   };
