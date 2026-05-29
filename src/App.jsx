@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail } from "lucide-react";
+import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail, MessageSquare } from "lucide-react";
 
 import StartAnimation from "./components/StartAnimation";
 import CyberCanvas from "./components/CyberCanvas";
@@ -9,10 +9,11 @@ import About from "./pages/About";
 import Work from "./pages/Work";
 import Journey from "./pages/Journey";
 import Credentials from "./pages/Credentials";
+import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
 
 // Index tabs to calculate slider directions
-const TABS = ["home", "about", "work", "journey", "credentials", "contact"];
+const TABS = ["home", "about", "work", "journey", "credentials", "reviews", "contact"];
 
 // Variants for direction-aware page transitions
 const pageVariants = {
@@ -82,6 +83,7 @@ export default function App() {
       case "work": return "Projects";
       case "journey": return "Journey";
       case "credentials": return "Aura";
+      case "reviews": return "Reviews";
       case "contact": return "Ping";
       default: return "";
     }
@@ -94,6 +96,7 @@ export default function App() {
       case "work": return <Briefcase size={size} className="nav-icon" />;
       case "journey": return <Calendar size={size} className="nav-icon" />;
       case "credentials": return <Award size={size} className="nav-icon" />;
+      case "reviews": return <MessageSquare size={size} className="nav-icon" />;
       case "contact": return <Mail size={size} className="nav-icon" />;
       default: return null;
     }
@@ -159,6 +162,7 @@ export default function App() {
                 {activePage === "work" && <Work />}
                 {activePage === "journey" && <Journey />}
                 {activePage === "credentials" && <Credentials />}
+                {activePage === "reviews" && <Reviews />}
                 {activePage === "contact" && <Contact />}
               </motion.div>
             </AnimatePresence>
@@ -189,6 +193,9 @@ export default function App() {
               );
             })}
           </nav>
+
+          {/* Portal target for bottom sheets/modals to render outside scroll context but inside the viewport */}
+          <div id="portal-root" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1000 }} />
         </div>
       )}
     </>

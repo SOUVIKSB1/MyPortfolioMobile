@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import "./BottomSheet.css";
@@ -23,7 +24,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
     }
   };
 
-  return (
+  const content = (
     <AnimatePresence>
       {isOpen && (
         <div className="bottom-sheet-root">
@@ -74,4 +75,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }) {
       )}
     </AnimatePresence>
   );
+
+  const portalTarget = typeof document !== "undefined" ? document.getElementById("portal-root") : null;
+  return portalTarget ? createPortal(content, portalTarget) : content;
 }
