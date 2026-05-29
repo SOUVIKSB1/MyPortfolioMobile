@@ -152,7 +152,7 @@ export default function App() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "100%", height: "auto", willChange: "transform, opacity" }}
               >
                 {activePage === "home" && <Home onNavigate={handleNavigate} />}
                 {activePage === "about" && <About />}

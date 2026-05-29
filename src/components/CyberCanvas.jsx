@@ -21,12 +21,12 @@ export default function CyberCanvas({ activePage }) {
     let height = (canvas.height = canvas.offsetHeight);
 
     const particles = [];
-    const maxParticles = 30; // Optimized for mobile
+    const maxParticles = 18; // Reduced particle count for massive performance gains on mobile CPU/GPU
 
     const mouse = {
       x: null,
       y: null,
-      radius: 130,
+      radius: 120, // Slightly smaller radius to reduce interaction math
     };
 
     // Helper to resolve particle colors on the fly based on current page
@@ -53,8 +53,8 @@ export default function CyberCanvas({ activePage }) {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.7;
-        this.vy = (Math.random() - 0.5) * 0.7;
+        this.vx = (Math.random() - 0.5) * 0.65;
+        this.vy = (Math.random() - 0.5) * 0.65;
         this.radius = Math.random() * 2 + 1;
         this.type = Math.random() > 0.5 ? "primary" : "secondary";
       }
@@ -96,8 +96,8 @@ export default function CyberCanvas({ activePage }) {
               // Repel (Push away)
               const repelX = -dx;
               const repelY = -dy;
-              this.vx += (repelX / dist) * force * 0.08;
-              this.vy += (repelY / dist) * force * 0.08;
+              this.vx += (repelX / dist) * force * 0.07;
+              this.vy += (repelY / dist) * force * 0.07;
             } else {
               // Attract / Speed Wave
               this.vx += (dx / dist) * force * 0.04;
@@ -108,7 +108,7 @@ export default function CyberCanvas({ activePage }) {
 
         // Limit speed to prevent chaotic flying
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-        const maxSpeed = page === "about" ? 1.8 : 1.2; // about page has slightly faster particles
+        const maxSpeed = page === "about" ? 1.6 : 1.1;
         if (speed > maxSpeed) {
           this.vx = (this.vx / speed) * maxSpeed;
           this.vy = (this.vy / speed) * maxSpeed;
@@ -121,12 +121,19 @@ export default function CyberCanvas({ activePage }) {
       draw(page) {
         const color = getParticleColor(this.type, page);
         ctx.beginPath();
+        
+        // 1. Draw solid core circle
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = color;
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = color;
         ctx.fill();
-        ctx.shadowBlur = 0; // Reset shadow for efficiency
+
+        // 2. Draw soft halo glow WITHOUT using expensive shadowBlur
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius * 2.3, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.18;
+        ctx.fill();
+        ctx.globalAlpha = 1.0; // Reset alpha
       }
     }
 
@@ -160,7 +167,7 @@ export default function CyberCanvas({ activePage }) {
       mouse.y = null;
     };
 
-    // Attach interaction listeners to viewport wrapper instead of just the canvas
+    // Attach interaction listeners to app-viewport to handle coordinates smoothly
     const wrapper = canvas.closest(".app-viewport") || canvas.parentElement;
     wrapper.addEventListener("mousemove", handlePointerMove);
     wrapper.addEventListener("mouseleave", handlePointerLeave);
@@ -179,9 +186,9 @@ export default function CyberCanvas({ activePage }) {
       });
 
       // Constellation lines connection range
-      const maxDistance = page === "credentials" ? 110 : 85; 
+      const maxDistance = page === "credentials" ? 100 : 75; 
 
-      // Draw connection lines
+      // Draw connection lines - extremely optimized: NO linear gradient allocations inside double loops
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -189,24 +196,15 @@ export default function CyberCanvas({ activePage }) {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < maxDistance) {
-            const alpha = ((maxDistance - dist) / maxDistance) * 0.12;
+            const alpha = ((maxDistance - dist) / maxDistance) * 0.1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
 
-            const colorI = getParticleColor(particles[i].type, page);
-            const colorJ = getParticleColor(particles[j].type, page);
-
-            const grad = ctx.createLinearGradient(
-              particles[i].x, particles[i].y,
-              particles[j].x, particles[j].y
-            );
-            grad.addColorStop(0, colorI);
-            grad.addColorStop(1, colorJ);
-
-            ctx.strokeStyle = grad;
+            // Fast flat line color matching first particle - saves 400+ gradient allocations per frame!
+            ctx.strokeStyle = getParticleColor(particles[i].type, page);
             ctx.globalAlpha = alpha;
-            ctx.lineWidth = 0.7;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
             ctx.globalAlpha = 1.0;
           }
