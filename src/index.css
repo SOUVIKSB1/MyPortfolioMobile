@@ -341,9 +341,7 @@ html, body {
   left: 0;
   width: 100%;
   height: var(--nav-height);
-  background: rgba(10, 10, 14, 0.75);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  background: var(--bg-primary); /* Solid color to prevent background content bleed-through */
   border-top: 1px solid var(--border-glow);
   display: flex;
   justify-content: space-around;
