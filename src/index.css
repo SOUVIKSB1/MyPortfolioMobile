@@ -41,6 +41,11 @@ html, body {
   user-select: none;
 }
 
+a {
+  text-decoration: none;
+}
+
+
 /* Base scrollbar design (fallback) */
 ::-webkit-scrollbar {
   width: 4px;
@@ -240,7 +245,7 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--orange) 0%, #ff8200 100%);
+  background: linear-gradient(135deg, var(--orange) 20%, orange 100%);
   color: #ffffff;
   border: none;
   font-family: 'Outfit', sans-serif;
@@ -263,7 +268,7 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #0096ff;
   color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.08);
   font-family: 'Outfit', sans-serif;

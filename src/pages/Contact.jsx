@@ -80,7 +80,7 @@ export default function Contact() {
           href="https://mail.google.com/mail/?view=cm&fs=1&to=souviksinhababu1@gmail.com" 
           target="_blank" 
           rel="noreferrer" 
-          className="btn-primary direct-btn border-blue-glow"
+          className="btn-secondary direct-btn border-blue-glow"
         >
           <Mail size={18} />
           sayHello()
