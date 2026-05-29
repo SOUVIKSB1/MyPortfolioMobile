@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import https from 'https';
+import fs from 'fs';
 
 // Load environment variables
 dotenv.config();
@@ -122,12 +123,24 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// Serve frontend build in production (relative path from backend folder to root dist)
-app.use(express.static(path.join(__dirname, '../dist')));
+// Serve frontend build in production if it exists (fallback to API status JSON if not found)
+const distPath = path.join(__dirname, '../dist');
+const indexHtmlPath = path.join(distPath, 'index.html');
 
-app.get('/{*splat}', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
-});
+if (fs.existsSync(indexHtmlPath)) {
+  app.use(express.static(distPath));
+  app.get('/{*splat}', (req, res) => {
+    res.sendFile(indexHtmlPath);
+  });
+} else {
+  app.get('/{*splat}', (req, res) => {
+    res.status(200).json({
+      message: "Portfolio Mobile API is running.",
+      status: "online",
+      database: mongoose.connection.readyState === 1 ? "connected" : "offline-fallback"
+    });
+  });
+}
 
 // Start Server
 app.listen(PORT, () => {
