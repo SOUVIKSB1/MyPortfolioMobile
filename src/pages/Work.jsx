@@ -78,7 +78,7 @@ const PROJECTS = [
   description: "A futuristic calculator web application featuring advanced arithmetic operations, voice-enabled input, intelligent AI assistance, theme customization, unit conversion utilities, interactive sound effects, and a responsive user interface designed for seamless cross-device experiences.",
   tech: ["HTML5", "CSS3", "JavaScript"],
   github: "https://github.com/SOUVIKSB1/Calculator-V-3.0",
-  live: "https://souviksb1.github.io/Calculator-V-3.0",
+  live: "https://calculator-v-3-0.vercel.app/",
   role: "Frontend Development",
   outcomes: "Implemented AI-assisted calculations, voice recognition capabilities, theme switching, and conversion tools while maintaining responsive performance across desktop and mobile devices."
 },
