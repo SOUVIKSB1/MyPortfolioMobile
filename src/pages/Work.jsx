@@ -23,7 +23,7 @@ const PROJECTS = [
     description: "Designed and developed a full-stack e-commerce platform focused on premium retail experiences. The application integrates secure Firebase authentication, dynamic product management, real-time inventory handling, and intuitive shopping workflows. Built with a responsive user interface and scalable backend architecture to ensure smooth performance, secure transactions, and an engaging customer journey across all devices.",
     tech: ["HTML", "CSS", "JavaScript", "MongoDB", "Firebase Authentication"],
     github: "https://github.com/SOUVIKSB1/Swarnika",
-    live: "https://swarnika-lemon.vercel.app/login"
+    live: "https://swarnika-lemon.vercel.app/login",
     role: "Full-Stack Web Application",
     outcomes: "Implemented secure Google Sign-In, automated product management workflows, responsive shopping experiences, and scalable database operations supporting efficient retail transactions and customer engagement."
   },
