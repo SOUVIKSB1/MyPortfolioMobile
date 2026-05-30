@@ -12,9 +12,20 @@ const PROJECTS = [
     description: "An enterprise-grade clinic management suite featuring calendar bookings, electronic patient medical records (EMR), automated prescriptions, and a secure real-time billing dashboard with financial analytical widgets.",
     tech: ["React", "Node.js", "Express", "ORACLE SQL PLUS", "Tailwind CSS"],
     github: "https://github.com/SOUVIKSB1/CLINIC_OS",
-      live: "https://clinic-os-gamma-one.vercel.app/",
-    role: "Full-Stack Developer",
+    live: "https://clinic-os-gamma-one.vercel.app/",
+    role: "Full-Stack Web Application",
     outcomes: "Streamlines patient check-in times by 40% and aggregates monthly revenue analytics instantly."
+  },
+  {
+    icon: "🛍️",
+    title: "Swarnika",
+    tagline: "Luxury-inspired e-commerce platform with secure digital commerce infrastructure.",
+    description: "Designed and developed a full-stack e-commerce platform focused on premium retail experiences. The application integrates secure Firebase authentication, dynamic product management, real-time inventory handling, and intuitive shopping workflows. Built with a responsive user interface and scalable backend architecture to ensure smooth performance, secure transactions, and an engaging customer journey across all devices.",
+    tech: ["HTML", "CSS", "JavaScript", "MongoDB", "Firebase Authentication"],
+    github: "https://github.com/SOUVIKSB1/Swarnika",
+    live: "https://swarnika-lemon.vercel.app/login"
+    role: "Full-Stack Web Application",
+    outcomes: "Implemented secure Google Sign-In, automated product management workflows, responsive shopping experiences, and scalable database operations supporting efficient retail transactions and customer engagement."
   },
   {
     icon: "💰",
