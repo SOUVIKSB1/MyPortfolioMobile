@@ -35,7 +35,7 @@ const PROJECTS = [
     tech: ["JavaScript", "HTML5", "CSS3", "Local Storage", "ChartJS"],
     github: "https://github.com/SOUVIKSB1/PiggyBank",
     live: "https://souviksb1.github.io/PiggyBank",
-    role: "Frontend Engineer",
+    role: "Frontend Web Application",
     outcomes: "Provides offline access and updates state dynamically using simple event listeners."
   },
   {
@@ -46,7 +46,7 @@ const PROJECTS = [
     tech: ["Python", "AI Search Heuristics", "State-Space Graphs", "Tkinter"],
     github: "https://github.com/SOUVIKSB1/8_Puzzle",
     live: "https://eight-puzzle-1swc.onrender.com/",
-    role: "Algorithm Developer",
+    role: "Algorithm Demonstration",
     outcomes: "Solves solvable configurations within milliseconds and details open/closed search nodes."
   },
   {
@@ -72,16 +72,38 @@ const PROJECTS = [
     outcomes: "Maintains screen readers compatibility and prevents browser focus leaks."
   },
   {
-    icon: "🧮",
-    title: "Calculator Web Suite",
-    tagline: "Modern responsive scientific calculator app.",
-    description: "A visual calculator application with standard/scientific operation layouts, supporting dark black glowing UI skins and persistent operations history cache.",
-    tech: ["JavaScript", "HTML5", "CSS3", "Glassmorphic Theme"],
-    github: "https://github.com/SOUVIKSB1/Calculator-V-3.0",
-    live: "https://souviksb1.github.io/Calculator-V-3.0",
-    role: "Frontend Designer",
-    outcomes: "Features smooth CSS transition layers and precise arithmetic state calculations."
-  }
+  icon: "🫟",
+  title: "Calculator Web V3.0",
+  tagline: "AI-powered next-generation calculator with smart productivity features.",
+  description: "A futuristic calculator web application featuring advanced arithmetic operations, voice-enabled input, intelligent AI assistance, theme customization, unit conversion utilities, interactive sound effects, and a responsive user interface designed for seamless cross-device experiences.",
+  tech: ["HTML5", "CSS3", "JavaScript"],
+  github: "https://github.com/SOUVIKSB1/Calculator-V-3.0",
+  live: "https://souviksb1.github.io/Calculator-V-3.0",
+  role: "Frontend Development",
+  outcomes: "Implemented AI-assisted calculations, voice recognition capabilities, theme switching, and conversion tools while maintaining responsive performance across desktop and mobile devices."
+},
+{
+  icon: "🧮",
+  title: "Calculator Web V2.0",
+  tagline: "Scientific calculator with enhanced functionality and modern UI design.",
+  description: "A feature-rich scientific calculator web application developed with modern frontend technologies, offering advanced mathematical operations, responsive layouts, intuitive user interactions, and a visually appealing dark-themed interface optimized for accuracy and usability.",
+  tech: ["HTML5", "CSS3", "JavaScript"],
+  github: "https://github.com/SOUVIKSB1/Calculator-V-2.0",
+  live: "https://souviksb1.github.io/Calculator-V-2.0/",
+  role: "Frontend Development",
+  outcomes: "Built advanced scientific calculation capabilities, optimized UI responsiveness, and delivered a clean user experience with improved accessibility and performance."
+},
+{
+  icon: "⛓️‍💥",
+  title: "Calculator Web V1.0",
+  tagline: "Foundational calculator application focused on accuracy and responsiveness.",
+  description: "A responsive calculator web application designed to perform essential arithmetic operations through a clean interface, structured layouts, and reliable client-side logic. Developed as the foundation for future calculator versions with improved features and functionality.",
+  tech: ["HTML5", "CSS3", "JavaScript"],
+  github: "https://github.com/SOUVIKSB1/Calculator-V-1.0",
+  live: "https://souviksb1.github.io/Calculator-V-1.0/",
+  role: "Frontend Development",
+  outcomes: "Implemented core arithmetic operations, responsive layouts, and user-friendly interactions while establishing the base architecture for subsequent calculator versions."
+}
 ];
 
 export default function Work() {
