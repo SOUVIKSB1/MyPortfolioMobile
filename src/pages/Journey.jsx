@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, Briefcase, GraduationCap, Calendar, Tag } from "lucide-react";
+import { Award, Briefcase, GraduationCap, Calendar, Tag, School } from "lucide-react";
 import "./Journey.css";
 import { FaSchoolCircleExclamation } from "react-icons/fa6";
 
@@ -32,7 +32,7 @@ const TIMELINE = [
   {
     date: "2018",
     type: "Education",
-    icon: <FaSchoolCircleExclamation size={16} />,
+    icon: <School size={16} />,
     title: "Secondary Education (Madhyamik)",
     institution: "Kenduadihi High School - Bankura, West Bengal",
     description: "Achieved 645 out of 700 marks (92.14%)."
