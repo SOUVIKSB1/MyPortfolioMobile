@@ -16,7 +16,7 @@ const TIMELINE = [
   {
     date: "2021 - 2022",
     type: "Education",
-    icon: <BookOpen size={16} />,
+    icon: <Briefcase size={16} />,
     title: "Educational Preparation",
     institution: "Allen Career Institute - Kota, Rajasthan",
     description: "Intensive preparation for entrance exams with a focus on problem-solving, conceptual clarity, and time management. Completed a 2-year classroom program."
@@ -24,7 +24,7 @@ const TIMELINE = [
   {
     date: "2019 - 2020",
     type: "Education",
-    icon: <School size={16} />,
+    icon: <Briefcase size={16} />,
     title: "Higher Secondary Education",
     institution: "Kenduadihi High School - Bankura, West Bengal",
     description: "Achieved 459 out of 500 marks (91.8%). Subject Combination: Physics, Chemistry, Mathematics, Biology (PCMB)."
@@ -32,7 +32,7 @@ const TIMELINE = [
   {
     date: "2018",
     type: "Education",
-    icon: <School size={16} />,
+    icon: <Briefcase size={16} />,
     title: "Secondary Education (Madhyamik)",
     institution: "Kenduadihi High School - Bankura, West Bengal",
     description: "Achieved 645 out of 700 marks (92.14%)."
