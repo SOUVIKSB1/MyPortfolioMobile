@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Award, Briefcase, GraduationCap, Calendar, Tag } from "lucide-react";
 import "./Journey.css";
+import { FaSchoolCircleExclamation } from "react-icons/fa6";
 
 const TIMELINE = [
   {
@@ -13,20 +14,28 @@ const TIMELINE = [
     description: "Deepening core theoretical and practical computer science principles: Algorithms, DBMS, Software Engineering, and Operating Systems. Fusing studies with cloud-native implementations."
   },
   {
-    date: "2024 - 2025",
-    type: "experience",
-    icon: <Briefcase size={16} />,
-    title: "Cloud & DevOps Projects",
-    institution: "Academic & Personal Repositories",
-    description: "Designed automated CI/CD code triggers, containerized complex full-stack services using Docker, and deployed nodes on Google Kubernetes Engine (GKE)."
+    date: "2021 - 2022",
+    type: "Education",
+    icon: <BookOpen size={16} />,
+    title: "Educational Preparation",
+    institution: "Allen Career Institute - Kota, Rajasthan",
+    description: "Intensive preparation for entrance exams with a focus on problem-solving, conceptual clarity, and time management. Completed a 2-year classroom program."
   },
   {
-    date: "2023 - 2024",
-    type: "experience",
-    icon: <Briefcase size={16} />,
-    title: "Full-Stack Web Projects",
-    institution: "Freelance & Open-Source",
-    description: "Engineered robust APIs in Node.js/Express, designed schemas using MongoDB and PostgreSQL, and built high-performance responsive frontend interfaces in React."
+    date: "2019 - 2020",
+    type: "Education",
+    icon: <School size={16} />,
+    title: "Higher Secondary Education",
+    institution: "Kenduadihi High School - Bankura, West Bengal",
+    description: "Achieved 459 out of 500 marks (91.8%). Subject Combination: Physics, Chemistry, Mathematics, Biology (PCMB)."
+  },
+  {
+    date: "2018",
+    type: "Education",
+    icon: <FaSchoolCircleExclamation size={16} />,
+    title: "Secondary Education (Madhyamik)",
+    institution: "Kenduadihi High School - Bankura, West Bengal",
+    description: "Achieved 645 out of 700 marks (92.14%)."
   }
 ];
 
