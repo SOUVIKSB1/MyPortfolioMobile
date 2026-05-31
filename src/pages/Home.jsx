@@ -187,7 +187,7 @@ export default function Home({ onNavigate }) {
       {/* Quick Stats Grid */}
       <div className="home-stats-grid">
         <div className="stat-item glass-panel border-orange-glow">
-          <h3 className="stat-number"><CounterTicker value={6} />+</h3>
+          <h3 className="stat-number"><CounterTicker value={9} />+</h3>
           <p className="stat-label">Projects</p>
         </div>
         <div className="stat-item glass-panel">
