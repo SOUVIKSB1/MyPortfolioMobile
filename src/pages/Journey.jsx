@@ -17,7 +17,7 @@ const TIMELINE = [
     date: "2021 - 2022",
     type: "Education",
     icon: <BrickWallFireIcon size={16} />,
-    title: "Educational Preparation",
+    title: "Entrance Exam Preparation",
     institution: "Allen Career Institute - Kota, Rajasthan",
     description: "Intensive preparation for entrance exams with a focus on problem-solving, conceptual clarity, and time management. Completed a 2-year classroom program."
   },
