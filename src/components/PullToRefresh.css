@@ -1,0 +1,72 @@
+/* ── Pull-to-Refresh Indicator ─────────────────────────────────────── */
+
+.ptr-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  pointer-events: none;
+
+  /* Smooth snap back on release */
+  transition: height 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ptr-wrapper.releasing {
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Indicator circle */
+.ptr-indicator {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  transition: transform 0.1s linear, color 0.2s ease;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.ptr-wrapper.triggered .ptr-indicator {
+  color: #10b981; /* green when ready to release */
+}
+
+.ptr-icon {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 6px currentColor);
+  stroke: currentColor;
+}
+
+.triggered-icon circle {
+  animation: ptr-spin 0.7s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes ptr-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Label */
+.ptr-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.ptr-wrapper.triggered .ptr-label {
+  color: #10b981;
+}

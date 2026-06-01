@@ -4,6 +4,7 @@ import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail, MessageSquare
 
 import StartAnimation from "./components/StartAnimation";
 import CyberCanvas from "./components/CyberCanvas";
+import PullToRefresh from "./components/PullToRefresh";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Work from "./pages/Work";
@@ -123,6 +124,9 @@ export default function App() {
           <div className="glow-blob glow-orange" />
           <div className="glow-blob glow-blue" />
           <div className="grain-overlay" />
+
+          {/* Pull-to-Refresh indicator */}
+          <PullToRefresh scrollContainerRef={scrollContainerRef} />
 
           {/* Top Sticky Header - fades out on scroll, hidden on other pages */}
           <header 
