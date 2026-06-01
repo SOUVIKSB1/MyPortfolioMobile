@@ -294,6 +294,16 @@
   color: var(--orange);
 }
 
+.live-metric-box.visits .metric-icon {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.live-metric-box.visits .metric-value {
+  color: #10b981;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
 .metric-info {
   display: flex;
   flex-direction: column;
@@ -326,6 +336,7 @@
 
 .pulse-glow.orange { background: radial-gradient(circle, var(--orange) 0%, transparent 80%); }
 .pulse-glow.blue { background: radial-gradient(circle, var(--blue) 0%, transparent 80%); }
+.pulse-glow.green { background: radial-gradient(circle, #10b981 0%, transparent 80%); }
 
 .live-footer {
   display: flex;

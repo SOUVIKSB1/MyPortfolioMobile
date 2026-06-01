@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Download, Mail, ExternalLink } from "lucide-react";
-import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaInstagram, FaEye } from "react-icons/fa";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
 import "./Home.css";
@@ -39,6 +39,7 @@ export default function Home({ onNavigate }) {
   const [typingText, setTypingText] = useState("");
   const [linkedinCount, setLinkedinCount] = useState(1481);
   const [instagramCount, setInstagramCount] = useState(1043);
+  const [visitCount, setVisitCount] = useState(null);
   const [syncStatus, setSyncStatus] = useState("Listening for updates...");
   const [lastUpdated, setLastUpdated] = useState("just now");
   const [imageError, setImageError] = useState(false);
@@ -86,6 +87,18 @@ export default function Home({ onNavigate }) {
 
     timer = setTimeout(handleType, typingSpeed);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch & increment visitor count on mount
+  useEffect(() => {
+    const BACKEND = import.meta.env.VITE_BACKEND_URL || "https://portfoliosouvik.onrender.com";
+    fetch(`${BACKEND}/api/visits`, { method: "POST" })
+      .then((r) => r.json())
+      .then((data) => setVisitCount(data.count))
+      .catch(() => {
+        // Silently fall back — show a placeholder
+        setVisitCount("—");
+      });
   }, []);
 
   // Live count randomized updates and clock ticker
@@ -242,6 +255,20 @@ export default function Home({ onNavigate }) {
             </div>
             <div className="pulse-glow blue" />
           </a>
+
+          {/* Portfolio Visits */}
+          <div className="live-metric-box visits">
+            <div className="metric-icon">
+              <FaEye size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Portfolio Visits</span>
+              <h4 className="metric-value">
+                {visitCount === null ? "…" : typeof visitCount === "number" ? visitCount.toLocaleString() : visitCount}
+              </h4>
+            </div>
+            <div className="pulse-glow green" />
+          </div>
         </div>
 
         <div className="live-footer">
