@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Download, Mail, ExternalLink } from "lucide-react";
-import { FaGithub, FaLinkedin, FaInstagram, FaEye } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaInstagram, FaEye, FaStar } from "react-icons/fa";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
 import "./Home.css";
@@ -40,6 +40,7 @@ export default function Home({ onNavigate }) {
   const [linkedinCount, setLinkedinCount] = useState(1481);
   const [instagramCount, setInstagramCount] = useState(1043);
   const [visitCount, setVisitCount] = useState(null);
+  const [reviewCount, setReviewCount] = useState(null);
   const [syncStatus, setSyncStatus] = useState("Listening for updates...");
   const [lastUpdated, setLastUpdated] = useState("just now");
   const [imageError, setImageError] = useState(false);
@@ -99,6 +100,15 @@ export default function Home({ onNavigate }) {
         // Silently fall back — show a placeholder
         setVisitCount("—");
       });
+  }, []);
+
+  // Fetch total review count on mount
+  useEffect(() => {
+    const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
+    fetch(`${BACKEND}/api/reviews/count`)
+      .then((r) => r.json())
+      .then((data) => setReviewCount(data.count))
+      .catch(() => setReviewCount("—"));
   }, []);
 
   // Live count randomized updates and clock ticker
@@ -268,6 +278,20 @@ export default function Home({ onNavigate }) {
               </h4>
             </div>
             <div className="pulse-glow green" />
+          </div>
+
+          {/* Total Reviews */}
+          <div className="live-metric-box reviews">
+            <div className="metric-icon">
+              <FaStar size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Total Reviews</span>
+              <h4 className="metric-value">
+                {reviewCount === null ? "…" : typeof reviewCount === "number" ? reviewCount.toLocaleString() : reviewCount}
+              </h4>
+            </div>
+            <div className="pulse-glow purple" />
           </div>
         </div>
 

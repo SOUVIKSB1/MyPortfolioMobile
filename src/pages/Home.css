@@ -304,6 +304,16 @@
   text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
 }
 
+.live-metric-box.reviews .metric-icon {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+}
+
+.live-metric-box.reviews .metric-value {
+  color: #a855f7;
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+}
+
 .metric-info {
   display: flex;
   flex-direction: column;
@@ -337,6 +347,7 @@
 .pulse-glow.orange { background: radial-gradient(circle, var(--orange) 0%, transparent 80%); }
 .pulse-glow.blue { background: radial-gradient(circle, var(--blue) 0%, transparent 80%); }
 .pulse-glow.green { background: radial-gradient(circle, #10b981 0%, transparent 80%); }
+.pulse-glow.purple { background: radial-gradient(circle, #a855f7 0%, transparent 80%); }
 
 .live-footer {
   display: flex;
