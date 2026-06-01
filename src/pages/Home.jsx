@@ -91,7 +91,7 @@ export default function Home({ onNavigate }) {
 
   // Fetch & increment visitor count on mount
   useEffect(() => {
-    const BACKEND = import.meta.env.VITE_BACKEND_URL || "https://portfoliosouvik.onrender.com";
+    const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
     fetch(`${BACKEND}/api/visits`, { method: "POST" })
       .then((r) => r.json())
       .then((data) => setVisitCount(data.count))
