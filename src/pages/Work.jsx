@@ -28,8 +28,8 @@ const PROJECTS = [
     outcomes: "Implemented secure Google Sign-In, automated product management workflows, responsive shopping experiences, and scalable database operations supporting efficient retail transactions and customer engagement."
   },
   {
-    icon: "💳",
-    title: "PayURupee",
+    icon: "₹",
+    title: "PayU₹upee",
     tagline: "Secure digital e-wallet with scheduled payments and splits.",
     description: "A premium full-stack digital e-wallet platform featuring a secure 6-digit UPI PIN authentication layer, real-time transaction streams, automated scheduled payments, multi-person split billing utilities, interactive scratch card cashback rewards, and responsive financial analysis insights.",
     tech: ["HTML5", "CSS3", "JavaScript", "Node.js", "Express", "MongoDB", "JWT"],
