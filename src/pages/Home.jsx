@@ -3,6 +3,7 @@ import { Download, Mail, ExternalLink } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram, FaEye, FaStar } from "react-icons/fa";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
+import { PROJECTS } from "./Work";
 import "./Home.css";
 
 const COMMANDS = [
@@ -210,7 +211,7 @@ export default function Home({ onNavigate }) {
       {/* Quick Stats Grid */}
       <div className="home-stats-grid">
         <div className="stat-item glass-panel border-orange-glow">
-          <h3 className="stat-number"><CounterTicker value={9} />+</h3>
+          <h3 className="stat-number"><CounterTicker value={PROJECTS.length} />+</h3>
           <p className="stat-label">Projects</p>
         </div>
         <div className="stat-item glass-panel">

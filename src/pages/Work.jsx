@@ -4,7 +4,7 @@ import { FaGithub } from "react-icons/fa";
 import BottomSheet from "../components/BottomSheet";
 import "./Work.css";
 
-const PROJECTS = [
+export const PROJECTS = [
   {
     icon: "🏥",
     title: "Clinic OS",
