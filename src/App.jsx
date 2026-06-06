@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail, MessageSquare } from "lucide-react";
+import { useBackHandler } from "./hooks/useBackHandler";
 
 import StartAnimation from "./components/StartAnimation";
 import CyberCanvas from "./components/CyberCanvas";
@@ -78,6 +79,13 @@ export default function App() {
       }
     }
   };
+
+  // ── Back button / gesture handler ──────────────────────────────────────────
+  // Intercepts the system back button and swipe-back gesture.
+  // • On any non-root tab: navigates to the previously visited tab.
+  // • On the home tab (root): shows "Press back again to exit" toast;
+  //   a second press within 2 s closes the app.
+  useBackHandler(activePage, handleNavigate, TABS);
 
   const getNavLabel = (tab) => {
     switch (tab) {
