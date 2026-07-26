@@ -5,28 +5,68 @@ import "./Credentials.css";
 
 const CERTIFICATIONS = [
   {
+    title: "Azure AI Fundamentals (AI-900)",
+    issuer: "Microsoft Certified",
+    date: "APR 2026",
+    id: "PUxp-uScT",
+    link: "https://www.certiport.com/portal/Pages/PrintTranscriptInfo.aspx?action=Cert&id=455&cvid=26m0VuRk4VtsDk//7ATIrg==",
+    icon: "🧠"
+  },
+  {
+    title: "AWS Academy Graduate - Data Engineering",
+    issuer: "AWS Academy",
+    date: "JUL 2026",
+    id: "AWS-Academy-DE",
+    link: "/certificates/aws_academy_graduate_data_engineering.pdf",
+    icon: "☁️"
+  },
+  {
+    title: "NPTEL Java Certification",
+    issuer: "IIT Kharagpur",
+    date: "NOV 2025",
+    id: "NPTEL25CS110S460803974",
+    link: "https://archive.nptel.ac.in/content/noc/NOC25/SEM2/Ecertificates/106/noc25-cs110/Course/NPTEL25CS110S46080397410888267.pdf",
+    icon: "☕"
+  },
+  {
+    title: "Data Base Management System",
+    issuer: "IIT Kharagpur",
+    date: "MAR 2026",
+    id: "NPTEL26CS39S660101642",
+    link: "https://nptel.ac.in/noc/E_Certificate/NOC26CS39S66010164203151734",
+    icon: "💿"
+  },
+  {
+    title: "Supervised Machine Learning",
+    issuer: "DeepLearning.AI",
+    date: "MAR 2025",
+    id: "B1DW0ZFLXWSV",
+    link: "https://www.coursera.org/account/accomplishments/verify/B1DW0ZFLXWSV",
+    icon: "🤖"
+  },
+  {
+    title: "Google Cloud Fundamentals",
+    issuer: "Google Cloud",
+    date: "NOV 2024",
+    id: "13038962",
+    link: "https://www.skills.google/public_profiles/16ea7d05-4436-4228-b43e-7f2bb2bfb07e/badges/13038962?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
+    icon: "☁️"
+  },
+  {
+    title: ".Net Backend Engineer",
+    issuer: "Cognizant",
+    date: "JUL 2026",
+    id: "CS-NBE",
+    link: "/certificates/dotnet_backend_engineer.pdf",
+    icon: "🖥️"
+  },
+  {
     title: "Prompt Engineering Foundation",
     issuer: "Cognizant",
     date: "JUL 2026",
     id: "CS-PEF",
     link: "/certificates/prompt_engineering_foundation.pdf",
     icon: "✍️"
-  },
-  {
-    title: "ITPM - Introduction to Agile [101-Basics]",
-    issuer: "Cognizant",
-    date: "JUL 2026",
-    id: "CS-ITPM",
-    link: "/certificates/itpm_introduction_to_agile.pdf",
-    icon: "🔄"
-  },
-  {
-    title: "GitHub Copilot Fundamentals Virtual Training",
-    issuer: "Cognizant",
-    date: "JUL 2026",
-    id: "CS-GHCF",
-    link: "/certificates/github_copilot_fundamentals.pdf",
-    icon: "🐙"
   },
   {
     title: "Introduction to Agentic AI",
@@ -53,52 +93,12 @@ const CERTIFICATIONS = [
     icon: "🧠"
   },
   {
-    title: ".Net Backend Engineer",
+    title: "GitHub Copilot Fundamentals Virtual Training",
     issuer: "Cognizant",
     date: "JUL 2026",
-    id: "CS-NBE",
-    link: "/certificates/dotnet_backend_engineer.pdf",
-    icon: "🖥️"
-  },
-  {
-    title: "Azure AI Fundamentals (AI-900)",
-    issuer: "Microsoft Certified",
-    date: "APR 2026",
-    id: "PUxp-uScT",
-    link: "https://www.certiport.com/portal/Pages/PrintTranscriptInfo.aspx?action=Cert&id=455&cvid=26m0VuRk4VtsDk//7ATIrg==",
-    icon: "🧠"
-  },
-  {
-    title: "Supervised Machine Learning",
-    issuer: "DeepLearning.AI",
-    date: "MAR 2025",
-    id: "B1DW0ZFLXWSV",
-    link: "https://www.coursera.org/account/accomplishments/verify/B1DW0ZFLXWSV",
-    icon: "🤖"
-  },
-  {
-    title: "NPTEL Java Certification",
-    issuer: "IIT Kharagpur",
-    date: "NOV 2025",
-    id: "NPTEL25CS110S460803974",
-    link: "https://archive.nptel.ac.in/content/noc/NOC25/SEM2/Ecertificates/106/noc25-cs110/Course/NPTEL25CS110S46080397410888267.pdf",
-    icon: "☕"
-  },
-  {
-    title: "Data Base Management System",
-    issuer: "IIT Kharagpur",
-    date: "MAR 2026",
-    id: "NPTEL26CS39S660101642",
-    link: "https://nptel.ac.in/noc/E_Certificate/NOC26CS39S66010164203151734",
-    icon: "💿"
-  },
-  {
-    title: "Google Cloud Fundamentals",
-    issuer: "Google Cloud",
-    date: "NOV 2024",
-    id: "13038962",
-    link: "https://www.skills.google/public_profiles/16ea7d05-4436-4228-b43e-7f2bb2bfb07e/badges/13038962?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
-    icon: "☁️"
+    id: "CS-GHCF",
+    link: "/certificates/github_copilot_fundamentals.pdf",
+    icon: "🐙"
   },
   {
     title: "Programming with Python",
@@ -117,28 +117,12 @@ const CERTIFICATIONS = [
     icon: "🌐"
   },
   {
-    title: "Large Language Model Basics",
-    issuer: "IBM",
-    date: "NOV 2024",
-    id: "MDL-433",
-    link: "https://skills.yourlearning.ibm.com/certificate/MDL-433",
-    icon: "🤖"
-  },
-  {
-    title: "Introduction to Artificial Intelligence",
-    issuer: "IBM",
-    date: "NOV 2024",
-    id: "MDL-211",
-    link: "https://skills.yourlearning.ibm.com/certificate/MDL-211",
-    icon: "🧠"
-  },
-  {
-    title: "Build Your First Chatbot",
-    issuer: "IBM",
-    date: "NOV 2024",
-    id: "ALM-COURSE_3946111",
-    link: "https://skills.yourlearning.ibm.com/certificate/ALM-COURSE_3946111",
-    icon: "💬"
+    title: "ITPM - Introduction to Agile [101-Basics]",
+    issuer: "Cognizant",
+    date: "JUL 2026",
+    id: "CS-ITPM",
+    link: "/certificates/itpm_introduction_to_agile.pdf",
+    icon: "🔄"
   },
   {
     title: "Generative AI for Decision Makers",
@@ -157,6 +141,38 @@ const CERTIFICATIONS = [
     icon: "🏢"
   },
   {
+    title: "Large Language Model Basics",
+    issuer: "IBM",
+    date: "NOV 2024",
+    id: "MDL-433",
+    link: "https://skills.yourlearning.ibm.com/certificate/MDL-433",
+    icon: "🤖"
+  },
+  {
+    title: "Introduction to Artificial Intelligence",
+    issuer: "IBM",
+    date: "NOV 2024",
+    id: "MDL-211",
+    link: "https://skills.yourlearning.ibm.com/certificate/MDL-211",
+    icon: "🧠"
+  },
+  {
+    title: "Getting Started with AI",
+    issuer: "IBM",
+    date: "NOV 2024",
+    id: "PLAN-E624C2604060",
+    link: "https://skills.yourlearning.ibm.com/certificate/PLAN-E624C2604060",
+    icon: "🤖"
+  },
+  {
+    title: "Build Your First Chatbot",
+    issuer: "IBM",
+    date: "NOV 2024",
+    id: "ALM-COURSE_3946111",
+    link: "https://skills.yourlearning.ibm.com/certificate/ALM-COURSE_3946111",
+    icon: "💬"
+  },
+  {
     title: "Web Development Basics",
     issuer: "IBM",
     date: "MAY 2026",
@@ -171,14 +187,6 @@ const CERTIFICATIONS = [
     id: "883eaf58-4da8-46f3-b35c-297d22f17c6a",
     link: "https://www.life-global.org/certificate/883eaf58-4da8-46f3-b35c-297d22f17c6a",
     icon: "💻"
-  },
-  {
-    title: "Getting Started with AI",
-    issuer: "IBM",
-    date: "NOV 2024",
-    id: "PLAN-E624C2604060",
-    link: "https://skills.yourlearning.ibm.com/certificate/PLAN-E624C2604060",
-    icon: "🤖"
   }
 ];
 
