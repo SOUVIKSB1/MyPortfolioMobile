@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 import BottomSheet from "../components/BottomSheet";
 import "./Credentials.css";
 
-const CERTIFICATIONS = [
+export const CERTIFICATIONS = [
   {
     title: "Azure AI Fundamentals (AI-900)",
     issuer: "Microsoft Certified",

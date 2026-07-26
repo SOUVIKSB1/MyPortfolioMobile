@@ -4,6 +4,7 @@ import { FaGithub, FaLinkedin, FaInstagram, FaEye, FaStar } from "react-icons/fa
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
 import { PROJECTS } from "./Work";
+import { CERTIFICATIONS } from "./Credentials";
 import "./Home.css";
 
 const COMMANDS = [
@@ -219,7 +220,7 @@ export default function Home({ onNavigate }) {
           <p className="stat-label">Year B.Tech</p>
         </div>
         <div className="stat-item glass-panel border-blue-glow">
-          <h3 className="stat-number"><CounterTicker value={15} />+</h3>
+          <h3 className="stat-number"><CounterTicker value={CERTIFICATIONS.length} />+</h3>
           <p className="stat-label">Certificates</p>
         </div>
       </div>
