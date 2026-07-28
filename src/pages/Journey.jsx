@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Award, Briefcase, GraduationCap, Calendar, Tag, School, BookOpen, BookOpenCheck, BrickWallFireIcon } from "lucide-react";
+import { triggerHaptic } from "../hooks/haptics";
 import "./Journey.css";
 import { FaSchoolCircleExclamation } from "react-icons/fa6";
 
@@ -111,7 +112,12 @@ export default function Journey() {
       {/* Segment Selector tabs */}
       <div className="journey-tab-bar glass-panel">
         <button
-          onClick={() => setActiveTab("timeline")}
+          onClick={() => {
+            if (activeTab !== "timeline") {
+              triggerHaptic(12);
+              setActiveTab("timeline");
+            }
+          }}
           className={`segment-btn ${activeTab === "timeline" ? "active" : ""}`}
         >
           <GraduationCap size={16} />
@@ -124,7 +130,12 @@ export default function Journey() {
           )}
         </button>
         <button
-          onClick={() => setActiveTab("achievements")}
+          onClick={() => {
+            if (activeTab !== "achievements") {
+              triggerHaptic(12);
+              setActiveTab("achievements");
+            }
+          }}
           className={`segment-btn ${activeTab === "achievements" ? "active" : ""}`}
         >
           <Award size={16} />

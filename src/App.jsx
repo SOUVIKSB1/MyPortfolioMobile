@@ -50,6 +50,7 @@ export default function App() {
   const [scrollTop, setScrollTop] = useState(0);
 
   const scrollContainerRef = useRef(null);
+  const lastScrollTickRef = useRef(0);
 
 
 
@@ -62,7 +63,14 @@ export default function App() {
   };
 
   const handleScroll = (e) => {
-    setScrollTop(e.target.scrollTop);
+    const currentScrollTop = e.target.scrollTop;
+    setScrollTop(currentScrollTop);
+    
+    // Smooth gear notch scroll haptic feedback (tick every 180px)
+    if (Math.abs(currentScrollTop - lastScrollTickRef.current) > 180) {
+      lastScrollTickRef.current = currentScrollTop;
+      triggerHaptic(5); // tiny physical click feel (5ms)
+    }
   };
 
   const handleNavigate = (pageId) => {
@@ -74,6 +82,7 @@ export default function App() {
       setDirection(targetIndex > currentIndex ? 1 : -1);
       setActivePage(pageId);
       setScrollTop(0); // Reset scroll tracker state
+      lastScrollTickRef.current = 0; // Reset scroll tick tracker position
       
       // Auto-scroll the content page container to top on page switches
       if (scrollContainerRef.current) {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ExternalLink } from "lucide-react";
 import BottomSheet from "../components/BottomSheet";
+import { triggerHaptic } from "../hooks/haptics";
 import "./Credentials.css";
 
 export const CERTIFICATIONS = [
@@ -209,7 +210,10 @@ export default function Credentials() {
             <div 
               key={idx} 
               className="cert-item-card glass-panel"
-              onClick={() => setSelectedCert(cert)}
+              onClick={() => {
+                triggerHaptic(15);
+                setSelectedCert(cert);
+              }}
             >
               <div className="cert-item-icon">{cert.icon}</div>
               <div className="cert-item-details">
@@ -224,7 +228,10 @@ export default function Credentials() {
       {/* Certification details bottom drawer */}
       <BottomSheet
         isOpen={selectedCert !== null}
-        onClose={() => setSelectedCert(null)}
+        onClose={() => {
+          triggerHaptic(8);
+          setSelectedCert(null);
+        }}
         title={selectedCert?.title}
       >
         {selectedCert && (
