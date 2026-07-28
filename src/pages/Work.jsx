@@ -120,6 +120,20 @@ export const PROJECTS = [
 
 export const INTERNSHIPS = [
   {
+    icon: "🔬",
+    title: "Research Intern",
+    company: "IIT Roorkee (IITR)",
+    tagline: "Ongoing Research Internship focused on Computer Vision and Deep Learning pipelines.",
+    description: "Developing an end-to-end deep learning system for Railway Track Fault Detection. Implementing transfer learning models using EfficientNetV2B0 with TensorFlow/Keras to achieve high-recall safety-critical classifications, served via a Gradio dashboard interface.",
+    tech: ["TensorFlow", "Keras", "EfficientNetV2", "Gradio", "Python", "Computer Vision"],
+    github: "https://github.com/SOUVIKSB1/Railway_Track_Fault_Detection",
+    live: "https://github.com/SOUVIKSB1/Railway_Track_Fault_Detection",
+    role: "Research Intern (Deep Learning)",
+    outcomes: "Engineered safety-focused models minimizing false negatives with post-training probability calibration and robust confidence gates.",
+    duration: "July 2026 - Present (Ongoing)",
+    issuers: "IIT Roorkee"
+  },
+  {
     icon: "☁️",
     title: "Data Engineering Virtual Internship",
     company: "EduSkills (AWS Academy)",
@@ -133,7 +147,7 @@ export const INTERNSHIPS = [
     id: "4597a1ded345be899574",
     studentId: "STU65fdd1992c2d11711133081",
     grade: "O (Outstanding)",
-    duration: "June - August 2026",
+    duration: "June - August 2026 (Completed)",
     issuers: "AICTE & EduSkills"
   }
 ];
@@ -274,7 +288,8 @@ export default function Work() {
               <div className="drawer-body-text">
                 <h5 className="drawer-sub-title">Details</h5>
                 <p className="drawer-details-text">
-                  📅 {selectedProject.duration} | 🏆 Grade: {selectedProject.grade}
+                  📅 {selectedProject.duration}
+                  {selectedProject.grade && ` | 🏆 Grade: ${selectedProject.grade}`}
                 </p>
                 {selectedProject.id && (
                   <p className="drawer-details-text font-mono" style={{ fontSize: "11px", marginTop: "2px" }}>
@@ -312,7 +327,7 @@ export default function Work() {
                   className="btn-primary drawer-link-btn"
                 >
                   <ExternalLink size={16} />
-                  {selectedProject.duration ? "View Certificate" : "Live Demo"}
+                  {selectedProject.live.endsWith(".pdf") ? "View Certificate" : "View Project"}
                 </a>
               )}
             </div>
