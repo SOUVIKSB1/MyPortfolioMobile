@@ -91,7 +91,7 @@ export default function App() {
     switch (tab) {
       case "home": return "Home";
       case "about": return "About";
-      case "work": return "Projects";
+      case "work": return "Showcases";
       case "journey": return "Journey";
       case "credentials": return "Aura";
       case "reviews": return "Reviews";
