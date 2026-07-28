@@ -220,6 +220,19 @@ export default function Work() {
                 {proj.company && <span className="proj-card-company">{proj.company}</span>}
                 <span className="proj-card-role">{proj.role}</span>
               </div>
+              {proj.duration && (
+                <div className="mobile-status-wrapper" style={{ marginLeft: "auto" }}>
+                  {proj.duration.includes("Ongoing") ? (
+                    <span className="mobile-status-dot ongoing" aria-label="Ongoing">
+                      <span className="dot-glow" />
+                    </span>
+                  ) : (
+                    <span className="mobile-status-dot completed" aria-label="Completed">
+                      <span className="dot-circle" />
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
             <p className="proj-card-tagline">{proj.tagline}</p>
             <div className="proj-card-tech-preview">
@@ -274,7 +287,24 @@ export default function Work() {
               <span className="drawer-proj-icon">{selectedProject.icon}</span>
               <div>
                 <h4 className="drawer-role-label">{selectedProject.role}</h4>
-                {selectedProject.company && <p className="drawer-company-text">{selectedProject.company}</p>}
+                {selectedProject.company && (
+                  <p className="drawer-company-text">
+                    {selectedProject.company}
+                    {selectedProject.duration && (
+                      selectedProject.duration.includes("Ongoing") ? (
+                        <span className="status-badge ongoing" style={{ marginLeft: "8px" }}>
+                          <span className="status-dot-glow" />
+                          Ongoing
+                        </span>
+                      ) : (
+                        <span className="status-badge completed" style={{ marginLeft: "8px" }}>
+                          <span className="status-dot-circle" />
+                          Completed
+                        </span>
+                      )
+                    )}
+                  </p>
+                )}
                 <p className="drawer-tech-text">{selectedProject.tech.join(" · ")}</p>
               </div>
             </div>
