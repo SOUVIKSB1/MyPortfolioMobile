@@ -127,7 +127,7 @@ export const INTERNSHIPS = [
     description: "Developing an end-to-end deep learning system for Railway Track Fault Detection. Implementing transfer learning models using EfficientNetV2B0 with TensorFlow/Keras to achieve high-recall safety-critical classifications, served via a Gradio dashboard interface.",
     tech: ["TensorFlow", "Keras", "EfficientNetV2", "Gradio", "Python", "Computer Vision"],
     github: "https://github.com/SOUVIKSB1/Railway_Track_Fault_Detection",
-    live: "https://github.com/SOUVIKSB1/Railway_Track_Fault_Detection",
+    live: null,
     role: "Research Intern (Deep Learning)",
     outcomes: "Engineered safety-focused models minimizing false negatives with post-training probability calibration and robust confidence gates.",
     duration: "July 2026 - Present (Ongoing)",
