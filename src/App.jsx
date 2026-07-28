@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail, MessageSquare } from "lucide-react";
 import { useBackHandler } from "./hooks/useBackHandler";
+import { triggerHaptic } from "./hooks/haptics";
 
 import StartAnimation from "./components/StartAnimation";
 import CyberCanvas from "./components/CyberCanvas";
@@ -69,6 +70,7 @@ export default function App() {
     const targetIndex = TABS.indexOf(pageId);
     
     if (targetIndex !== currentIndex) {
+      triggerHaptic(12); // light tap haptic feedback (12ms)
       setDirection(targetIndex > currentIndex ? 1 : -1);
       setActivePage(pageId);
       setScrollTop(0); // Reset scroll tracker state

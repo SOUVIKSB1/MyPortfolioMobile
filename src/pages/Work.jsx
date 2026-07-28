@@ -3,6 +3,7 @@ import { ExternalLink, Sparkles, Briefcase, FolderOpen } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 import BottomSheet from "../components/BottomSheet";
+import { triggerHaptic } from "../hooks/haptics";
 import "./Work.css";
 
 export const PROJECTS = [
@@ -157,10 +158,12 @@ export default function Work() {
   const [activeTab, setActiveTab] = useState("projects");
 
   const openProjectDetails = (proj) => {
+    triggerHaptic(15); // standard tap haptic feedback (15ms)
     setSelectedProject(proj);
   };
 
   const closeProjectDetails = () => {
+    triggerHaptic(8); // light release haptic feedback (8ms)
     setSelectedProject(null);
   };
 
@@ -178,7 +181,12 @@ export default function Work() {
       {/* Segment Selector tabs */}
       <div className="work-tab-bar glass-panel">
         <button
-          onClick={() => setActiveTab("projects")}
+          onClick={() => {
+            if (activeTab !== "projects") {
+              triggerHaptic(12);
+              setActiveTab("projects");
+            }
+          }}
           className={`work-segment-btn ${activeTab === "projects" ? "active" : ""}`}
         >
           <FolderOpen size={16} />
@@ -191,7 +199,12 @@ export default function Work() {
           )}
         </button>
         <button
-          onClick={() => setActiveTab("internships")}
+          onClick={() => {
+            if (activeTab !== "internships") {
+              triggerHaptic(12);
+              setActiveTab("internships");
+            }
+          }}
           className={`work-segment-btn ${activeTab === "internships" ? "active" : ""}`}
         >
           <Briefcase size={16} />
