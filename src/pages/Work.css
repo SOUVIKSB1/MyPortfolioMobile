@@ -215,3 +215,67 @@
   color: var(--orange);
   border-color: var(--orange-border);
 }
+
+/* Work Segment Selectors */
+.work-tab-bar {
+  display: flex;
+  padding: 4px;
+  border-radius: 14px;
+  gap: 4px;
+  background: rgba(10, 10, 14, 0.5);
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.work-segment-btn {
+  flex: 1;
+  position: relative;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 10px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.work-segment-btn.active {
+  color: var(--text-primary);
+}
+
+.active-work-segment-line {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+  border-radius: 2px;
+}
+
+.proj-card-company {
+  font-size: 12px;
+  color: var(--orange);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.drawer-company-text {
+  font-size: 13.5px;
+  color: var(--orange);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.drawer-details-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}

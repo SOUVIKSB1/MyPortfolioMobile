@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { ExternalLink, Sparkles, Briefcase, FolderOpen } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { motion } from "framer-motion";
 import BottomSheet from "../components/BottomSheet";
 import "./Work.css";
 
@@ -117,8 +118,29 @@ export const PROJECTS = [
 }
 ];
 
+export const INTERNSHIPS = [
+  {
+    icon: "☁️",
+    title: "Data Engineering Virtual Internship",
+    company: "EduSkills (AWS Academy)",
+    tagline: "8-week intensive virtual internship in Data Engineering powered by AWS Academy.",
+    description: "Completed an intensive 8-week virtual internship focusing on modern data engineering workflows, database architectures, ETL pipeline creation, and cloud analysis on AWS. Gained practical experience implementing data warehousing, serverless querying, and real-time streaming services using the official AWS Academy curriculum.",
+    tech: ["AWS Academy", "Data Engineering", "Cloud DBMS", "ETL Pipelines", "AICTE Support"],
+    github: null,
+    live: "/certificates/data_engineering_virtual_internship.pdf",
+    role: "Data Engineering Intern",
+    outcomes: "Earned Grade O (Outstanding) with Certificate ID 4597a1ded345be899574. Validated student ID STU65fdd1992c2d11711133081.",
+    id: "4597a1ded345be899574",
+    studentId: "STU65fdd1992c2d11711133081",
+    grade: "O (Outstanding)",
+    duration: "June - August 2026",
+    issuers: "AICTE & EduSkills"
+  }
+];
+
 export default function Work() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [activeTab, setActiveTab] = useState("projects");
 
   const openProjectDetails = (proj) => {
     setSelectedProject(proj);
@@ -127,6 +149,8 @@ export default function Work() {
   const closeProjectDetails = () => {
     setSelectedProject(null);
   };
+
+  const currentList = activeTab === "projects" ? PROJECTS : INTERNSHIPS;
 
   return (
     <div className="work-page-container">
@@ -137,9 +161,39 @@ export default function Work() {
       </div>
       <h2 className="section-title">Featured Projects</h2>
 
+      {/* Segment Selector tabs */}
+      <div className="work-tab-bar glass-panel">
+        <button
+          onClick={() => setActiveTab("projects")}
+          className={`work-segment-btn ${activeTab === "projects" ? "active" : ""}`}
+        >
+          <FolderOpen size={16} />
+          Projects
+          {activeTab === "projects" && (
+            <motion.div 
+              className="active-work-segment-line"
+              layoutId="workTabLine"
+            />
+          )}
+        </button>
+        <button
+          onClick={() => setActiveTab("internships")}
+          className={`work-segment-btn ${activeTab === "internships" ? "active" : ""}`}
+        >
+          <Briefcase size={16} />
+          Internships
+          {activeTab === "internships" && (
+            <motion.div 
+              className="active-work-segment-line"
+              layoutId="workTabLine"
+            />
+          )}
+        </button>
+      </div>
+
       {/* Projects List */}
       <div className="projects-feed">
-        {PROJECTS.map((proj, idx) => (
+        {currentList.map((proj, idx) => (
           <div 
             key={idx} 
             className="project-card glass-panel"
@@ -149,6 +203,7 @@ export default function Work() {
               <span className="proj-card-icon">{proj.icon}</span>
               <div className="proj-card-meta">
                 <h3 className="proj-card-title">{proj.title}</h3>
+                {proj.company && <span className="proj-card-company">{proj.company}</span>}
                 <span className="proj-card-role">{proj.role}</span>
               </div>
             </div>
@@ -164,26 +219,28 @@ export default function Work() {
             
             {/* Quick Action links */}
             <div className="proj-card-links" onClick={(e) => e.stopPropagation()}>
-              <a 
-                href={proj.github} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="proj-link-icon-btn"
-                aria-label={`View GitHub source code for ${proj.title}`}
-              >
-                <FaGithub size={12} />
-                Code
-              </a>
+              {proj.github && (
+                <a 
+                  href={proj.github} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="proj-link-icon-btn"
+                  aria-label={`View GitHub source code for ${proj.title}`}
+                >
+                  <FaGithub size={12} />
+                  Code
+                </a>
+              )}
               {proj.live && (
                 <a 
                   href={proj.live} 
                   target="_blank" 
                   rel="noreferrer" 
                   className="proj-link-icon-btn"
-                  aria-label={`Visit live demo for ${proj.title}`}
+                  aria-label={proj.duration ? `View Certificate for ${proj.title}` : `Visit live demo for ${proj.title}`}
                 >
                   <ExternalLink size={12} />
-                  Demo
+                  {proj.duration ? "Certificate" : "Demo"}
                 </a>
               )}
             </div>
@@ -203,6 +260,7 @@ export default function Work() {
               <span className="drawer-proj-icon">{selectedProject.icon}</span>
               <div>
                 <h4 className="drawer-role-label">{selectedProject.role}</h4>
+                {selectedProject.company && <p className="drawer-company-text">{selectedProject.company}</p>}
                 <p className="drawer-tech-text">{selectedProject.tech.join(" · ")}</p>
               </div>
             </div>
@@ -211,6 +269,20 @@ export default function Work() {
               <h5 className="drawer-sub-title">Overview</h5>
               <p>{selectedProject.description}</p>
             </div>
+
+            {selectedProject.duration && (
+              <div className="drawer-body-text">
+                <h5 className="drawer-sub-title">Details</h5>
+                <p className="drawer-details-text">
+                  📅 {selectedProject.duration} | 🏆 Grade: {selectedProject.grade}
+                </p>
+                {selectedProject.id && (
+                  <p className="drawer-details-text font-mono" style={{ fontSize: "11px", marginTop: "2px" }}>
+                    ID: {selectedProject.id} | Student ID: {selectedProject.studentId}
+                  </p>
+                )}
+              </div>
+            )}
 
             <div className="drawer-body-text">
               <h5 className="drawer-sub-title">Key Outcome</h5>
@@ -221,15 +293,17 @@ export default function Work() {
             </div>
 
             <div className="drawer-actions">
-              <a 
-                href={selectedProject.github} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="btn-secondary drawer-link-btn"
-              >
-                <FaGithub size={16} />
-                GitHub Code
-              </a>
+              {selectedProject.github && (
+                <a 
+                  href={selectedProject.github} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn-secondary drawer-link-btn"
+                >
+                  <FaGithub size={16} />
+                  GitHub Code
+                </a>
+              )}
               {selectedProject.live && (
                 <a 
                   href={selectedProject.live} 
@@ -238,7 +312,7 @@ export default function Work() {
                   className="btn-primary drawer-link-btn"
                 >
                   <ExternalLink size={16} />
-                  Live Demo
+                  {selectedProject.duration ? "View Certificate" : "Live Demo"}
                 </a>
               )}
             </div>
