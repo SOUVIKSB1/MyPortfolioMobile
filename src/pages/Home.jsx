@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Download, Mail, ExternalLink } from "lucide-react";
+import { Download, Mail, ExternalLink, Share2 } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram, FaEye, FaStar } from "react-icons/fa";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
@@ -13,7 +13,7 @@ const COMMANDS = [
   "npm run build:prod",
   "kubectl get pods -w",
   "ping google.com -c 1",
-  "status: GKE active (24ms)"
+  "git push origin main --force"
 ];
 
 function CounterTicker({ value, duration = 1200 }) {
@@ -37,7 +37,7 @@ function CounterTicker({ value, duration = 1200 }) {
   return <span>{count}</span>;
 }
 
-export default function Home({ onNavigate }) {
+export default function Home({ onNavigate, onShare }) {
   const [typingText, setTypingText] = useState("");
   const [linkedinCount, setLinkedinCount] = useState(1481);
   const [instagramCount, setInstagramCount] = useState(1043);
@@ -310,16 +310,26 @@ export default function Home({ onNavigate }) {
           className="btn-primary flex-1"
         >
           View Projects
-          <ExternalLink size={16} />
+          <ExternalLink size={15} />
         </button>
         <a 
           href="/Souvik_Sinhababu_CV.pdf" 
           download="Souvik_Sinhababu_CV.pdf" 
           className="btn-secondary flex-1"
         >
-          <Download size={16} />
-          Resume (PDF)
+          <Download size={15} />
+          Resume
         </a>
+        {onShare && (
+          <button 
+            onClick={onShare}
+            className="btn-share-icon"
+            aria-label="Share Portfolio"
+            title="Share Portfolio"
+          >
+            <Share2 size={16} />
+          </button>
+        )}
       </div>
     </div>
   );

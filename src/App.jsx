@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail, MessageSquare } from "lucide-react";
+import { Home as HomeIcon, User, Briefcase, Calendar, Award, Mail, MessageSquare, Share2, Check } from "lucide-react";
 import { useBackHandler } from "./hooks/useBackHandler";
 import { triggerHaptic } from "./hooks/haptics";
 
@@ -101,6 +101,41 @@ export default function App() {
   const scrollContainerRef = useRef(null);
   const lastScrollTickRef = useRef(0);
   const navRef = useRef(null);
+
+  const [showShareToast, setShowShareToast] = useState(false);
+
+  const handleShare = async () => {
+    triggerHaptic(15);
+    const shareData = {
+      title: "Souvik Sinhababu | Mobile Portfolio",
+      text: "Explore Souvik Sinhababu's developer portfolio!",
+      url: window.location.origin
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          copyShareLink(shareData.url);
+        }
+      }
+    } else {
+      copyShareLink(shareData.url);
+    }
+  };
+
+  const copyShareLink = (url) => {
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        setShowShareToast(true);
+        setTimeout(() => setShowShareToast(false), 2400);
+      });
+    } else {
+      setShowShareToast(true);
+      setTimeout(() => setShowShareToast(false), 2400);
+    }
+  };
 
   const handleStartExit = () => {
     setIsExitingLoader(true);
@@ -222,6 +257,22 @@ export default function App() {
           {/* Pull-to-Refresh indicator */}
           <PullToRefresh scrollContainerRef={scrollContainerRef} />
 
+          {/* Floating Share Link Toast */}
+          <AnimatePresence>
+            {showShareToast && (
+              <motion.div 
+                className="share-toast"
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 450, damping: 25 }}
+              >
+                <Check size={14} style={{ color: "#10b981" }} />
+                <span>Portfolio link copied! 🚀</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Top Sticky Header - fades out on scroll, hidden on other pages */}
           <header 
             className="app-header"
@@ -235,9 +286,21 @@ export default function App() {
             <div className="logo-text">
               {"< "}<span>Souvik</span>{" ./>"}
             </div>
-            <div className="header-status">
-              <span className="status-pulse" />
-              <span>ONLINE</span>
+            
+            <div className="header-actions">
+              <button 
+                onClick={handleShare}
+                className="header-share-btn"
+                aria-label="Share Portfolio"
+                title="Share Portfolio"
+              >
+                <Share2 size={12} />
+                <span>SHARE</span>
+              </button>
+              <div className="header-status">
+                <span className="status-pulse" />
+                <span>ONLINE</span>
+              </div>
             </div>
           </header>
 
@@ -267,7 +330,7 @@ export default function App() {
                   touchAction: "pan-y" 
                 }}
               >
-                {activePage === "home" && <Home onNavigate={handleNavigate} />}
+                {activePage === "home" && <Home onNavigate={handleNavigate} onShare={handleShare} />}
                 {activePage === "about" && <About />}
                 {activePage === "work" && <Work />}
                 {activePage === "journey" && <Journey />}
