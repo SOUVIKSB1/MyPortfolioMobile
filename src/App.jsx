@@ -212,52 +212,112 @@ export default function App() {
     }
   };
 
-  // ── Navbar Horizontal Scroll & Fast-Scroll Magnification Wave ─────────────
-  const lastNavScrollRef = useRef({ left: 0, time: Date.now() });
-  const [navScrollVelocity, setNavScrollVelocity] = useState(0);
-  const [navScrollCenter, setNavScrollCenter] = useState(null);
-  const navScrollTimerRef = useRef(null);
+  // ── Navbar Horizontal Swipe & Fast-Swipe MacBook Magnification Wave ────────
+  const [navSwipeVelocity, setNavSwipeVelocity] = useState(0);
+  const [navSwipePointerX, setNavSwipePointerX] = useState(null);
+  const navTouchTrackerRef = useRef({
+    startX: 0,
+    startY: 0,
+    startTime: 0,
+    lastX: 0,
+    lastTime: 0,
+    isSwiping: false,
+    hasSwiped: false
+  });
 
-  const handleNavScroll = (e) => {
-    const el = e.currentTarget;
-    const currentLeft = el.scrollLeft;
+  const handleNavTouchStart = (e) => {
+    const touch = e.touches ? e.touches[0] : e;
+    if (!touch || !navRef.current) return;
+    const navRect = navRef.current.getBoundingClientRect();
+    const touchX = touch.clientX - navRect.left;
     const now = Date.now();
-    const dt = Math.max(16, now - lastNavScrollRef.current.time);
-    const dx = Math.abs(currentLeft - lastNavScrollRef.current.left);
-    const velocity = (dx / dt) * 1000; // pixels per second
+    navTouchTrackerRef.current = {
+      startX: touchX,
+      startY: touch.clientY,
+      startTime: now,
+      lastX: touchX,
+      lastTime: now,
+      isSwiping: false,
+      hasSwiped: false
+    };
+  };
 
-    lastNavScrollRef.current = { left: currentLeft, time: now };
+  const handleNavTouchMove = (e) => {
+    const touch = e.touches ? e.touches[0] : e;
+    if (!touch || !navRef.current) return;
+    const navRect = navRef.current.getBoundingClientRect();
+    const touchX = Math.max(0, Math.min(navRect.width, touch.clientX - navRect.left));
+    const now = Date.now();
+    const tracker = navTouchTrackerRef.current;
+    const deltaX = touchX - tracker.startX;
+    const deltaY = touch.clientY - tracker.startY;
 
-    // Only activate MacBook dock wave when scrolling fast horizontally (> 100px/s)
-    if (velocity > 100) {
-      const centerPos = currentLeft + el.clientWidth / 2;
-      setNavScrollCenter(centerPos);
-      setNavScrollVelocity(velocity);
+    // Only engage if horizontal swipe is dominant and moved > 8px
+    if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      tracker.isSwiping = true;
+      tracker.hasSwiped = true;
+
+      const dt = Math.max(16, now - tracker.lastTime);
+      const dx = Math.abs(touchX - tracker.lastX);
+      const velocity = (dx / dt) * 1000; // px per second
+
+      tracker.lastX = touchX;
+      tracker.lastTime = now;
+
+      // Only trigger dock wave during fast horizontal swipe (> 120px/s)
+      if (velocity > 120) {
+        setNavSwipePointerX(touchX);
+        setNavSwipeVelocity(velocity);
+      }
+    }
+  };
+
+  const handleNavTouchEnd = () => {
+    const tracker = navTouchTrackerRef.current;
+    
+    // If user performed an intentional horizontal swipe across the navbar
+    if (tracker.isSwiping && tracker.hasSwiped) {
+      const deltaX = tracker.lastX - tracker.startX;
+      const totalTime = Math.max(50, Date.now() - tracker.startTime);
+      const avgVelocity = (Math.abs(deltaX) / totalTime) * 1000;
+      const currentIndex = TABS.indexOf(activePage);
+
+      if ((Math.abs(deltaX) >= 35 || avgVelocity >= 280) && currentIndex !== -1) {
+        if (deltaX < 0 && currentIndex < TABS.length - 1) {
+          // Swiped Left on navbar -> Next Tab
+          handleNavigate(TABS[currentIndex + 1]);
+        } else if (deltaX > 0 && currentIndex > 0) {
+          // Swiped Right on navbar -> Previous Tab
+          handleNavigate(TABS[currentIndex - 1]);
+        }
+      }
     }
 
-    if (navScrollTimerRef.current) clearTimeout(navScrollTimerRef.current);
-    navScrollTimerRef.current = setTimeout(() => {
-      setNavScrollVelocity(0);
-      setNavScrollCenter(null);
-    }, 140);
+    // Reset magnification wave immediately on release so icons return strictly to 1:1 scale
+    setNavSwipeVelocity(0);
+    setNavSwipePointerX(null);
+    setTimeout(() => {
+      navTouchTrackerRef.current.hasSwiped = false;
+      navTouchTrackerRef.current.isSwiping = false;
+    }, 50);
   };
 
   const getScrollItemMagnification = (index) => {
-    // Only magnify during fast horizontal scroll (NO tap, NO stationary selection)
-    if (navScrollVelocity <= 100 || navScrollCenter === null || !navRef.current) {
+    // Only magnify during fast horizontal swipe (NO tap, NO stationary selection)
+    if (navSwipeVelocity <= 120 || navSwipePointerX === null || !navRef.current) {
       return { scale: 1, y: 0 };
     }
-    const navEl = navRef.current;
-    const tabWidth = (navEl.scrollWidth || 340) / TABS.length;
+    const navWidth = navRef.current.offsetWidth || 340;
+    const tabWidth = navWidth / TABS.length;
     const itemCenter = (index + 0.5) * tabWidth;
-    const distance = Math.abs(navScrollCenter - itemCenter);
-    const influenceRadius = tabWidth * 1.8;
+    const distance = Math.abs(navSwipePointerX - itemCenter);
+    const influenceRadius = tabWidth * 1.75;
 
     if (distance < influenceRadius) {
       const factor = Math.cos((distance / influenceRadius) * (Math.PI / 2));
-      const velocityBoost = Math.min(1, (navScrollVelocity - 100) / 350);
-      const scale = 1 + factor * 0.32 * velocityBoost;
-      const y = -factor * 8 * velocityBoost;
+      const velocityBoost = Math.min(1, (navSwipeVelocity - 120) / 380);
+      const scale = 1 + factor * 0.35 * velocityBoost;
+      const y = -factor * 9 * velocityBoost;
       return { scale, y };
     }
     return { scale: 1, y: 0 };
@@ -417,11 +477,14 @@ export default function App() {
           {/* PWA Floating Install Prompt */}
           <InstallPrompt />
 
-          {/* Liquid Glass Dock Navbar with Horizontal Smooth Scrolling */}
+          {/* Liquid Glass Dock Navbar with Horizontal Swipe & Magnification Wave */}
           <nav 
             ref={navRef}
             className="bottom-nav"
-            onScroll={handleNavScroll}
+            onTouchStart={handleNavTouchStart}
+            onTouchMove={handleNavTouchMove}
+            onTouchEnd={handleNavTouchEnd}
+            onTouchCancel={handleNavTouchEnd}
           >
             {/* Top specular highlight shimmer */}
             <div className="nav-glass-sheen" />
@@ -434,7 +497,11 @@ export default function App() {
               return (
                 <button
                   key={tab}
-                  onClick={() => handleNavigate(tab)}
+                  onClick={() => {
+                    if (!navTouchTrackerRef.current.hasSwiped) {
+                      handleNavigate(tab);
+                    }
+                  }}
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
                   style={{
