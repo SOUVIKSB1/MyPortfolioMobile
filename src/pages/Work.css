@@ -14,11 +14,6 @@
   user-select: none;
 }
 
-.work-header-section .section-label .dot {
-  background-color: #10b981;
-  box-shadow: 0 0 8px #10b981;
-}
-
 .work-subtitle {
   font-size: 13px;
   color: #94a3b8;
@@ -26,7 +21,10 @@
   margin-top: 2px;
 }
 
-/* Liquid Glass Tab Bar - Theme: Neon Emerald Green (#10b981) */
+/* ────────────────────────────────
+   LIQUID GLASS TAB BAR
+   Active Color: Emerald Green (#10b981) to match Showcase Navbar
+   ──────────────────────────────── */
 .work-liquid-tab-bar {
   position: relative;
   display: flex;
@@ -67,6 +65,7 @@
   color: #ffffff;
 }
 
+/* ONLY the tab bar active indicator is Green (#10b981) */
 .active-liquid-tab-glow {
   position: absolute;
   inset: 0;
@@ -125,9 +124,9 @@
 
 .category-pill-btn.active {
   color: #ffffff;
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.45);
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+  background: rgba(255, 95, 0, 0.14);
+  border-color: rgba(255, 95, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 95, 0, 0.15);
 }
 
 .cat-count {
@@ -141,7 +140,7 @@
 }
 
 .category-pill-btn.active .cat-count {
-  background: rgba(16, 185, 129, 0.28);
+  background: rgba(255, 95, 0, 0.25);
   color: #ffffff;
 }
 
@@ -179,9 +178,9 @@
 
 .liquid-glass-tile:active {
   transform: scale(0.985);
-  border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.06);
-  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border-color: var(--orange-border);
+  background: rgba(255, 95, 0, 0.06);
+  box-shadow: 0 12px 30px rgba(255, 95, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 .projects-feed {
@@ -239,9 +238,9 @@
   font-weight: 700;
   padding: 1.5px 6px;
   border-radius: 4px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #10b981;
+  background: rgba(0, 176, 255, 0.08);
+  border: 1px solid rgba(0, 176, 255, 0.25);
+  color: var(--blue);
   letter-spacing: 0.02em;
 }
 
@@ -255,7 +254,7 @@
 
 .proj-card-company {
   font-size: 12px;
-  color: #10b981;
+  color: var(--orange);
   font-weight: 600;
 }
 
@@ -284,9 +283,9 @@
 }
 
 .tech-pill.more {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.25);
+  color: var(--orange);
+  background: rgba(255, 95, 0, 0.08);
+  border-color: rgba(255, 95, 0, 0.2);
   font-weight: 700;
 }
 
@@ -315,15 +314,15 @@
 }
 
 .proj-link-icon-btn:active {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(255, 95, 0, 0.12);
+  color: var(--orange);
+  border-color: var(--orange-border);
 }
 
 .proj-link-icon-btn.live-btn {
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #10b981;
+  background: rgba(255, 95, 0, 0.08);
+  border-color: rgba(255, 95, 0, 0.25);
+  color: var(--orange);
 }
 
 /* Status Indicators */
@@ -356,7 +355,7 @@
 .mobile-status-dot.completed .dot-circle {
   width: 8px;
   height: 8px;
-  border: 2px solid #10b981;
+  border: 2px solid #4ade80;
   border-radius: 50%;
   box-sizing: border-box;
 }
@@ -400,7 +399,7 @@
 .drawer-tech-text {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  color: #10b981;
+  color: var(--blue);
   margin-top: 4px;
 }
 
@@ -427,8 +426,8 @@
 }
 
 .drawer-highlight-text {
-  background: rgba(16, 185, 129, 0.03);
-  border-left: 3px solid #10b981;
+  background: rgba(255, 95, 0, 0.03);
+  border-left: 3px solid var(--orange);
   padding: 10px 12px;
   border-radius: 0 10px 10px 0;
   font-size: 13px !important;
@@ -439,7 +438,7 @@
 }
 
 .spark-inline {
-  color: #10b981;
+  color: var(--orange);
   margin-top: 2px;
   flex-shrink: 0;
 }
@@ -458,7 +457,7 @@
 
 .drawer-company-text {
   font-size: 13.5px;
-  color: #10b981;
+  color: var(--orange);
   font-weight: 600;
   margin-top: 2px;
 }
@@ -506,15 +505,15 @@
 }
 
 .status-badge.completed {
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #10b981;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #4ade80;
 }
 
 .status-badge.completed .status-dot-circle {
   width: 6px;
   height: 6px;
-  border: 1.5px solid #10b981;
+  border: 1.5px solid #4ade80;
   border-radius: 50%;
   box-sizing: border-box;
 }
