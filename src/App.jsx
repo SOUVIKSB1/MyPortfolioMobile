@@ -212,6 +212,57 @@ export default function App() {
     }
   };
 
+  // ── Navbar Horizontal Scroll & Fast-Scroll Magnification Wave ─────────────
+  const lastNavScrollRef = useRef({ left: 0, time: Date.now() });
+  const [navScrollVelocity, setNavScrollVelocity] = useState(0);
+  const [navScrollCenter, setNavScrollCenter] = useState(null);
+  const navScrollTimerRef = useRef(null);
+
+  const handleNavScroll = (e) => {
+    const el = e.currentTarget;
+    const currentLeft = el.scrollLeft;
+    const now = Date.now();
+    const dt = Math.max(16, now - lastNavScrollRef.current.time);
+    const dx = Math.abs(currentLeft - lastNavScrollRef.current.left);
+    const velocity = (dx / dt) * 1000; // pixels per second
+
+    lastNavScrollRef.current = { left: currentLeft, time: now };
+
+    // Only activate MacBook dock wave when scrolling fast horizontally (> 100px/s)
+    if (velocity > 100) {
+      const centerPos = currentLeft + el.clientWidth / 2;
+      setNavScrollCenter(centerPos);
+      setNavScrollVelocity(velocity);
+    }
+
+    if (navScrollTimerRef.current) clearTimeout(navScrollTimerRef.current);
+    navScrollTimerRef.current = setTimeout(() => {
+      setNavScrollVelocity(0);
+      setNavScrollCenter(null);
+    }, 140);
+  };
+
+  const getScrollItemMagnification = (index) => {
+    // Only magnify during fast horizontal scroll (NO tap, NO stationary selection)
+    if (navScrollVelocity <= 100 || navScrollCenter === null || !navRef.current) {
+      return { scale: 1, y: 0 };
+    }
+    const navEl = navRef.current;
+    const tabWidth = (navEl.scrollWidth || 340) / TABS.length;
+    const itemCenter = (index + 0.5) * tabWidth;
+    const distance = Math.abs(navScrollCenter - itemCenter);
+    const influenceRadius = tabWidth * 1.8;
+
+    if (distance < influenceRadius) {
+      const factor = Math.cos((distance / influenceRadius) * (Math.PI / 2));
+      const velocityBoost = Math.min(1, (navScrollVelocity - 100) / 350);
+      const scale = 1 + factor * 0.32 * velocityBoost;
+      const y = -factor * 8 * velocityBoost;
+      return { scale, y };
+    }
+    return { scale: 1, y: 0 };
+  };
+
   // ── Back button / gesture handler ──────────────────────────────────────────
   useBackHandler(activePage, handleNavigate, TABS);
 
@@ -366,17 +417,19 @@ export default function App() {
           {/* PWA Floating Install Prompt */}
           <InstallPrompt />
 
-          {/* Liquid Glass Dock Navbar */}
+          {/* Liquid Glass Dock Navbar with Horizontal Smooth Scrolling */}
           <nav 
             ref={navRef}
             className="bottom-nav"
+            onScroll={handleNavScroll}
           >
             {/* Top specular highlight shimmer */}
             <div className="nav-glass-sheen" />
 
-            {TABS.map((tab) => {
+            {TABS.map((tab, idx) => {
               const isActive = activePage === tab;
               const theme = TAB_THEMES[tab] || TAB_THEMES.home;
+              const scrollMag = getScrollItemMagnification(idx);
 
               return (
                 <button
@@ -406,24 +459,38 @@ export default function App() {
                     />
                   )}
 
-                  <div 
+                  <motion.div 
                     className="nav-icon-wrap"
+                    animate={{
+                      scale: scrollMag.scale,
+                      y: scrollMag.y
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 450,
+                      damping: 24,
+                      mass: 0.4
+                    }}
                     style={{
                       filter: isActive ? `drop-shadow(0 0 8px ${theme.glow})` : undefined
                     }}
                   >
                     {getNavIcon(tab)}
-                  </div>
+                  </motion.div>
 
-                  <span 
+                  <motion.span 
                     className="nav-label"
+                    animate={{
+                      scale: scrollMag.scale > 1.05 ? 1.08 : 1
+                    }}
+                    transition={{ duration: 0.12 }}
                     style={{
                       color: isActive ? theme.color : undefined,
                       fontWeight: isActive ? 700 : 600
                     }}
                   >
                     {getNavLabel(tab)}
-                  </span>
+                  </motion.span>
                   
                   {/* 7-Color Dynamic glowing active dot */}
                   {isActive && (
