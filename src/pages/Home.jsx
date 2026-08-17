@@ -326,7 +326,13 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
           </div>
 
           {/* Quick Command Chips */}
-          <div className="terminal-chips-row">
+          <div 
+            className="terminal-chips-row"
+            onPointerDownCapture={(e) => e.stopPropagation()}
+            onTouchStartCapture={(e) => e.stopPropagation()}
+            onTouchMoveCapture={(e) => e.stopPropagation()}
+            onTouchEndCapture={(e) => e.stopPropagation()}
+          >
             <span className="chips-label">Run:</span>
             <button type="button" onClick={() => handleCommandChip("skills")} className="terminal-chip">skills</button>
             <button type="button" onClick={() => handleCommandChip("hire_me")} className="terminal-chip highlight">hire_me</button>

@@ -123,7 +123,13 @@ export default function About() {
 
         <div className="aura-card glass-panel border-orange-glow">
           {/* Domain Category Selector Tabs */}
-          <div className="aura-domain-tabs">
+          <div 
+            className="aura-domain-tabs"
+            onPointerDownCapture={(e) => e.stopPropagation()}
+            onTouchStartCapture={(e) => e.stopPropagation()}
+            onTouchMoveCapture={(e) => e.stopPropagation()}
+            onTouchEndCapture={(e) => e.stopPropagation()}
+          >
             {DOMAINS.map((domain) => {
               const isSelected = selectedDomain === domain.id;
               return (

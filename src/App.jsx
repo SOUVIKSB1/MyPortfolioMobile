@@ -177,6 +177,31 @@ export default function App() {
     }
   };
 
+  // ── High-Precision Drag & Swipe Gesture Handler ───────────────────────────
+  const handleDragEnd = (event, info) => {
+    const distanceX = info.offset.x;
+    const distanceY = info.offset.y;
+    const velocityX = info.velocity.x;
+    const velocityY = info.velocity.y;
+    const currentIndex = TABS.indexOf(activePage);
+
+    // 1. Strict horizontal trajectory check: horizontal movement must be at least 1.7x vertical movement
+    const isHorizontalIntent = Math.abs(distanceX) > Math.abs(distanceY) * 1.7;
+    
+    // 2. High-precision threshold: intentional drag (>= 85px) OR fast intentional flick (>= 500px/s velocity with >= 35px drag)
+    const isIntentionalDistance = Math.abs(distanceX) >= 85;
+    const isIntentionalFlick = Math.abs(velocityX) >= 500 && Math.abs(distanceX) >= 35 && Math.abs(velocityX) > Math.abs(velocityY) * 1.5;
+
+    if (isHorizontalIntent && (isIntentionalDistance || isIntentionalFlick)) {
+      if (distanceX < 0 && currentIndex < TABS.length - 1) {
+        // Swiped Left -> Move to Next Tab
+        handleNavigate(TABS[currentIndex + 1]);
+      } else if (distanceX > 0 && currentIndex > 0) {
+        // Swiped Right -> Move to Previous Tab
+        handleNavigate(TABS[currentIndex - 1]);
+      }
+    }
+  };
 
   // ── Navbar touch scrub gesture handler (slide finger along tabs) ───────────
   const handleNavTouch = (e) => {
@@ -306,10 +331,16 @@ export default function App() {
                 initial="enter"
                 animate="center"
                 exit="exit"
+                drag="x"
+                dragDirectionLock
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.14}
+                onDragEnd={handleDragEnd}
                 style={{ 
                   width: "100%", 
                   height: "auto", 
-                  willChange: "transform, opacity"
+                  willChange: "transform, opacity",
+                  touchAction: "pan-y"
                 }}
               >
                 {activePage === "home" && (
