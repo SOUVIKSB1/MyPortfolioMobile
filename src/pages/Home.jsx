@@ -41,11 +41,18 @@ export default function Home({ onNavigate }) {
   const [typingText, setTypingText] = useState("");
   const [linkedinCount, setLinkedinCount] = useState(1481);
   const [instagramCount, setInstagramCount] = useState(1043);
+  const [githubRepos, setGithubRepos] = useState(18);
+  const [recentCommit, setRecentCommit] = useState({ repo: "MyPortfolioMobile", msg: "style: elevate gaps, card padding, typography", time: "just now" });
   const [visitCount, setVisitCount] = useState(null);
   const [reviewCount, setReviewCount] = useState(null);
   const [syncStatus, setSyncStatus] = useState("Listening for updates...");
   const [lastUpdated, setLastUpdated] = useState("just now");
   const [imageError, setImageError] = useState(false);
+
+  // Interactive Terminal State
+  const [terminalLogs, setTerminalLogs] = useState([]);
+  const [customInput, setCustomInput] = useState("");
+  const terminalInputRef = useRef(null);
 
   // Dynamic B.Tech year calculations
   const btechStartYear = 2023;
@@ -92,6 +99,36 @@ export default function Home({ onNavigate }) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Fetch Live GitHub stats & recent commits
+  useEffect(() => {
+    fetch("https://api.github.com/users/SOUVIKSB1")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.public_repos) {
+          setGithubRepos(data.public_repos);
+        }
+      })
+      .catch(() => {});
+
+    fetch("https://api.github.com/users/SOUVIKSB1/events/public?per_page=5")
+      .then((r) => r.json())
+      .then((events) => {
+        if (Array.isArray(events) && events.length > 0) {
+          const pushEvent = events.find((e) => e.type === "PushEvent") || events[0];
+          if (pushEvent) {
+            const repoName = pushEvent.repo?.name?.replace("SOUVIKSB1/", "") || "MyPortfolioMobile";
+            const commitMsg = pushEvent.payload?.commits?.[0]?.message || "feat: continuous portfolio updates";
+            setRecentCommit({
+              repo: repoName,
+              msg: commitMsg.length > 38 ? commitMsg.substring(0, 38) + "..." : commitMsg,
+              time: new Date(pushEvent.created_at).toLocaleDateString([], { month: "short", day: "numeric" })
+            });
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Fetch & increment visitor count on mount
   useEffect(() => {
     const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
@@ -99,7 +136,6 @@ export default function Home({ onNavigate }) {
       .then((r) => r.json())
       .then((data) => setVisitCount(data.count))
       .catch(() => {
-        // Silently fall back — show a placeholder
         setVisitCount("—");
       });
   }, []);
@@ -125,7 +161,7 @@ export default function Home({ onNavigate }) {
       
       const now = new Date();
       setLastUpdated(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-      setSyncStatus("API feed synced successfully");
+      setSyncStatus("GitHub & Metrics synced");
       
       setTimeout(() => {
         setSyncStatus("Listening for updates...");
@@ -134,6 +170,58 @@ export default function Home({ onNavigate }) {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Interactive Terminal Command Execution
+  const executeTerminalCommand = (cmd) => {
+    const cleanCmd = cmd.trim().toLowerCase();
+    if (!cleanCmd) return;
+
+    let output = "";
+    let isAction = false;
+
+    switch (cleanCmd) {
+      case "help":
+        output = "Available commands: bio, skills, hire_me, matrix, clear";
+        break;
+      case "bio":
+        output = "Souvik Sinhababu | B.Tech CSE @ TMSL • Full-Stack Developer & Cloud DevOps Engineer.";
+        break;
+      case "skills":
+        output = "Core Stack: React, Next.js, Node.js, Express, Docker, Kubernetes, GCP, Python, Java, MongoDB.";
+        break;
+      case "hire_me":
+        output = "🚀 Initiating handshake with Souvik... Redirecting to Ping channel!";
+        isAction = true;
+        setTimeout(() => onNavigate("contact"), 750);
+        break;
+      case "matrix":
+        output = "⚡ ACCESS GRANTED: 01101111 01110000 01100101 01101110 01100100 01100101 01110110";
+        break;
+      case "clear":
+        setTerminalLogs([]);
+        return;
+      default:
+        output = `Command not recognized: '${cleanCmd}'. Try: help, bio, skills, hire_me`;
+        break;
+    }
+
+    setTerminalLogs((prev) => [
+      ...prev.slice(-3), // keep last 4 outputs for clean mobile space
+      { cmd, output, isAction }
+    ]);
+  };
+
+  const handleCommandChip = (cmd) => {
+    executeTerminalCommand(cmd);
+  };
+
+  const handleCustomSubmit = (e) => {
+    e.preventDefault();
+    if (customInput) {
+      executeTerminalCommand(customInput);
+      setCustomInput("");
+    }
+  };
 
   return (
     <div className="home-page-container">
@@ -164,7 +252,6 @@ export default function Home({ onNavigate }) {
           <div className="profile-identity">
             <h1 className="name-title">
               <span className="text-gradient-blue">Souvik </span>
-              
               <span className="text-gradient-orange"> Sinhababu</span>
             </h1>
             <p className="role-subtitle">Software Engineer & Cloud Explorer</p>
@@ -175,7 +262,7 @@ export default function Home({ onNavigate }) {
           Techno Main Salt Lake CSE student. Specializing in bridging high-fidelity React frontends with containerized DevOps deployment on Google Kubernetes Engine.
         </p>
 
-        {/* Terminal panel */}
+        {/* Interactive Terminal panel */}
         <div className="console-panel">
           <div className="console-header">
             <div className="console-controls">
@@ -183,8 +270,9 @@ export default function Home({ onNavigate }) {
               <span className="c-dot yellow" />
               <span className="c-dot green" />
             </div>
-            <span className="console-title">status.sh</span>
+            <span className="console-title">status.sh • interactive</span>
           </div>
+          
           <div className="console-body">
             <div className="console-line">
               <span className="c-prompt">souvik@dev:~$</span> <span className="c-text">cat profile.json</span>
@@ -202,9 +290,34 @@ export default function Home({ onNavigate }) {
               <br />
               {"}"}
             </div>
+
+            {/* Custom Terminal Command Logs */}
+            {terminalLogs.map((log, index) => (
+              <div key={index} className="terminal-executed-block">
+                <div className="console-line">
+                  <span className="c-prompt">souvik@dev:~$</span> <span className="c-text">{log.cmd}</span>
+                </div>
+                <div className={`terminal-log-output ${log.isAction ? "action-glow" : ""}`}>
+                  {log.output}
+                </div>
+              </div>
+            ))}
+
             <div className="console-typing">
               <span className="c-prompt">souvik@dev:~$</span> <span className="c-type-text">{typingText}</span><span className="c-cursor">_</span>
             </div>
+          </div>
+
+          {/* Quick Command Chips */}
+          <div className="terminal-chips-row">
+            <span className="chips-label">Run:</span>
+            <button type="button" onClick={() => handleCommandChip("skills")} className="terminal-chip">skills</button>
+            <button type="button" onClick={() => handleCommandChip("hire_me")} className="terminal-chip highlight">hire_me</button>
+            <button type="button" onClick={() => handleCommandChip("matrix")} className="terminal-chip">matrix</button>
+            <button type="button" onClick={() => handleCommandChip("bio")} className="terminal-chip">bio</button>
+            {terminalLogs.length > 0 && (
+              <button type="button" onClick={() => handleCommandChip("clear")} className="terminal-chip clear">clear</button>
+            )}
           </div>
         </div>
       </TiltCard>
@@ -225,17 +338,35 @@ export default function Home({ onNavigate }) {
         </div>
       </div>
 
-      {/* Live Social Sync Hub */}
+      {/* Live Social & GitHub Sync Hub */}
       <div className="live-hub-card glass-panel border-blue-glow">
         <div className="live-header">
           <div className="live-indicator">
             <span className="live-dot" />
-            <span>Connect Hub</span>
+            <span>Connect & Live Hub</span>
           </div>
           <span className="live-status">{syncStatus}</span>
         </div>
 
         <div className="live-metrics-grid">
+          {/* GitHub Repos Live */}
+          <a 
+            href="https://github.com/SOUVIKSB1" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box github"
+          >
+            <div className="metric-icon">
+              <FaGithub size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">GitHub Repos</span>
+              <h4 className="metric-value">{githubRepos}+</h4>
+            </div>
+            <div className="pulse-glow blue" />
+          </a>
+
+          {/* LinkedIn Live */}
           <a 
             href="https://linkedin.com/in/souviksinhababu" 
             target="_blank" 
@@ -246,12 +377,13 @@ export default function Home({ onNavigate }) {
               <FaLinkedin size={18} />
             </div>
             <div className="metric-info">
-              <span className="metric-label">LinkedIn Connections</span>
+              <span className="metric-label">LinkedIn Network</span>
               <h4 className="metric-value">{linkedinCount}</h4>
             </div>
             <div className="pulse-glow orange" />
           </a>
 
+          {/* Instagram Live */}
           <a 
             href="https://instagram.com/sinhababu_souvik" 
             target="_blank" 
@@ -262,10 +394,10 @@ export default function Home({ onNavigate }) {
               <FaInstagram size={18} />
             </div>
             <div className="metric-info">
-              <span className="metric-label">Instagram Audience</span>
+              <span className="metric-label">Instagram Fans</span>
               <h4 className="metric-value">{instagramCount}</h4>
             </div>
-            <div className="pulse-glow blue" />
+            <div className="pulse-glow pink" />
           </a>
 
           {/* Portfolio Visits */}
@@ -281,20 +413,18 @@ export default function Home({ onNavigate }) {
             </div>
             <div className="pulse-glow green" />
           </div>
+        </div>
 
-          {/* Total Reviews */}
-          <div className="live-metric-box reviews">
-            <div className="metric-icon">
-              <FaStar size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">Total Reviews</span>
-              <h4 className="metric-value">
-                {reviewCount === null ? "…" : typeof reviewCount === "number" ? reviewCount.toLocaleString() : reviewCount}
-              </h4>
-            </div>
-            <div className="pulse-glow purple" />
+        {/* Live GitHub Recent Commit Banner */}
+        <div className="live-github-commit-bar">
+          <div className="commit-bar-icon">
+            <FaGithub size={13} />
           </div>
+          <div className="commit-bar-text">
+            <span className="commit-repo">{recentCommit.repo}:</span>
+            <span className="commit-msg">"{recentCommit.msg}"</span>
+          </div>
+          <span className="commit-time">{recentCommit.time}</span>
         </div>
 
         <div className="live-footer">

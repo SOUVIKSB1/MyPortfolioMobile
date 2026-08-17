@@ -204,15 +204,84 @@
   margin-left: 6px;
 }
 
-.c-cursor {
-  color: var(--blue);
-  animation: blink 1s infinite alternate;
-  font-weight: bold;
+.terminal-executed-block {
+  margin: 6px 0;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid var(--orange);
+  border-radius: 4px;
 }
 
-@keyframes blink {
-  0%, 40% { opacity: 0; }
-  60%, 100% { opacity: 1; }
+.terminal-log-output {
+  color: #94a3b8;
+  font-size: 11px;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.terminal-log-output.action-glow {
+  color: #10b981;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.terminal-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.terminal-chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+.chips-label {
+  font-size: 9.5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.terminal-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.terminal-chip:active {
+  transform: scale(0.92);
+  background: rgba(255, 95, 0, 0.15);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.terminal-chip.highlight {
+  background: rgba(255, 95, 0, 0.1);
+  border-color: rgba(255, 95, 0, 0.3);
+  color: var(--orange);
+}
+
+.terminal-chip.clear {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.05);
 }
 
 /* Live social hub */
@@ -356,10 +425,73 @@
   opacity: 0.02;
 }
 
-.pulse-glow.orange { background: radial-gradient(circle, var(--orange) 0%, transparent 80%); }
-.pulse-glow.blue { background: radial-gradient(circle, var(--blue) 0%, transparent 80%); }
-.pulse-glow.green { background: radial-gradient(circle, #10b981 0%, transparent 80%); }
-.pulse-glow.purple { background: radial-gradient(circle, #a855f7 0%, transparent 80%); }
+.c-cursor {
+  color: var(--blue);
+  animation: blink 1s infinite alternate;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 40% { opacity: 0; }
+  60%, 100% { opacity: 1; }
+}
+
+.live-metric-box.github .metric-icon {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.pulse-glow.pink { background: radial-gradient(circle, #ec4899 0%, transparent 80%); }
+
+/* Live GitHub Commit Bar */
+.live-github-commit-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-top: 4px;
+}
+
+.commit-bar-icon {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.commit-bar-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.commit-repo {
+  color: var(--orange);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.commit-msg {
+  color: #cbd5e1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.commit-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
 
 .live-footer {
   display: flex;

@@ -1,0 +1,24 @@
+{
+  "name": "Souvik Sinhababu | Developer Portfolio",
+  "short_name": "Souvik Portfolio",
+  "description": "Mobile Developer Portfolio & Cloud Engineering Showcases of Souvik Sinhababu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060608",
+  "theme_color": "#ff5f00",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

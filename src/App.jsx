@@ -7,6 +7,7 @@ import { triggerHaptic } from "./hooks/haptics";
 import StartAnimation from "./components/StartAnimation";
 import CyberCanvas from "./components/CyberCanvas";
 import PullToRefresh from "./components/PullToRefresh";
+import InstallPrompt from "./components/InstallPrompt";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Work from "./pages/Work";
@@ -340,6 +341,9 @@ export default function App() {
               </motion.div>
             </AnimatePresence>
           </div>
+
+          {/* PWA Floating Install Prompt */}
+          <InstallPrompt />
 
           {/* iOS Instagram Style Liquid Glass Navbar */}
           <nav 
