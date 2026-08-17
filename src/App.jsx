@@ -236,9 +236,9 @@ export default function App() {
     const navRect = navRef.current.getBoundingClientRect();
     const touchX = Math.max(0, Math.min(navRect.width, touch.clientX - navRect.left));
 
-    // Only activate dock magnification if the finger has actually scrolled / moved (> 8px)
+    // Strictly activate dock wave ONLY when finger has actually dragged horizontally across (> 12px)
     const deltaX = Math.abs(touchX - dockTouchStartRef.current.x);
-    if (deltaX > 8) {
+    if (deltaX > 12) {
       dockTouchStartRef.current.moved = true;
       setDockPointerX(touchX);
       setIsDockScrubbing(true);
