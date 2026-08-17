@@ -214,32 +214,52 @@ export default function App() {
 
   // ── MacBook Dock Magnification & Scrub Physics ──────────────────────────────
   const [dockPointerX, setDockPointerX] = useState(null);
-  const [isDockHovered, setIsDockHovered] = useState(false);
+  const [isDockScrubbing, setIsDockScrubbing] = useState(false);
+  const dockTouchStartRef = useRef({ x: 0, y: 0, moved: false });
 
-  const handleDockPointerMove = (e) => {
-    if (!navRef.current) return;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    if (clientX === undefined) return;
-    const navRect = navRef.current.getBoundingClientRect();
-    const touchX = Math.max(0, Math.min(navRect.width, clientX - navRect.left));
-    setDockPointerX(touchX);
-    setIsDockHovered(true);
-
-    const tabWidth = navRect.width / TABS.length;
-    const targetIndex = Math.max(0, Math.min(TABS.length - 1, Math.floor(touchX / tabWidth)));
-    const targetTab = TABS[targetIndex];
-    if (targetTab && targetTab !== activePage) {
-      handleNavigate(targetTab);
+  const handleDockTouchStart = (e) => {
+    const touch = e.touches ? e.touches[0] : e;
+    if (touch && navRef.current) {
+      const navRect = navRef.current.getBoundingClientRect();
+      dockTouchStartRef.current = { 
+        x: touch.clientX - navRect.left, 
+        y: touch.clientY - navRect.top, 
+        moved: false 
+      };
     }
   };
 
-  const handleDockPointerLeave = () => {
-    setIsDockHovered(false);
+  const handleDockTouchMove = (e) => {
+    if (!navRef.current) return;
+    const touch = e.touches ? e.touches[0] : e;
+    if (!touch) return;
+    const navRect = navRef.current.getBoundingClientRect();
+    const touchX = Math.max(0, Math.min(navRect.width, touch.clientX - navRect.left));
+
+    // Only activate dock magnification if the finger has actually scrolled / moved (> 8px)
+    const deltaX = Math.abs(touchX - dockTouchStartRef.current.x);
+    if (deltaX > 8) {
+      dockTouchStartRef.current.moved = true;
+      setDockPointerX(touchX);
+      setIsDockScrubbing(true);
+
+      const tabWidth = navRect.width / TABS.length;
+      const targetIndex = Math.max(0, Math.min(TABS.length - 1, Math.floor(touchX / tabWidth)));
+      const targetTab = TABS[targetIndex];
+      if (targetTab && targetTab !== activePage) {
+        handleNavigate(targetTab);
+      }
+    }
+  };
+
+  const handleDockTouchEnd = () => {
+    setIsDockScrubbing(false);
     setDockPointerX(null);
+    dockTouchStartRef.current = { x: 0, y: 0, moved: false };
   };
 
   const getDockItemMagnification = (index) => {
-    if (!isDockHovered || dockPointerX === null || !navRef.current) {
+    if (!isDockScrubbing || dockPointerX === null || !navRef.current) {
       return { scale: 1, y: 0 };
     }
     const navWidth = navRef.current.offsetWidth || 340;
@@ -415,12 +435,12 @@ export default function App() {
           <nav 
             ref={navRef}
             className="bottom-nav"
-            onTouchStart={handleDockPointerMove}
-            onTouchMove={handleDockPointerMove}
-            onTouchEnd={handleDockPointerLeave}
-            onTouchCancel={handleDockPointerLeave}
-            onMouseMove={handleDockPointerMove}
-            onMouseLeave={handleDockPointerLeave}
+            onTouchStart={handleDockTouchStart}
+            onTouchMove={handleDockTouchMove}
+            onTouchEnd={handleDockTouchEnd}
+            onTouchCancel={handleDockTouchEnd}
+            onMouseMove={handleDockTouchMove}
+            onMouseLeave={handleDockTouchEnd}
           >
             {/* Top specular highlight shimmer */}
             <div className="nav-glass-sheen" />
@@ -433,9 +453,14 @@ export default function App() {
               return (
                 <motion.button
                   key={tab}
-                  onClick={() => handleNavigate(tab)}
+                  onClick={() => {
+                    if (!dockTouchStartRef.current.moved) {
+                      handleNavigate(tab);
+                    }
+                  }}
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
+                  whileTap={{ scale: 0.9 }}
                   animate={{
                     scale: dockTransform.scale,
                     y: dockTransform.y
