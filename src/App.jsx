@@ -18,6 +18,45 @@ import Contact from "./pages/Contact";
 // Index tabs to calculate slider directions
 const TABS = ["home", "about", "work", "journey", "credentials", "reviews", "contact"];
 
+// 7 Distinct Cyber Colors for the 7 Panels
+const TAB_THEMES = {
+  home: {
+    color: "#ff5f00",        // Neon Cyber Orange
+    glow: "rgba(255, 95, 0, 0.85)",
+    highlight: "rgba(255, 95, 0, 0.22)"
+  },
+  about: {
+    color: "#00d2ff",        // Electric Cyan Blue
+    glow: "rgba(0, 210, 255, 0.85)",
+    highlight: "rgba(0, 210, 255, 0.22)"
+  },
+  work: {
+    color: "#10b981",        // Neon Emerald Green
+    glow: "rgba(16, 185, 129, 0.85)",
+    highlight: "rgba(16, 185, 129, 0.22)"
+  },
+  journey: {
+    color: "#a855f7",        // Cyber Violet Purple
+    glow: "rgba(168, 85, 247, 0.85)",
+    highlight: "rgba(168, 85, 247, 0.22)"
+  },
+  credentials: {
+    color: "#fbbf24",        // Radiant Amber Gold
+    glow: "rgba(251, 191, 36, 0.85)",
+    highlight: "rgba(251, 191, 36, 0.22)"
+  },
+  reviews: {
+    color: "#ec4899",        // Hot Neon Pink
+    glow: "rgba(236, 72, 153, 0.85)",
+    highlight: "rgba(236, 72, 153, 0.22)"
+  },
+  contact: {
+    color: "#ff2e63",        // Laser Crimson Red
+    glow: "rgba(255, 46, 99, 0.85)",
+    highlight: "rgba(255, 46, 99, 0.22)"
+  }
+};
+
 // High-fidelity iOS spring page variants with depth and smooth velocity
 const pageVariants = {
   enter: (direction) => ({
@@ -251,6 +290,7 @@ export default function App() {
 
             {TABS.map((tab) => {
               const isActive = activePage === tab;
+              const theme = TAB_THEMES[tab] || TAB_THEMES.home;
               return (
                 <motion.button
                   key={tab}
@@ -258,12 +298,19 @@ export default function App() {
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
                   whileTap={{ scale: 0.88 }}
+                  style={{
+                    color: isActive ? theme.color : undefined
+                  }}
                 >
-                  {/* Soft Orange Highlight backdrop for active tab */}
+                  {/* Dynamic 7-Color Highlight backdrop for active tab */}
                   {isActive && (
                     <motion.div 
                       className="nav-active-highlight"
                       layoutId="activeNavHighlight"
+                      style={{
+                        background: `radial-gradient(circle at center, ${theme.highlight} 0%, rgba(255, 255, 255, 0.02) 75%, transparent 100%)`,
+                        boxShadow: `0 0 18px ${theme.highlight}`
+                      }}
                       transition={{
                         type: "spring",
                         stiffness: 440,
@@ -275,6 +322,9 @@ export default function App() {
 
                   <motion.div 
                     className="nav-icon-wrap"
+                    style={{
+                      filter: isActive ? `drop-shadow(0 0 8px ${theme.glow})` : undefined
+                    }}
                     animate={{
                       scale: isActive ? 1.14 : 1,
                       y: isActive ? -2 : 0
@@ -284,13 +334,25 @@ export default function App() {
                     {getNavIcon(tab)}
                   </motion.div>
 
-                  <span className="nav-label">{getNavLabel(tab)}</span>
+                  <span 
+                    className="nav-label"
+                    style={{
+                      color: isActive ? theme.color : undefined,
+                      fontWeight: isActive ? 700 : 600
+                    }}
+                  >
+                    {getNavLabel(tab)}
+                  </span>
                   
-                  {/* Clean glowing orange active dot */}
+                  {/* 7-Color Dynamic glowing active dot */}
                   {isActive && (
                     <motion.span 
                       className="nav-active-dot"
                       layoutId="activeNavDot"
+                      style={{
+                        backgroundColor: theme.color,
+                        boxShadow: `0 0 8px ${theme.color}, 0 0 14px ${theme.glow}`
+                      }}
                       transition={{
                         type: "spring",
                         stiffness: 500,

@@ -415,39 +415,25 @@ a {
 }
 
 .nav-item.active {
-  color: var(--orange);
-}
-
-.nav-item.active .nav-icon {
-  color: var(--orange);
-  filter: drop-shadow(0 0 8px rgba(255, 95, 0, 0.8));
-}
-
-.nav-item.active .nav-label {
-  color: #ffaa55;
   font-weight: 700;
 }
 
-/* Active Tab Soft Orange Highlight (No glass borders) */
+/* Active Tab Soft Dynamic Highlight (No glass borders) */
 .nav-active-highlight {
   position: absolute;
   inset: 4px 6px;
   border-radius: 18px;
-  background: radial-gradient(circle at center, rgba(255, 95, 0, 0.22) 0%, rgba(255, 95, 0, 0.05) 75%, transparent 100%);
-  box-shadow: 0 0 18px rgba(255, 95, 0, 0.25);
   z-index: -1;
   pointer-events: none;
 }
 
-/* Active Tab Glowing Orange Dot */
+/* Active Tab 7-Color Glowing Dot */
 .nav-active-dot {
   position: absolute;
   bottom: 3px;
-  width: 4px;
-  height: 4px;
+  width: 4.5px;
+  height: 4.5px;
   border-radius: 50%;
-  background: #ff5f00;
-  box-shadow: 0 0 8px #ff5f00, 0 0 14px rgba(255, 95, 0, 0.85);
   pointer-events: none;
 }
 
