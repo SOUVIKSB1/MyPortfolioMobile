@@ -460,10 +460,9 @@ export default function App() {
                   }}
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
-                  whileTap={{ scale: 0.9 }}
                   animate={{
-                    scale: dockTransform.scale,
-                    y: dockTransform.y
+                    scale: isDockScrubbing ? dockTransform.scale : 1,
+                    y: isDockScrubbing ? dockTransform.y : 0
                   }}
                   transition={{
                     type: "spring",
@@ -493,19 +492,14 @@ export default function App() {
                     />
                   )}
 
-                  <motion.div 
+                  <div 
                     className="nav-icon-wrap"
                     style={{
                       filter: isActive ? `drop-shadow(0 0 8px ${theme.glow})` : undefined
                     }}
-                    animate={{
-                      scale: isActive ? 1.14 : 1,
-                      y: isActive ? -2 : 0
-                    }}
-                    transition={{ type: "spring", stiffness: 420, damping: 24 }}
                   >
                     {getNavIcon(tab)}
-                  </motion.div>
+                  </div>
 
                   <span 
                     className="nav-label"
