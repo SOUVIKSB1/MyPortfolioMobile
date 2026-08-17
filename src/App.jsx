@@ -177,21 +177,6 @@ export default function App() {
     }
   };
 
-  // ── Drag & Swipe gesture for full-screen finger slide page changes ───────────
-  const handleDragEnd = (event, info) => {
-    const swipeDistance = info.offset.x;
-    const swipeVelocity = info.velocity.x;
-    const currentIndex = TABS.indexOf(activePage);
-
-    // Swipe left (dragging finger to left) -> go to next tab
-    if ((swipeDistance < -45 || swipeVelocity < -350) && currentIndex < TABS.length - 1) {
-      handleNavigate(TABS[currentIndex + 1]);
-    }
-    // Swipe right (dragging finger to right) -> go to previous tab
-    else if ((swipeDistance > 45 || swipeVelocity > 350) && currentIndex > 0) {
-      handleNavigate(TABS[currentIndex - 1]);
-    }
-  };
 
   // ── Navbar touch scrub gesture handler (slide finger along tabs) ───────────
   const handleNavTouch = (e) => {
@@ -321,16 +306,10 @@ export default function App() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                drag="x"
-                dragDirectionLock
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.18}
-                onDragEnd={handleDragEnd}
                 style={{ 
                   width: "100%", 
                   height: "auto", 
-                  willChange: "transform, opacity",
-                  touchAction: "pan-y" 
+                  willChange: "transform, opacity"
                 }}
               >
                 {activePage === "home" && (
