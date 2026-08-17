@@ -212,19 +212,49 @@ export default function App() {
     }
   };
 
-  // ── Navbar touch scrub gesture handler (slide finger along tabs) ───────────
-  const handleNavTouch = (e) => {
+  // ── MacBook Dock Magnification & Scrub Physics ──────────────────────────────
+  const [dockPointerX, setDockPointerX] = useState(null);
+  const [isDockHovered, setIsDockHovered] = useState(false);
+
+  const handleDockPointerMove = (e) => {
     if (!navRef.current) return;
-    const touch = e.touches ? e.touches[0] : e;
-    if (!touch) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    if (clientX === undefined) return;
     const navRect = navRef.current.getBoundingClientRect();
-    const touchX = touch.clientX - navRect.left;
+    const touchX = Math.max(0, Math.min(navRect.width, clientX - navRect.left));
+    setDockPointerX(touchX);
+    setIsDockHovered(true);
+
     const tabWidth = navRect.width / TABS.length;
     const targetIndex = Math.max(0, Math.min(TABS.length - 1, Math.floor(touchX / tabWidth)));
     const targetTab = TABS[targetIndex];
     if (targetTab && targetTab !== activePage) {
       handleNavigate(targetTab);
     }
+  };
+
+  const handleDockPointerLeave = () => {
+    setIsDockHovered(false);
+    setDockPointerX(null);
+  };
+
+  const getDockItemMagnification = (index) => {
+    if (!isDockHovered || dockPointerX === null || !navRef.current) {
+      return { scale: 1, y: 0 };
+    }
+    const navWidth = navRef.current.offsetWidth || 340;
+    const tabWidth = navWidth / TABS.length;
+    const tabCenterX = (index + 0.5) * tabWidth;
+    const distance = Math.abs(dockPointerX - tabCenterX);
+    const maxRadius = tabWidth * 1.75; // influence radius across neighboring icons
+
+    if (distance < maxRadius) {
+      const factor = Math.cos((distance / maxRadius) * (Math.PI / 2));
+      const scale = 1 + factor * 0.38; // smooth parabolic magnification up to 1.38x
+      const y = -factor * 9; // lifts smoothly above dock line by up to 9px
+      return { scale, y };
+    }
+    return { scale: 1, y: 0 };
   };
 
   // ── Back button / gesture handler ──────────────────────────────────────────
@@ -381,26 +411,41 @@ export default function App() {
           {/* PWA Floating Install Prompt */}
           <InstallPrompt />
 
-          {/* iOS Instagram Style Liquid Glass Navbar */}
+          {/* MacBook Style Liquid Glass Dock Navbar */}
           <nav 
             ref={navRef}
             className="bottom-nav"
-            onTouchStart={handleNavTouch}
-            onTouchMove={handleNavTouch}
+            onTouchStart={handleDockPointerMove}
+            onTouchMove={handleDockPointerMove}
+            onTouchEnd={handleDockPointerLeave}
+            onTouchCancel={handleDockPointerLeave}
+            onMouseMove={handleDockPointerMove}
+            onMouseLeave={handleDockPointerLeave}
           >
             {/* Top specular highlight shimmer */}
             <div className="nav-glass-sheen" />
 
-            {TABS.map((tab) => {
+            {TABS.map((tab, idx) => {
               const isActive = activePage === tab;
               const theme = TAB_THEMES[tab] || TAB_THEMES.home;
+              const dockTransform = getDockItemMagnification(idx);
+
               return (
                 <motion.button
                   key={tab}
                   onClick={() => handleNavigate(tab)}
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
-                  whileTap={{ scale: 0.88 }}
+                  animate={{
+                    scale: dockTransform.scale,
+                    y: dockTransform.y
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 450,
+                    damping: 24,
+                    mass: 0.4
+                  }}
                   style={{
                     color: isActive ? theme.color : undefined
                   }}
