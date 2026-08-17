@@ -212,71 +212,6 @@ export default function App() {
     }
   };
 
-  // ── MacBook Dock Magnification & Scrub Physics ──────────────────────────────
-  const [dockPointerX, setDockPointerX] = useState(null);
-  const [isDockScrubbing, setIsDockScrubbing] = useState(false);
-  const dockTouchStartRef = useRef({ x: 0, y: 0, moved: false });
-
-  const handleDockTouchStart = (e) => {
-    const touch = e.touches ? e.touches[0] : e;
-    if (touch && navRef.current) {
-      const navRect = navRef.current.getBoundingClientRect();
-      dockTouchStartRef.current = { 
-        x: touch.clientX - navRect.left, 
-        y: touch.clientY - navRect.top, 
-        moved: false 
-      };
-    }
-  };
-
-  const handleDockTouchMove = (e) => {
-    if (!navRef.current) return;
-    const touch = e.touches ? e.touches[0] : e;
-    if (!touch) return;
-    const navRect = navRef.current.getBoundingClientRect();
-    const touchX = Math.max(0, Math.min(navRect.width, touch.clientX - navRect.left));
-
-    // Strictly activate dock wave ONLY when finger has actually dragged horizontally across (> 12px)
-    const deltaX = Math.abs(touchX - dockTouchStartRef.current.x);
-    if (deltaX > 12) {
-      dockTouchStartRef.current.moved = true;
-      setDockPointerX(touchX);
-      setIsDockScrubbing(true);
-
-      const tabWidth = navRect.width / TABS.length;
-      const targetIndex = Math.max(0, Math.min(TABS.length - 1, Math.floor(touchX / tabWidth)));
-      const targetTab = TABS[targetIndex];
-      if (targetTab && targetTab !== activePage) {
-        handleNavigate(targetTab);
-      }
-    }
-  };
-
-  const handleDockTouchEnd = () => {
-    setIsDockScrubbing(false);
-    setDockPointerX(null);
-    dockTouchStartRef.current = { x: 0, y: 0, moved: false };
-  };
-
-  const getDockItemMagnification = (index) => {
-    if (!isDockScrubbing || dockPointerX === null || !navRef.current) {
-      return { scale: 1, y: 0 };
-    }
-    const navWidth = navRef.current.offsetWidth || 340;
-    const tabWidth = navWidth / TABS.length;
-    const tabCenterX = (index + 0.5) * tabWidth;
-    const distance = Math.abs(dockPointerX - tabCenterX);
-    const maxRadius = tabWidth * 1.75; // influence radius across neighboring icons
-
-    if (distance < maxRadius) {
-      const factor = Math.cos((distance / maxRadius) * (Math.PI / 2));
-      const scale = 1 + factor * 0.38; // smooth parabolic magnification up to 1.38x
-      const y = -factor * 9; // lifts smoothly above dock line by up to 9px
-      return { scale, y };
-    }
-    return { scale: 1, y: 0 };
-  };
-
   // ── Back button / gesture handler ──────────────────────────────────────────
   useBackHandler(activePage, handleNavigate, TABS);
 
@@ -431,45 +366,24 @@ export default function App() {
           {/* PWA Floating Install Prompt */}
           <InstallPrompt />
 
-          {/* MacBook Style Liquid Glass Dock Navbar */}
+          {/* Liquid Glass Dock Navbar */}
           <nav 
             ref={navRef}
             className="bottom-nav"
-            onTouchStart={handleDockTouchStart}
-            onTouchMove={handleDockTouchMove}
-            onTouchEnd={handleDockTouchEnd}
-            onTouchCancel={handleDockTouchEnd}
-            onMouseMove={handleDockTouchMove}
-            onMouseLeave={handleDockTouchEnd}
           >
             {/* Top specular highlight shimmer */}
             <div className="nav-glass-sheen" />
 
-            {TABS.map((tab, idx) => {
+            {TABS.map((tab) => {
               const isActive = activePage === tab;
               const theme = TAB_THEMES[tab] || TAB_THEMES.home;
-              const dockTransform = getDockItemMagnification(idx);
 
               return (
-                <motion.button
+                <button
                   key={tab}
-                  onClick={() => {
-                    if (!dockTouchStartRef.current.moved) {
-                      handleNavigate(tab);
-                    }
-                  }}
+                  onClick={() => handleNavigate(tab)}
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
-                  animate={{
-                    scale: isDockScrubbing ? dockTransform.scale : 1,
-                    y: isDockScrubbing ? dockTransform.y : 0
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 450,
-                    damping: 24,
-                    mass: 0.4
-                  }}
                   style={{
                     color: isActive ? theme.color : undefined
                   }}
@@ -527,7 +441,7 @@ export default function App() {
                       }}
                     />
                   )}
-                </motion.button>
+                </button>
               );
             })}
           </nav>
