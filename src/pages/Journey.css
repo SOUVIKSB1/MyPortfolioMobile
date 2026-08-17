@@ -5,18 +5,13 @@
   padding-bottom: 30px;
 }
 
-/* Header Section - Theme: Cyber Violet Purple (#a855f7) */
+/* Header Section */
 .journey-header-section {
   display: flex;
   flex-direction: column;
   gap: 6px;
   text-align: left;
   user-select: none;
-}
-
-.journey-header-section .section-label .dot {
-  background-color: #a855f7;
-  box-shadow: 0 0 8px #a855f7;
 }
 
 .journey-subtitle {
@@ -26,7 +21,10 @@
   margin-top: 2px;
 }
 
-/* Liquid Glass Journey Tab Bar */
+/* ────────────────────────────────
+   LIQUID GLASS JOURNEY TAB BAR
+   Active Color: Cyber Violet Purple (#a855f7) to match Journey Navbar
+   ──────────────────────────────── */
 .journey-liquid-tab-bar {
   position: relative;
   display: flex;
@@ -67,6 +65,7 @@
   color: #ffffff;
 }
 
+/* ONLY the Journey tab bar active indicator is Purple (#a855f7) */
 .active-journey-tab-glow {
   position: absolute;
   inset: 0;
@@ -94,8 +93,8 @@
   bottom: 10px;
   left: 0;
   width: 2px;
-  background: linear-gradient(to bottom, #a855f7 0%, rgba(168, 85, 247, 0.3) 50%, #a855f7 100%);
-  opacity: 0.45;
+  background: linear-gradient(to bottom, var(--blue) 0%, var(--orange) 50%, var(--blue) 100%);
+  opacity: 0.35;
 }
 
 .timeline-node {
@@ -115,9 +114,19 @@
   align-items: center;
   justify-content: center;
   z-index: 10;
-  border: 1.5px solid #a855f7;
-  color: #a855f7;
-  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  border: 1.5px solid var(--border-glow);
+}
+
+.node-badge.education {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 10px rgba(0, 176, 255, 0.4);
+}
+
+.node-badge.experience {
+  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: 0 0 10px rgba(255, 95, 0, 0.4);
 }
 
 .node-card {
@@ -126,9 +135,9 @@
 
 .node-card:active {
   transform: scale(0.985);
-  border-color: rgba(168, 85, 247, 0.4);
-  background: rgba(168, 85, 247, 0.06);
-  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border-color: var(--orange-border);
+  background: rgba(255, 95, 0, 0.06);
+  box-shadow: 0 12px 30px rgba(255, 95, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 .node-date {
@@ -137,7 +146,7 @@
   gap: 5px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10.5px;
-  color: #a855f7;
+  color: var(--blue);
   font-weight: 700;
   margin-bottom: 6px;
 }
@@ -156,7 +165,7 @@
 
 .node-institution {
   font-size: 12px;
-  color: #a855f7;
+  color: var(--orange);
   font-weight: 600;
   margin-top: 3px;
   margin-bottom: 10px;
@@ -183,9 +192,9 @@
 
 .achievement-item-card:active {
   transform: scale(0.985);
-  border-color: rgba(168, 85, 247, 0.4);
-  background: rgba(168, 85, 247, 0.06);
-  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border-color: var(--orange-border);
+  background: rgba(255, 95, 0, 0.06);
+  box-shadow: 0 12px 30px rgba(255, 95, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 .ach-card-top {
@@ -228,9 +237,9 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5px;
   font-weight: 700;
-  color: #a855f7;
-  background: rgba(168, 85, 247, 0.08);
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: var(--orange);
+  background: rgba(255, 95, 0, 0.08);
+  border: 1px solid rgba(255, 95, 0, 0.2);
   padding: 2px 6px;
   border-radius: 4px;
   text-transform: uppercase;
@@ -266,6 +275,6 @@
 }
 
 .tag-inline-icon {
-  color: #a855f7;
+  color: var(--blue);
   flex-shrink: 0;
 }
