@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from "react";
-import { ExternalLink, Sparkles, Briefcase, FolderOpen, LayoutGrid, SlidersHorizontal, ChevronRight, ChevronLeft } from "lucide-react";
+import { ExternalLink, Sparkles, Briefcase, FolderOpen, Tag } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomSheet from "../components/BottomSheet";
@@ -201,9 +201,8 @@ export default function Work() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeTab, setActiveTab] = useState("projects");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [viewMode, setViewMode] = useState("carousel"); // 'carousel' (Horizontal Swipe) or 'grid'
-  
-  const carouselRef = useRef(null);
+
+  const touchStartRef = useRef({ x: 0, y: 0 });
 
   const openProjectDetails = (proj) => {
     triggerHaptic(15);
@@ -221,59 +220,66 @@ export default function Work() {
     return PROJECTS.filter(p => p.category === selectedCategory);
   }, [activeTab, selectedCategory]);
 
-  const handleScrollCarousel = (direction) => {
-    if (carouselRef.current) {
-      const scrollAmount = 300;
-      carouselRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth"
-      });
-      triggerHaptic(10);
+  // Handle Swipe Gesture on the Tab / Title Bar
+  const handleTouchStart = (e) => {
+    const touch = e.touches ? e.touches[0] : e;
+    if (touch) {
+      touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    const touch = e.changedTouches ? e.changedTouches[0] : e;
+    if (!touch) return;
+
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+
+    // Strict horizontal swipe check
+    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+      if (deltaX < 0 && activeTab === "projects") {
+        // Swiped Left -> Switch to Internships
+        triggerHaptic(14);
+        setActiveTab("internships");
+      } else if (deltaX > 0 && activeTab === "internships") {
+        // Swiped Right -> Switch to Projects
+        triggerHaptic(14);
+        setActiveTab("projects");
+      }
     }
   };
 
   return (
     <div className="work-page-container">
-      {/* Title Header */}
-      <div className="work-header-section">
+      {/* Title Header with Swipe Detection */}
+      <div 
+        className="work-header-section"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <div className="section-label">
           <span className="dot" />
           Showcase & Experience
         </div>
-        <div className="work-title-row">
-          <h2 className="section-title">Engineered Works</h2>
-          <div className="work-view-toggle">
-            <button
-              className={`view-toggle-btn ${viewMode === "carousel" ? "active" : ""}`}
-              onClick={() => {
-                triggerHaptic(10);
-                setViewMode("carousel");
-              }}
-              title="Horizontal Swipe Mode"
-              aria-label="Horizontal Swipe Carousel"
-            >
-              <SlidersHorizontal size={14} />
-            </button>
-            <button
-              className={`view-toggle-btn ${viewMode === "grid" ? "active" : ""}`}
-              onClick={() => {
-                triggerHaptic(10);
-                setViewMode("grid");
-              }}
-              title="Vertical Feed Mode"
-              aria-label="Vertical Grid View"
-            >
-              <LayoutGrid size={14} />
-            </button>
-          </div>
-        </div>
+        <h2 className="section-title">Engineered Works</h2>
         <p className="work-subtitle">
           Interactive full-stack systems, deep learning models, and cloud-native solutions.
         </p>
       </div>
 
-      {/* Main Tab Bar - Projects vs Internships with Liquid Glass Effect */}
-      <div className="work-liquid-tab-bar">
+      {/* Main Liquid Glass Tab Bar - Clickable & Swipeable */}
+      <div 
+        className="work-liquid-tab-bar"
+        onPointerDownCapture={(e) => e.stopPropagation()}
+        onTouchStartCapture={(e) => {
+          e.stopPropagation();
+          handleTouchStart(e);
+        }}
+        onTouchEndCapture={(e) => {
+          e.stopPropagation();
+          handleTouchEnd(e);
+        }}
+      >
         <div className="nav-glass-sheen" />
         <button
           onClick={() => {
@@ -347,113 +353,16 @@ export default function Work() {
         </div>
       )}
 
-      {/* Horizontal Swipe Carousel Mode */}
-      {viewMode === "carousel" ? (
-        <div className="work-carousel-wrapper">
-          <div className="carousel-controls-bar">
-            <span className="carousel-hint">
-              👈 Swipe horizontally through {activeTab === "projects" ? "projects" : "internships"}
-            </span>
-            <div className="carousel-nav-arrows">
-              <button onClick={() => handleScrollCarousel("left")} className="arrow-btn" aria-label="Previous">
-                <ChevronLeft size={16} />
-              </button>
-              <button onClick={() => handleScrollCarousel("right")} className="arrow-btn" aria-label="Next">
-                <ChevronRight size={16} />
-              </button>
-            </div>
-          </div>
-
-          <div 
-            ref={carouselRef}
-            className="horizontal-swipe-deck"
-            onPointerDownCapture={(e) => e.stopPropagation()}
-            onTouchStartCapture={(e) => e.stopPropagation()}
-            onTouchMoveCapture={(e) => e.stopPropagation()}
-            onTouchEndCapture={(e) => e.stopPropagation()}
-          >
-            {currentList.map((proj, idx) => (
-              <div 
-                key={proj.id || idx} 
-                className="liquid-glass-tile carousel-card"
-                onClick={() => openProjectDetails(proj)}
-              >
-                {/* Specular Liquid Glass Top Sheen */}
-                <div className="liquid-glass-sheen" />
-
-                <div className="proj-card-header">
-                  <span className="proj-card-icon">{proj.icon}</span>
-                  <div className="proj-card-meta">
-                    <div className="proj-card-top-row">
-                      <h3 className="proj-card-title">{proj.title}</h3>
-                      {proj.categoryLabel && (
-                        <span className="proj-cat-badge">{proj.categoryLabel}</span>
-                      )}
-                    </div>
-                    {proj.company && <span className="proj-card-company">{proj.company}</span>}
-                    <span className="proj-card-role">{proj.role}</span>
-                  </div>
-
-                  {proj.duration && (
-                    <div className="mobile-status-wrapper" style={{ marginLeft: "auto" }}>
-                      {proj.duration.includes("Ongoing") ? (
-                        <span className="mobile-status-dot ongoing" aria-label="Ongoing">
-                          <span className="dot-glow" />
-                        </span>
-                      ) : (
-                        <span className="mobile-status-dot completed" aria-label="Completed">
-                          <span className="dot-circle" />
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <p className="proj-card-tagline">{proj.tagline}</p>
-
-                <div className="proj-card-tech-preview">
-                  {proj.tech.slice(0, 3).map((t) => (
-                    <span key={t} className="tech-pill">{t}</span>
-                  ))}
-                  {proj.tech.length > 3 && (
-                    <span className="tech-pill more">+{proj.tech.length - 3}</span>
-                  )}
-                </div>
-                
-                {/* Quick Action links */}
-                <div className="proj-card-links" onClick={(e) => e.stopPropagation()}>
-                  {proj.github && (
-                    <a 
-                      href={proj.github} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="proj-link-icon-btn"
-                      aria-label={`View GitHub source code for ${proj.title}`}
-                    >
-                      <FaGithub size={12} />
-                      <span>Code</span>
-                    </a>
-                  )}
-                  {proj.live && (
-                    <a 
-                      href={proj.live} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="proj-link-icon-btn live-btn"
-                      aria-label={proj.duration ? `View Certificate for ${proj.title}` : `Visit live demo for ${proj.title}`}
-                    >
-                      <ExternalLink size={12} />
-                      <span>{proj.duration ? "Certificate" : "Demo"}</span>
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        /* Vertical Feed Mode */
-        <div className="projects-feed">
+      {/* Vertical Feed of Liquid Glass Cards with Smooth Fade / Slide */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab + selectedCategory}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2 }}
+          className="projects-feed"
+        >
           {currentList.map((proj, idx) => (
             <div 
               key={proj.id || idx} 
@@ -531,8 +440,8 @@ export default function Work() {
               </div>
             </div>
           ))}
-        </div>
-      )}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Bottom Sheet Drawer for Selected Project */}
       <BottomSheet

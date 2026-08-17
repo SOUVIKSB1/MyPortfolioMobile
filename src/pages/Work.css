@@ -11,44 +11,7 @@
   flex-direction: column;
   gap: 6px;
   text-align: left;
-}
-
-.work-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.work-view-toggle {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(14, 18, 30, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 3px;
-  border-radius: 12px;
-  backdrop-filter: blur(12px);
-}
-
-.view-toggle-btn {
-  background: transparent;
-  border: none;
-  color: #64748b;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.view-toggle-btn.active {
-  background: rgba(255, 95, 0, 0.18);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(255, 95, 0, 0.25);
+  user-select: none;
 }
 
 .work-subtitle {
@@ -71,6 +34,8 @@
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   overflow: hidden;
+  user-select: none;
+  touch-action: pan-y;
 }
 
 .work-liquid-tab {
@@ -218,76 +183,6 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-}
-
-/* ────────────────────────────────
-   HORIZONTAL SWIPE CAROUSEL DECK
-   ──────────────────────────────── */
-.work-carousel-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.carousel-controls-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 4px;
-}
-
-.carousel-hint {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.carousel-nav-arrows {
-  display: flex;
-  gap: 6px;
-}
-
-.arrow-btn {
-  background: rgba(14, 18, 30, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd5e1;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.arrow-btn:active {
-  background: rgba(255, 95, 0, 0.2);
-  color: var(--orange);
-  border-color: var(--orange-border);
-}
-
-.horizontal-swipe-deck {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  padding: 4px 2px 14px 2px;
-  scrollbar-width: none;
-  touch-action: pan-x !important;
-  overscroll-behavior-x: contain;
-}
-
-.horizontal-swipe-deck::-webkit-scrollbar {
-  display: none;
-}
-
-.carousel-card {
-  flex: 0 0 88%;
-  scroll-snap-align: center;
-  min-width: 275px;
-  touch-action: pan-x !important;
 }
 
 /* Project Card Header & Elements */

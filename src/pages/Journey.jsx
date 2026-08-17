@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, Briefcase, GraduationCap, Calendar, Tag, School, BookOpen, BookOpenCheck, BrickWallFireIcon } from "lucide-react";
+import { Award, GraduationCap, Calendar, Tag, BrickWallFireIcon, BookOpenCheck } from "lucide-react";
 import { triggerHaptic } from "../hooks/haptics";
 import "./Journey.css";
-import { FaSchoolCircleExclamation } from "react-icons/fa6";
 
 const TIMELINE = [
   {
@@ -16,7 +15,7 @@ const TIMELINE = [
   },
   {
     date: "2021 - 2022",
-    type: "Education",
+    type: "education",
     icon: <BrickWallFireIcon size={20} />,
     title: "Entrance Exam Preparation",
     institution: "Allen Career Institute - Kota, Rajasthan",
@@ -24,7 +23,7 @@ const TIMELINE = [
   },
   {
     date: "2019 - 2020",
-    type: "Education",
+    type: "education",
     icon: <BookOpenCheck size={20} />,
     title: "Higher Secondary Education",
     institution: "Kenduadihi High School - Bankura, West Bengal",
@@ -32,7 +31,7 @@ const TIMELINE = [
   },
   {
     date: "2018",
-    type: "Education",
+    type: "education",
     icon: <BookOpenCheck size={20} />,
     title: "Secondary Education (Madhyamik)",
     institution: "Kenduadihi High School - Bankura, West Bengal",
@@ -99,18 +98,69 @@ const ACHIEVEMENTS = [
 
 export default function Journey() {
   const [activeTab, setActiveTab] = useState("timeline");
+  const touchStartRef = useRef({ x: 0, y: 0 });
+
+  // Handle Swipe Gesture on the Tab / Title Bar
+  const handleTouchStart = (e) => {
+    const touch = e.touches ? e.touches[0] : e;
+    if (touch) {
+      touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    const touch = e.changedTouches ? e.changedTouches[0] : e;
+    if (!touch) return;
+
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+
+    // Strict horizontal swipe check
+    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+      if (deltaX < 0 && activeTab === "timeline") {
+        // Swiped Left -> Switch to Milestones
+        triggerHaptic(14);
+        setActiveTab("achievements");
+      } else if (deltaX > 0 && activeTab === "achievements") {
+        // Swiped Right -> Switch to Education & Experience
+        triggerHaptic(14);
+        setActiveTab("timeline");
+      }
+    }
+  };
 
   return (
     <div className="journey-page-container">
-      {/* Title */}
-      <div className="section-label">
-        <span className="dot" />
-        My Path
+      {/* Title with Swipe Detection */}
+      <div 
+        className="journey-header-section"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="section-label">
+          <span className="dot" />
+          My Path
+        </div>
+        <h2 className="section-title">Journey & Milestones</h2>
+        <p className="journey-subtitle">
+          Academic foundation, engineering leadership, and cloud hackathon milestones.
+        </p>
       </div>
-      <h2 className="section-title">Journey & Achievements</h2>
 
-      {/* Segment Selector tabs */}
-      <div className="journey-tab-bar glass-panel">
+      {/* Main Liquid Glass Tab Bar - Clickable & Swipeable */}
+      <div 
+        className="journey-liquid-tab-bar"
+        onPointerDownCapture={(e) => e.stopPropagation()}
+        onTouchStartCapture={(e) => {
+          e.stopPropagation();
+          handleTouchStart(e);
+        }}
+        onTouchEndCapture={(e) => {
+          e.stopPropagation();
+          handleTouchEnd(e);
+        }}
+      >
+        <div className="nav-glass-sheen" />
         <button
           onClick={() => {
             if (activeTab !== "timeline") {
@@ -118,17 +168,18 @@ export default function Journey() {
               setActiveTab("timeline");
             }
           }}
-          className={`segment-btn ${activeTab === "timeline" ? "active" : ""}`}
+          className={`journey-liquid-tab ${activeTab === "timeline" ? "active" : ""}`}
         >
-          <GraduationCap size={16} />
-          Education & Experience
+          <GraduationCap size={15} />
+          <span>Education & Background</span>
           {activeTab === "timeline" && (
             <motion.div 
-              className="active-segment-line"
-              layoutId="journeyTabLine"
+              className="active-journey-tab-glow"
+              layoutId="activeJourneyTabGlow"
             />
           )}
         </button>
+
         <button
           onClick={() => {
             if (activeTab !== "achievements") {
@@ -136,29 +187,29 @@ export default function Journey() {
               setActiveTab("achievements");
             }
           }}
-          className={`segment-btn ${activeTab === "achievements" ? "active" : ""}`}
+          className={`journey-liquid-tab ${activeTab === "achievements" ? "active" : ""}`}
         >
-          <Award size={16} />
-          Milestones
+          <Award size={15} />
+          <span>Milestones ({ACHIEVEMENTS.length})</span>
           {activeTab === "achievements" && (
             <motion.div 
-              className="active-segment-line"
-              layoutId="journeyTabLine"
+              className="active-journey-tab-glow"
+              layoutId="activeJourneyTabGlow"
             />
           )}
         </button>
       </div>
 
-      {/* Panel Contents */}
+      {/* Panel Contents with Liquid Glass treatment */}
       <div className="journey-content-outer">
         <AnimatePresence mode="wait">
           {activeTab === "timeline" ? (
             <motion.div
               key="timeline"
-              initial={{ x: -10, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 10, opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
               className="timeline-panel"
             >
               <div className="timeline-trail" />
@@ -169,8 +220,9 @@ export default function Journey() {
                     {time.icon}
                   </div>
 
-                  {/* Card Content */}
-                  <div className="node-card glass-panel">
+                  {/* Liquid Glass Card Content */}
+                  <div className="node-card liquid-glass-tile">
+                    <div className="liquid-glass-sheen" />
                     <span className="node-date">
                       <Calendar size={12} className="inline-icon" />
                       {time.date}
@@ -185,14 +237,15 @@ export default function Journey() {
           ) : (
             <motion.div
               key="achievements"
-              initial={{ x: 10, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -10, opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
               className="achievements-panel"
             >
               {ACHIEVEMENTS.map((ach, idx) => (
-                <div key={idx} className="achievement-item-card glass-panel border-blue-glow">
+                <div key={idx} className="achievement-item-card liquid-glass-tile">
+                  <div className="liquid-glass-sheen" />
                   <div className="ach-card-top">
                     <div className="ach-card-icon-wrap">
                       <span className="ach-card-emoji">{ach.icon}</span>
