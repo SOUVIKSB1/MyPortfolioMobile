@@ -59,35 +59,40 @@ const TAB_THEMES = {
   }
 };
 
-// High-fidelity snappy iOS spring page variants - blooms directly up from the bottom navbar
+// MacBook Dock Genie Effect Page Variants
+// Morphs & uncoils directly from the exact tapped navbar dock icon coordinate
 const pageVariants = {
   enter: (direction) => ({
-    x: direction > 0 ? 30 : -30,
-    y: 24,
+    scaleX: 0.16,
+    scaleY: 0.06,
+    y: 50,
     opacity: 0,
-    scale: 0.94
+    filter: "brightness(1.6) contrast(1.1)"
   }),
   center: {
-    x: 0,
+    scaleX: 1,
+    scaleY: 1,
     y: 0,
     opacity: 1,
-    scale: 1,
+    filter: "brightness(1) contrast(1)",
     transition: {
       type: "spring",
-      stiffness: 500,
-      damping: 30,
-      mass: 0.5,
-      opacity: { duration: 0.16 }
+      stiffness: 440,
+      damping: 26,
+      mass: 0.55,
+      opacity: { duration: 0.18, ease: "easeOut" },
+      filter: { duration: 0.22, ease: "easeOut" }
     }
   },
   exit: (direction) => ({
-    x: direction > 0 ? -24 : 24,
-    y: 14,
+    scaleX: 0.18,
+    scaleY: 0.06,
+    y: 40,
     opacity: 0,
-    scale: 0.96,
+    filter: "brightness(1.5)",
     transition: {
-      duration: 0.12,
-      ease: "easeIn"
+      duration: 0.16,
+      ease: [0.32, 0, 0.67, 0] // Downward suction curve into dock
     }
   })
 };
@@ -246,6 +251,9 @@ export default function App() {
     }
   };
 
+  const activeTabIndex = TABS.indexOf(activePage);
+  const originXPercent = activeTabIndex !== -1 ? Math.round(((activeTabIndex + 0.5) / TABS.length) * 1000) / 10 : 50;
+
   return (
     <>
       {/* Intro hacker loading sequence */}
@@ -338,9 +346,9 @@ export default function App() {
                 style={{ 
                   width: "100%", 
                   height: "auto", 
-                  willChange: "transform, opacity",
+                  willChange: "transform, opacity, filter",
                   touchAction: "pan-y",
-                  transformOrigin: "bottom center"
+                  transformOrigin: `${originXPercent}% 100%`
                 }}
               >
                 {activePage === "home" && (
