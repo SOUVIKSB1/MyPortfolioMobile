@@ -1,7 +1,8 @@
 .contact-page-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
+  padding-bottom: 20px;
 }
 
 .direct-contact-row {
@@ -13,32 +14,37 @@
 .direct-btn {
   flex: 1;
   font-size: 13.5px;
-  padding: 12px 16px;
+  padding: 13px 18px;
+  border-radius: 14px;
 }
 
 /* Console Ping Box */
 .ping-console-box {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   text-align: left;
-  border-color: rgba(255, 95, 0, 0.1);
+  padding: 20px 22px;
+  border-radius: 22px;
+  background: rgba(14, 14, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6);
 }
 
 .console-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .console-input-line {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  padding: 8px 12px;
-  border-radius: 10px;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 14px;
+  border-radius: 12px;
 }
 
 .console-input-line input,
@@ -48,7 +54,7 @@
   border: none;
   outline: none;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-primary);
   padding: 0;
   resize: none;
@@ -60,27 +66,28 @@
 }
 
 .console-send-btn {
-  font-size: 12px;
-  padding: 10px 16px;
+  font-size: 12.5px;
+  padding: 11px 18px;
   align-self: flex-end;
+  border-radius: 12px;
 }
 
 .console-logs-feed {
   background: #040406;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 10px;
-  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px 15px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  line-height: 1.6;
+  font-size: 11px;
+  line-height: 1.65;
   color: #e2e8f0;
   max-height: 180px;
   overflow-y: auto;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.85);
 }
 
 .log-line {
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .log-arrow {
@@ -90,20 +97,24 @@
 
 /* Social Grid Card */
 .socials-grid-card {
-  padding: 16px;
+  padding: 20px 22px;
+  border-radius: 22px;
+  background: rgba(14, 14, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.55);
   text-align: left;
 }
 
 .socials-title {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .social-links-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .social-btn {
@@ -112,38 +123,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 12px 6px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px 8px;
+  border-radius: 14px;
   text-decoration: none;
   color: var(--text-secondary);
-  gap: 6px;
-  transition: all 0.2s ease;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .social-btn span {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
 }
 
 .social-btn:active {
-  background: rgba(255, 255, 255, 0.05);
+  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .social-btn.github:active {
   color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .social-btn.linkedin:active {
   color: var(--blue);
   border-color: var(--blue-border);
-  background: rgba(0, 176, 255, 0.03);
+  background: rgba(0, 176, 255, 0.08);
 }
 
 .social-btn.instagram:active {
   color: var(--orange);
   border-color: var(--orange-border);
-  background: rgba(255, 95, 0, 0.03);
+  background: rgba(255, 95, 0, 0.08);
 }
