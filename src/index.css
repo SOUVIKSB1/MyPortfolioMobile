@@ -428,44 +428,26 @@ a {
   font-weight: 700;
 }
 
-/* Liquid Glass Active Pill Morphing Backdrop */
-.liquid-glass-pill {
+/* Active Tab Soft Orange Highlight (No glass borders) */
+.nav-active-highlight {
   position: absolute;
-  inset: 2px 4px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(255, 95, 0, 0.22) 0%, rgba(255, 55, 0, 0.08) 100%);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 120, 0, 0.38);
-  border-top: 1px solid rgba(255, 210, 160, 0.7);
-  box-shadow: 
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.45),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.3),
-    0 0 16px rgba(255, 95, 0, 0.35),
-    0 2px 8px rgba(0, 0, 0, 0.4);
+  inset: 4px 6px;
+  border-radius: 18px;
+  background: radial-gradient(circle at center, rgba(255, 95, 0, 0.22) 0%, rgba(255, 95, 0, 0.05) 75%, transparent 100%);
+  box-shadow: 0 0 18px rgba(255, 95, 0, 0.25);
   z-index: -1;
   pointer-events: none;
-  overflow: hidden;
 }
 
-.liquid-glass-glare {
-  position: absolute;
-  top: 0;
-  left: 15%;
-  right: 15%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-}
-
-/* Liquid Glowing Bead */
-.liquid-glow-dot {
+/* Active Tab Glowing Orange Dot */
+.nav-active-dot {
   position: absolute;
   bottom: 3px;
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffaa55;
-  box-shadow: 0 0 8px var(--orange), 0 0 12px var(--orange);
+  background: #ff5f00;
+  box-shadow: 0 0 8px #ff5f00, 0 0 14px rgba(255, 95, 0, 0.85);
   pointer-events: none;
 }
 

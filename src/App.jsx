@@ -259,20 +259,18 @@ export default function App() {
                   aria-label={`Navigate to ${tab}`}
                   whileTap={{ scale: 0.88 }}
                 >
-                  {/* Liquid Glass morphing pill backdrop */}
+                  {/* Soft Orange Highlight backdrop for active tab */}
                   {isActive && (
                     <motion.div 
-                      className="liquid-glass-pill"
-                      layoutId="activeLiquidGlassPill"
+                      className="nav-active-highlight"
+                      layoutId="activeNavHighlight"
                       transition={{
                         type: "spring",
                         stiffness: 440,
                         damping: 32,
                         mass: 0.65
                       }}
-                    >
-                      <div className="liquid-glass-glare" />
-                    </motion.div>
+                    />
                   )}
 
                   <motion.div 
@@ -288,11 +286,11 @@ export default function App() {
 
                   <span className="nav-label">{getNavLabel(tab)}</span>
                   
-                  {/* Liquid neon active glow dot */}
+                  {/* Clean glowing orange active dot */}
                   {isActive && (
                     <motion.span 
-                      className="liquid-glow-dot"
-                      layoutId="activeLiquidDot"
+                      className="nav-active-dot"
+                      layoutId="activeNavDot"
                       transition={{
                         type: "spring",
                         stiffness: 500,
