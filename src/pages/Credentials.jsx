@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ExternalLink, Copy, Check, ShieldCheck, Search, X, Sparkles, Award, Layers } from "lucide-react";
+import { ExternalLink, Copy, Check, ShieldCheck, Search, X, Sparkles, Layers } from "lucide-react";
 import BottomSheet from "../components/BottomSheet";
 import { triggerHaptic } from "../hooks/haptics";
 import "./Credentials.css";
@@ -8,14 +8,14 @@ export const CERT_TIERS = [
   {
     id: "tier-1",
     tierNumber: 1,
-    tierCode: "T-01",
-    title: "Flagship Global & Academic",
-    shortTitle: "Flagship",
+    tierLabel: "Tier 1",
+    title: "Global Flagships & Academic",
+    shortTitle: "Tier 1 • Flagship",
     description: "Proctored industry benchmarks, premier cloud credentials & national AI internships",
     icon: "🌟",
     accentColor: "#f59e0b",
-    gradient: "linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.03) 100%)",
-    borderColor: "rgba(245, 158, 11, 0.28)",
+    gradient: "linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.02) 100%)",
+    borderColor: "rgba(245, 158, 11, 0.25)",
     certs: [
       {
         title: "Azure AI Fundamentals (AI-900)",
@@ -62,14 +62,14 @@ export const CERT_TIERS = [
   {
     id: "tier-2",
     tierNumber: 2,
-    tierCode: "T-02",
+    tierLabel: "Tier 2",
     title: "Applied AI, Agents & RAG",
-    shortTitle: "AI & RAG",
+    shortTitle: "Tier 2 • AI & RAG",
     description: "Autonomous multi-agent workflows, neural retrieval (RAG) & transformer pipelines",
     icon: "🤖",
     accentColor: "#a855f7",
-    gradient: "linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.03) 100%)",
-    borderColor: "rgba(168, 85, 247, 0.28)",
+    gradient: "linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(168, 85, 247, 0.02) 100%)",
+    borderColor: "rgba(168, 85, 247, 0.25)",
     certs: [
       {
         title: "Make Agentic AI Work for You",
@@ -132,14 +132,14 @@ export const CERT_TIERS = [
   {
     id: "tier-3",
     tierNumber: 3,
-    tierCode: "T-03",
+    tierLabel: "Tier 3",
     title: "Cloud, Backend & Tooling",
-    shortTitle: "Cloud & Dev",
+    shortTitle: "Tier 3 • Cloud & Dev",
     description: "Enterprise backend engineering, Google Cloud infrastructure & API ecosystems",
     icon: "☁️",
     accentColor: "#38bdf8",
-    gradient: "linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(56, 189, 248, 0.03) 100%)",
-    borderColor: "rgba(56, 189, 248, 0.28)",
+    gradient: "linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0.02) 100%)",
+    borderColor: "rgba(56, 189, 248, 0.25)",
     certs: [
       {
         title: ".Net Backend Engineer",
@@ -186,14 +186,14 @@ export const CERT_TIERS = [
   {
     id: "tier-4",
     tierNumber: 4,
-    tierCode: "T-04",
+    tierLabel: "Tier 4",
     title: "Strategic AI & Data Systems",
-    shortTitle: "Strategy & Data",
+    shortTitle: "Tier 4 • Strategy & Data",
     description: "Enterprise GenAI readiness, core data processing principles & Agile execution",
     icon: "📈",
     accentColor: "#10b981",
-    gradient: "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.03) 100%)",
-    borderColor: "rgba(16, 185, 129, 0.28)",
+    gradient: "linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(16, 185, 129, 0.02) 100%)",
+    borderColor: "rgba(16, 185, 129, 0.25)",
     certs: [
       {
         title: "Getting Started with Data (Data Fundamentals)",
@@ -248,14 +248,14 @@ export const CERT_TIERS = [
   {
     id: "tier-5",
     tierNumber: 5,
-    tierCode: "T-05",
-    title: "Foundational & Specialized",
-    shortTitle: "Foundational",
+    tierLabel: "Tier 5",
+    title: "Foundational & Core Modules",
+    shortTitle: "Tier 5 • Foundations",
     description: "Core AI history, conversational chatbots & web architecture fundamentals",
     icon: "📚",
     accentColor: "#f43f5e",
-    gradient: "linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(244, 63, 94, 0.03) 100%)",
-    borderColor: "rgba(244, 63, 94, 0.28)",
+    gradient: "linear-gradient(135deg, rgba(244, 63, 94, 0.12) 0%, rgba(244, 63, 94, 0.02) 100%)",
+    borderColor: "rgba(244, 63, 94, 0.25)",
     certs: [
       {
         title: "Large Language Model Basics",
@@ -314,7 +314,7 @@ export const CERTIFICATIONS = CERT_TIERS.flatMap(tier =>
     ...cert,
     tierId: tier.id,
     tierNumber: tier.tierNumber,
-    tierCode: tier.tierCode,
+    tierLabel: tier.tierLabel,
     tierTitle: tier.title,
     tierColor: tier.accentColor,
     tierIcon: tier.icon
@@ -344,7 +344,7 @@ export default function Credentials() {
     const query = searchQuery.trim().toLowerCase();
     
     return CERT_TIERS.map(tier => {
-      // If tier filter is active and doesn't match, return empty
+      // If tier filter is active and doesn't match, return null
       if (activeTier !== "all" && tier.id !== activeTier) {
         return null;
       }
@@ -369,10 +369,6 @@ export default function Credentials() {
     }).filter(Boolean);
   }, [activeTier, searchQuery]);
 
-  const totalMatchingCerts = useMemo(() => {
-    return filteredTiers.reduce((acc, t) => acc + t.certs.length, 0);
-  }, [filteredTiers]);
-
   return (
     <div className="credentials-page-container">
       {/* Title Header */}
@@ -383,7 +379,7 @@ export default function Credentials() {
         </div>
         <h2 className="section-title">Licenses & Certifications</h2>
         <p className="credentials-subtitle">
-          29 professional credentials structured into 5 market-aligned engineering tiers.
+          29 credentials structured into 5 market-aligned engineering tiers.
         </p>
       </div>
 
@@ -412,8 +408,14 @@ export default function Credentials() {
         )}
       </div>
 
-      {/* Tier Filter Horizontal Pill Scroller */}
-      <div className="tier-filter-scroll-wrapper">
+      {/* Tier Filter Horizontal Pill Scroller - with touch isolation */}
+      <div 
+        className="tier-filter-scroll-wrapper"
+        onPointerDownCapture={(e) => e.stopPropagation()}
+        onTouchStartCapture={(e) => e.stopPropagation()}
+        onTouchMoveCapture={(e) => e.stopPropagation()}
+        onTouchEndCapture={(e) => e.stopPropagation()}
+      >
         <div className="tier-filter-bar">
           <button
             className={`tier-pill-btn ${activeTier === "all" ? "active" : ""}`}
@@ -439,8 +441,7 @@ export default function Credentials() {
                 setActiveTier(tier.id);
               }}
             >
-              <span className="tier-pill-code">{tier.tierCode}</span>
-              <span>{tier.shortTitle}</span>
+              <span className="tier-pill-label">{tier.shortTitle}</span>
               <span className="tier-pill-count">{tier.certs.length}</span>
             </button>
           ))}
@@ -468,7 +469,7 @@ export default function Credentials() {
         ) : (
           filteredTiers.map((tier) => (
             <div key={tier.id} className="tier-section-block">
-              {/* Tier Banner Header */}
+              {/* Refined Tier Banner Header */}
               <div 
                 className="tier-banner-header"
                 style={{
@@ -477,13 +478,12 @@ export default function Credentials() {
                 }}
               >
                 <div className="tier-banner-top">
-                  <div className="tier-code-tag" style={{ background: tier.accentColor }}>
-                    {tier.tierCode}
+                  <div className="tier-label-badge" style={{ color: tier.accentColor, borderColor: `${tier.accentColor}55`, background: `${tier.accentColor}18` }}>
+                    <span className="tier-badge-dot" style={{ background: tier.accentColor }} />
+                    <span>{tier.tierLabel}</span>
                   </div>
-                  <div className="tier-banner-meta">
-                    <h3 className="tier-banner-title">{tier.title}</h3>
-                    <span className="tier-banner-count">{tier.certs.length} Credential{tier.certs.length > 1 ? "s" : ""}</span>
-                  </div>
+                  <h3 className="tier-banner-title">{tier.title}</h3>
+                  <span className="tier-banner-count">{tier.certs.length}</span>
                 </div>
                 <p className="tier-banner-desc">{tier.description}</p>
               </div>
@@ -498,7 +498,7 @@ export default function Credentials() {
                       triggerHaptic(15);
                       setSelectedCert({
                         ...cert,
-                        tierCode: tier.tierCode,
+                        tierLabel: tier.tierLabel,
                         tierTitle: tier.title,
                         tierColor: tier.accentColor,
                         tierIcon: tier.icon
@@ -512,11 +512,11 @@ export default function Credentials() {
                           className="cert-tier-mini-badge"
                           style={{
                             color: tier.accentColor,
-                            borderColor: `${tier.accentColor}44`,
+                            borderColor: `${tier.accentColor}40`,
                             background: `${tier.accentColor}12`
                           }}
                         >
-                          {tier.tierCode}
+                          {tier.tierLabel}
                         </span>
                         <span className="cert-item-date-badge">{cert.date}</span>
                       </div>
@@ -556,7 +556,7 @@ export default function Credentials() {
                   }}
                 >
                   <Sparkles size={11} />
-                  <span>{selectedCert.tierCode} • {selectedCert.tierTitle}</span>
+                  <span>{selectedCert.tierLabel} • {selectedCert.tierTitle}</span>
                 </div>
                 <h3 className="cert-drawer-title">{selectedCert.title}</h3>
                 <h4 className="cert-drawer-issuer">{selectedCert.issuer}</h4>
@@ -590,7 +590,7 @@ export default function Credentials() {
               <div className="cert-drawer-info">
                 <span className="info-lbl">Tier Level</span>
                 <span className="info-val" style={{ color: selectedCert.tierColor, fontWeight: 700 }}>
-                  {selectedCert.tierCode} ({selectedCert.tierTitle})
+                  {selectedCert.tierLabel} • {selectedCert.tierTitle}
                 </span>
               </div>
 
