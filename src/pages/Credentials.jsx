@@ -535,17 +535,6 @@ export default function Credentials() {
             <div className="cert-drawer-header">
               <span className="cert-drawer-emoji">{selectedCert.icon}</span>
               <div className="cert-drawer-header-meta">
-                <div 
-                  className="cert-drawer-tier-pill"
-                  style={{
-                    color: selectedCert.tierColor,
-                    borderColor: `${selectedCert.tierColor}55`,
-                    background: `${selectedCert.tierColor}18`
-                  }}
-                >
-                  <Sparkles size={11} />
-                  <span>{selectedCert.tierLabel} • {selectedCert.tierTitle}</span>
-                </div>
                 <h3 className="cert-drawer-title">{selectedCert.title}</h3>
                 <h4 className="cert-drawer-issuer">{selectedCert.issuer}</h4>
               </div>
