@@ -330,7 +330,7 @@ export default function App() {
                   touchAction: "pan-y" 
                 }}
               >
-                {activePage === "home" && <Home onNavigate={handleNavigate} onShare={handleShare} />}
+                {activePage === "home" && <Home onNavigate={handleNavigate} />}
                 {activePage === "about" && <About />}
                 {activePage === "work" && <Work />}
                 {activePage === "journey" && <Journey />}
