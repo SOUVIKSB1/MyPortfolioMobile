@@ -248,14 +248,13 @@ export default function Credentials() {
               <div className="cert-item-icon">{cert.icon}</div>
               <div className="cert-item-details">
                 <h4 className="cert-item-title">{cert.title}</h4>
-                <div className="cert-item-submeta">
-                  <span className="cert-item-issuer">{cert.issuer}</span>
-                  <span className="cert-item-dot">•</span>
-                  <span className="cert-item-date">{cert.date}</span>
-                </div>
+                <span className="cert-item-issuer">{cert.issuer}</span>
               </div>
-              <div className="cert-item-arrow">
-                <ExternalLink size={13} />
+              <div className="cert-item-right">
+                <span className="cert-item-date-badge">{cert.date}</span>
+                <div className="cert-item-arrow">
+                  <ExternalLink size={12} />
+                </div>
               </div>
             </div>
           ))}
