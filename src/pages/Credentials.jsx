@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Copy, Check, ShieldCheck, Share2, Award } from "lucide-react";
 import BottomSheet from "../components/BottomSheet";
 import { triggerHaptic } from "../hooks/haptics";
 import "./Credentials.css";
@@ -99,7 +99,23 @@ export const CERTIFICATIONS = [
     date: "JUL 2026",
     id: "CS-GHCF",
     link: "/certificates/github_copilot_fundamentals.pdf",
-    icon: "🐙"
+    icon: "🤖"
+  },
+  {
+    title: "Postman API Fundamentals Student Expert",
+    issuer: "Postman",
+    date: "OCT 2024",
+    id: "P-APIFSE",
+    link: "https://badgr.com/public/assertions/94n1wX7sQ3a1_QYdO-sTlw?identity__email=souviksinhababu88%40gmail.com",
+    icon: "🚀"
+  },
+  {
+    title: "Building Real-Time Video Apps with WebRTC",
+    issuer: "IBM",
+    date: "OCT 2024",
+    id: "ALM-COURSE_4058937",
+    link: "https://skills.yourlearning.ibm.com/certificate/ALM-COURSE_4058937",
+    icon: "🌐"
   },
   {
     title: "Programming with Python",
@@ -193,6 +209,20 @@ export const CERTIFICATIONS = [
 
 export default function Credentials() {
   const [selectedCert, setSelectedCert] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyId = (id) => {
+    triggerHaptic(15);
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(id).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    } else {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   return (
     <div className="credentials-page-container">
@@ -218,54 +248,88 @@ export default function Credentials() {
               <div className="cert-item-icon">{cert.icon}</div>
               <div className="cert-item-details">
                 <h4 className="cert-item-title">{cert.title}</h4>
-                <span className="cert-item-issuer">{cert.issuer}</span>
+                <div className="cert-item-submeta">
+                  <span className="cert-item-issuer">{cert.issuer}</span>
+                  <span className="cert-item-dot">•</span>
+                  <span className="cert-item-date">{cert.date}</span>
+                </div>
+              </div>
+              <div className="cert-item-arrow">
+                <ExternalLink size={13} />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Certification details bottom drawer */}
+      {/* Certification details rich bottom modal */}
       <BottomSheet
         isOpen={selectedCert !== null}
         onClose={() => {
           triggerHaptic(8);
           setSelectedCert(null);
+          setCopied(false);
         }}
-        title={selectedCert?.title}
+        title="Credential Verification"
       >
         {selectedCert && (
           <div className="cert-drawer-layout">
             <div className="cert-drawer-header">
               <span className="cert-drawer-emoji">{selectedCert.icon}</span>
-              <div>
+              <div className="cert-drawer-header-meta">
+                <h3 className="cert-drawer-title">{selectedCert.title}</h3>
                 <h4 className="cert-drawer-issuer">{selectedCert.issuer}</h4>
-                <p className="cert-drawer-date">Issued: {selectedCert.date}</p>
               </div>
             </div>
 
+            {/* Verified Active Badge */}
+            <div className="cert-status-badge">
+              <ShieldCheck size={16} className="status-shield-icon" />
+              <span>Officially Verified & Authenticated • {selectedCert.date}</span>
+            </div>
+
             <div className="cert-drawer-details">
-              <div className="cert-drawer-info">
-                <span className="info-lbl">Credentials ID</span>
-                <span className="info-val">{selectedCert.id}</span>
-              </div>
-              <div className="cert-drawer-info warning">
-                <span className="info-lbl">Verification Status</span>
-                <span className="info-val verified">Verified Active</span>
-              </div>
-              <div className="cert-drawer-info warning">
-                <span className="info-lbl">Verification Link</span>
-                <a 
-                  href={selectedCert.link} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="info-val link"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "4px", textDecoration: "none",}}
+              {/* Credential ID row with 1-Click Copy */}
+              <div className="cert-drawer-info copyable">
+                <div className="info-text-group">
+                  <span className="info-lbl">Credential ID</span>
+                  <span className="info-val">{selectedCert.id}</span>
+                </div>
+                <button 
+                  onClick={() => handleCopyId(selectedCert.id)} 
+                  className="cert-copy-btn"
+                  aria-label="Copy credential ID"
                 >
-                  <ExternalLink size={12} />
-                  Link
-                </a>
+                  {copied ? <Check size={14} style={{ color: "#10b981" }} /> : <Copy size={14} />}
+                  <span>{copied ? "Copied!" : "Copy"}</span>
+                </button>
               </div>
+
+              {/* Issuer Organization */}
+              <div className="cert-drawer-info">
+                <span className="info-lbl">Issuing Body</span>
+                <span className="info-val issuer-name">{selectedCert.issuer}</span>
+              </div>
+
+              {/* Issue Date */}
+              <div className="cert-drawer-info">
+                <span className="info-lbl">Issued Period</span>
+                <span className="info-val">{selectedCert.date}</span>
+              </div>
+            </div>
+
+            {/* Direct Verification Action Buttons */}
+            <div className="cert-drawer-actions">
+              <a 
+                href={selectedCert.link} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn-primary cert-action-main"
+                onClick={() => triggerHaptic(12)}
+              >
+                <ExternalLink size={15} />
+                <span>Verify Credential on Portal</span>
+              </a>
             </div>
           </div>
         )}
