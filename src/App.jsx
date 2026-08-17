@@ -253,7 +253,7 @@ export default function App() {
     const deltaY = touch.clientY - tracker.startY;
 
     // Only engage if horizontal swipe is dominant and moved > 8px
-    if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+    if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
       tracker.isSwiping = true;
       tracker.hasSwiped = true;
 
@@ -264,10 +264,18 @@ export default function App() {
       tracker.lastX = touchX;
       tracker.lastTime = now;
 
-      // Only trigger dock wave during fast horizontal swipe (> 120px/s)
-      if (velocity > 120) {
+      // Trigger dock magnification wave during fast horizontal swipe (> 100px/s)
+      if (velocity > 100) {
         setNavSwipePointerX(touchX);
         setNavSwipeVelocity(velocity);
+      }
+
+      // Switch active tab in real-time as the fast swipe glides across the navbar icons
+      const tabWidth = navRect.width / TABS.length;
+      const targetIndex = Math.max(0, Math.min(TABS.length - 1, Math.floor(touchX / tabWidth)));
+      const targetTab = TABS[targetIndex];
+      if (targetTab && targetTab !== activePage) {
+        handleNavigate(targetTab);
       }
     }
   };
@@ -275,19 +283,19 @@ export default function App() {
   const handleNavTouchEnd = () => {
     const tracker = navTouchTrackerRef.current;
     
-    // If user performed an intentional horizontal swipe across the navbar
+    // If user performed an intentional fast horizontal flick across the navbar
     if (tracker.isSwiping && tracker.hasSwiped) {
       const deltaX = tracker.lastX - tracker.startX;
       const totalTime = Math.max(50, Date.now() - tracker.startTime);
       const avgVelocity = (Math.abs(deltaX) / totalTime) * 1000;
       const currentIndex = TABS.indexOf(activePage);
 
-      if ((Math.abs(deltaX) >= 35 || avgVelocity >= 280) && currentIndex !== -1) {
+      if ((Math.abs(deltaX) >= 25 || avgVelocity >= 240) && currentIndex !== -1) {
         if (deltaX < 0 && currentIndex < TABS.length - 1) {
-          // Swiped Left on navbar -> Next Tab
+          // Fast flick left -> Next Tab
           handleNavigate(TABS[currentIndex + 1]);
         } else if (deltaX > 0 && currentIndex > 0) {
-          // Swiped Right on navbar -> Previous Tab
+          // Fast flick right -> Previous Tab
           handleNavigate(TABS[currentIndex - 1]);
         }
       }
