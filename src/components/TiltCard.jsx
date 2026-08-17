@@ -65,7 +65,18 @@ export default function TiltCard({ children, className = "", maxRotation = 10 })
         transformStyle: "preserve-3d",
       }}
     >
-      <div style={{ transform: "translateZ(10px)", transformStyle: "preserve-3d", width: "100%", height: "100%" }}>
+      <div 
+        className="tilt-card-inner" 
+        style={{ 
+          transform: "translateZ(10px)", 
+          transformStyle: "preserve-3d", 
+          width: "100%", 
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "inherit"
+        }}
+      >
         {children}
       </div>
     </div>

@@ -138,7 +138,7 @@ export default function Home({ onNavigate }) {
   return (
     <div className="home-page-container">
       {/* Spacer to push Home content down below sticky header bar */}
-      <div className="home-top-spacer" style={{ height: "48px", width: "100%", flexShrink: 0 }} />
+      <div className="home-top-spacer" style={{ height: "20px", width: "100%", flexShrink: 0 }} />
 
       {/* Hero Badge Tag */}
       <div className="home-tag">
