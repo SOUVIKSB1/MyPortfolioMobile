@@ -37,7 +37,7 @@ function CounterTicker({ value, duration = 1200 }) {
   return <span>{count}</span>;
 }
 
-export default function Home({ onNavigate }) {
+export default function Home({ onNavigate, onTriggerMatrix }) {
   const [typingText, setTypingText] = useState("");
   const [linkedinCount, setLinkedinCount] = useState(1481);
   const [instagramCount, setInstagramCount] = useState(1043);
@@ -53,6 +53,15 @@ export default function Home({ onNavigate }) {
   const [terminalLogs, setTerminalLogs] = useState([]);
   const [customInput, setCustomInput] = useState("");
   const terminalInputRef = useRef(null);
+  const lastAvatarTapRef = useRef(0);
+
+  const handleAvatarDoubleTap = () => {
+    const now = Date.now();
+    if (now - lastAvatarTapRef.current < 350) {
+      if (onTriggerMatrix) onTriggerMatrix();
+    }
+    lastAvatarTapRef.current = now;
+  };
 
   // Dynamic B.Tech year calculations
   const btechStartYear = 2023;
@@ -196,12 +205,16 @@ export default function Home({ onNavigate }) {
         break;
       case "matrix":
         output = "⚡ ACCESS GRANTED: 01101111 01110000 01100101 01101110 01100100 01100101 01110110";
+        isAction = true;
+        if (onTriggerMatrix) {
+          setTimeout(() => onTriggerMatrix(), 350);
+        }
         break;
       case "clear":
         setTerminalLogs([]);
         return;
       default:
-        output = `Command not recognized: '${cleanCmd}'. Try: help, bio, skills, hire_me`;
+        output = `Command not recognized: '${cleanCmd}'. Try: help, bio, skills, hire_me, matrix`;
         break;
     }
 
@@ -237,7 +250,11 @@ export default function Home({ onNavigate }) {
       {/* Profile/Terminal Header Card with 3D Tilt and custom border glow */}
       <TiltCard className="hero-profile-card glow-border-card">
         <div className="profile-top">
-          <div className="avatar-wrapper border-orange-glow">
+          <div 
+            className="avatar-wrapper border-orange-glow"
+            onClick={handleAvatarDoubleTap}
+            title="Double-tap for Matrix Mode"
+          >
             {imageError ? (
               <div className="avatar-fallback">SS</div>
             ) : (

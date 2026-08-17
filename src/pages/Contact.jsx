@@ -1,18 +1,49 @@
-import { useState } from "react";
-import { Mail, Phone, ExternalLink, Send, ShieldCheck } from "lucide-react";
+import { useState, useRef } from "react";
+import { Mail, Phone, ExternalLink, Send, ShieldCheck, Zap } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { triggerHaptic } from "../hooks/haptics";
 import "./Contact.css";
+
+const QUICK_INQUIRIES = [
+  {
+    id: "hire",
+    label: "💼 Hire / Internship",
+    text: "Hi Souvik, I checked out your portfolio and would love to discuss software engineering / internship roles with you."
+  },
+  {
+    id: "collab",
+    label: "🚀 Project Collab",
+    text: "Hey Souvik! I'm working on an exciting project and would love to collaborate with you on full-stack & cloud architecture."
+  },
+  {
+    id: "coffee",
+    label: "☕ Coffee Chat",
+    text: "Hello Souvik! Love your work on React, Kubernetes & Cloud systems. Would love to connect for a quick tech chat!"
+  }
+];
 
 export default function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [pingLogs, setPingLogs] = useState([]);
   const [isPinging, setIsPinging] = useState(false);
+  const textareaRef = useRef(null);
+
+  const handleSelectInquiry = (inquiry) => {
+    triggerHaptic(12);
+    setSelectedInquiry(inquiry.id);
+    setMessage(inquiry.text);
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
 
   const handleSendPing = (e) => {
     e.preventDefault();
     if (!email.trim() || !message.trim()) return;
 
+    triggerHaptic(15);
     setIsPinging(true);
     setPingLogs([
       "PING souviksinhababu.dev (127.0.0.1) 56(84) bytes of data.",
@@ -57,6 +88,7 @@ export default function Contact() {
       // Reset inputs
       setEmail("");
       setMessage("");
+      setSelectedInquiry(null);
       setIsPinging(false);
     }, 1800);
   };
@@ -87,6 +119,29 @@ export default function Contact() {
         </a>
       </div>
 
+      {/* Quick Inquiries Fast Chips */}
+      <div className="quick-inquiries-wrap">
+        <div className="inquiries-header">
+          <Zap size={13} className="zap-icon" />
+          <span>Quick Inquiry Templates</span>
+        </div>
+        <div className="inquiries-chips-row">
+          {QUICK_INQUIRIES.map((inq) => {
+            const isSelected = selectedInquiry === inq.id;
+            return (
+              <button
+                key={inq.id}
+                type="button"
+                onClick={() => handleSelectInquiry(inq)}
+                className={`inquiry-chip ${isSelected ? "active" : ""}`}
+              >
+                {inq.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Interactive Ping Terminal Console */}
       <div className="ping-console-box glass-panel">
         <div className="console-header">
@@ -114,6 +169,7 @@ export default function Contact() {
           <div className="console-input-line">
             <span className="c-prompt">message:~$</span>
             <textarea
+              ref={textareaRef}
               placeholder="What are we building?"
               value={message}
               onChange={(e) => setMessage(e.target.value)}

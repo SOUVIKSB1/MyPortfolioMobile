@@ -8,6 +8,7 @@ import StartAnimation from "./components/StartAnimation";
 import CyberCanvas from "./components/CyberCanvas";
 import PullToRefresh from "./components/PullToRefresh";
 import InstallPrompt from "./components/InstallPrompt";
+import MatrixRain from "./components/MatrixRain";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Work from "./pages/Work";
@@ -98,6 +99,7 @@ export default function App() {
   const [activePage, setActivePage] = useState("home");
   const [direction, setDirection] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
+  const [isMatrixOpen, setIsMatrixOpen] = useState(false);
 
   const scrollContainerRef = useRef(null);
   const lastScrollTickRef = useRef(0);
@@ -331,7 +333,12 @@ export default function App() {
                   touchAction: "pan-y" 
                 }}
               >
-                {activePage === "home" && <Home onNavigate={handleNavigate} />}
+                {activePage === "home" && (
+                  <Home 
+                    onNavigate={handleNavigate} 
+                    onTriggerMatrix={() => setIsMatrixOpen(true)} 
+                  />
+                )}
                 {activePage === "about" && <About />}
                 {activePage === "work" && <Work />}
                 {activePage === "journey" && <Journey />}
@@ -341,6 +348,12 @@ export default function App() {
               </motion.div>
             </AnimatePresence>
           </div>
+
+          {/* Full-Screen Matrix Rain Easter Egg */}
+          <MatrixRain 
+            isOpen={isMatrixOpen} 
+            onClose={() => setIsMatrixOpen(false)} 
+          />
 
           {/* PWA Floating Install Prompt */}
           <InstallPrompt />
