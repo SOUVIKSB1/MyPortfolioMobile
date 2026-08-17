@@ -29,6 +29,171 @@
   color: #94a3b8;
 }
 
+/* Proficiency Aura Radar Section */
+.proficiency-aura-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aura-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aura-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aura-icon {
+  color: var(--orange);
+}
+
+.aura-live-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(255, 95, 0, 0.08);
+  border: 1px solid rgba(255, 95, 0, 0.22);
+  padding: 2.5px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.aura-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: rgba(14, 14, 22, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.aura-domain-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.aura-domain-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.aura-domain-tab {
+  flex: 1;
+  min-width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 6px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.aura-domain-tab.active {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.domain-tab-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.domain-tab-name {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.aura-domain-tab.active .domain-tab-name {
+  color: var(--text-primary);
+}
+
+.aura-spotlight {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+}
+
+.aura-spotlight-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.spotlight-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.spotlight-domain-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.spotlight-level-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid;
+  width: fit-content;
+}
+
+.spotlight-score-large {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.aura-meter-track {
+  width: 100%;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.aura-meter-fill {
+  height: 100%;
+  border-radius: 10px;
+}
+
+.aura-summary-text {
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin: 0;
+}
+
 .sub-header-title {
   font-size: 16px;
   font-weight: 700;

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, BrainCircuit, Cloud, Layers } from "lucide-react";
+import { ChevronRight, BrainCircuit, Cloud, Layers, Cpu, Sparkles, CheckCircle2 } from "lucide-react";
 import TiltCard from "../components/TiltCard";
+import { triggerHaptic } from "../hooks/haptics";
 import "./About.css";
 
 const PRINCIPLES = [
@@ -25,6 +26,45 @@ const PRINCIPLES = [
   }
 ];
 
+const DOMAINS = [
+  {
+    id: "fullstack",
+    name: "Full-Stack & Frontend",
+    score: 95,
+    level: "High-Fidelity Master",
+    color: "#ff5f00",
+    glow: "rgba(255, 95, 0, 0.6)",
+    summary: "React, Next.js, Node.js, Express & responsive mobile design architecture."
+  },
+  {
+    id: "cloud",
+    name: "Cloud, DevOps & K8s",
+    score: 92,
+    level: "Production Orchestrator",
+    color: "#00d2ff",
+    glow: "rgba(0, 210, 255, 0.6)",
+    summary: "GCP, Docker containerization, Kubernetes GKE & automated CI/CD pipelines."
+  },
+  {
+    id: "systems",
+    name: "CS Core & Databases",
+    score: 88,
+    level: "Engineering Specialist",
+    color: "#10b981",
+    glow: "rgba(16, 185, 129, 0.6)",
+    summary: "Java, Python, C++, Data Structures, PostgreSQL & MongoDB database modeling."
+  },
+  {
+    id: "ai",
+    name: "Agentic AI & GenAI",
+    score: 85,
+    level: "Active Builder",
+    color: "#a855f7",
+    glow: "rgba(168, 85, 247, 0.6)",
+    summary: "Vertex AI, Prompt Engineering, Agentic Workflows & Generative AI models."
+  }
+];
+
 const SKILL_CATEGORIES = {
   languages: {
     title: "Languages",
@@ -42,10 +82,15 @@ const SKILL_CATEGORIES = {
 
 export default function About() {
   const [expandedPrinciple, setExpandedPrinciple] = useState(0);
+  const [selectedDomain, setSelectedDomain] = useState("fullstack");
+  const [activeSkillTooltip, setActiveSkillTooltip] = useState(null);
 
   const togglePrinciple = (idx) => {
+    triggerHaptic(10);
     setExpandedPrinciple(expandedPrinciple === idx ? null : idx);
   };
+
+  const activeDomainData = DOMAINS.find((d) => d.id === selectedDomain) || DOMAINS[0];
 
   return (
     <div className="about-page-container">
@@ -65,6 +110,97 @@ export default function About() {
           My passion lies in bridging high-fidelity frontend visual aesthetics with modern, robust cloud environments. I approach engineering with a focus on optimization, containerized scalability, and maintainability.
         </p>
       </TiltCard>
+
+      {/* Interactive Proficiency Aura Section */}
+      <div className="proficiency-aura-section">
+        <div className="aura-header">
+          <div className="aura-title-wrap">
+            <Cpu size={16} className="aura-icon" />
+            <h3 className="sub-header-title" style={{ margin: 0 }}>Proficiency Aura</h3>
+          </div>
+          <span className="aura-live-badge">Live Radar</span>
+        </div>
+
+        <div className="aura-card glass-panel border-orange-glow">
+          {/* Domain Category Selector Tabs */}
+          <div className="aura-domain-tabs">
+            {DOMAINS.map((domain) => {
+              const isSelected = selectedDomain === domain.id;
+              return (
+                <button
+                  key={domain.id}
+                  onClick={() => {
+                    triggerHaptic(12);
+                    setSelectedDomain(domain.id);
+                  }}
+                  className={`aura-domain-tab ${isSelected ? "active" : ""}`}
+                  style={{
+                    color: isSelected ? domain.color : undefined,
+                    borderColor: isSelected ? domain.color : undefined
+                  }}
+                >
+                  <span className="domain-tab-score">{domain.score}%</span>
+                  <span className="domain-tab-name">{domain.name.split(" ")[0]}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Domain Spotlight Display */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeDomainData.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="aura-spotlight"
+            >
+              <div className="aura-spotlight-top">
+                <div className="spotlight-identity">
+                  <h4 className="spotlight-domain-name">{activeDomainData.name}</h4>
+                  <span 
+                    className="spotlight-level-pill"
+                    style={{ 
+                      color: activeDomainData.color,
+                      borderColor: activeDomainData.color,
+                      backgroundColor: `${activeDomainData.color}15`
+                    }}
+                  >
+                    <CheckCircle2 size={11} />
+                    {activeDomainData.level}
+                  </span>
+                </div>
+                <span 
+                  className="spotlight-score-large"
+                  style={{ 
+                    color: activeDomainData.color,
+                    textShadow: `0 0 14px ${activeDomainData.glow}`
+                  }}
+                >
+                  {activeDomainData.score}%
+                </span>
+              </div>
+
+              {/* Animated Progress Meter */}
+              <div className="aura-meter-track">
+                <motion.div 
+                  className="aura-meter-fill"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${activeDomainData.score}%` }}
+                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                  style={{ 
+                    background: `linear-gradient(90deg, ${activeDomainData.color}88, ${activeDomainData.color})`,
+                    boxShadow: `0 0 12px ${activeDomainData.glow}`
+                  }}
+                />
+              </div>
+
+              <p className="aura-summary-text">{activeDomainData.summary}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
 
       {/* Engineering Principles Accordion */}
       <div className="principles-section">
@@ -141,7 +277,11 @@ export default function About() {
                       damping: 10, 
                       delay: catIdx * 0.1 + idx * 0.02 + 0.2 
                     }}
-                    whileTap={{ scale: 0.94 }}
+                    whileTap={{ scale: 0.92 }}
+                    onClick={() => {
+                      triggerHaptic(8);
+                      setActiveSkillTooltip(activeSkillTooltip === skill ? null : skill);
+                    }}
                   >
                     <span className="skill-dot" />
                     {skill}
