@@ -18,26 +18,36 @@ import Contact from "./pages/Contact";
 // Index tabs to calculate slider directions
 const TABS = ["home", "about", "work", "journey", "credentials", "reviews", "contact"];
 
-// Variants for direction-aware page transitions
+// High-fidelity iOS spring page variants with depth and smooth velocity
 const pageVariants = {
   enter: (direction) => ({
     x: direction > 0 ? "100%" : "-100%",
-    opacity: 0
+    opacity: 0,
+    scale: 0.97,
+    filter: "blur(3px)"
   }),
   center: {
     x: 0,
     opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
     transition: {
-      x: { type: "spring", stiffness: 300, damping: 30 },
-      opacity: { duration: 0.2 }
+      x: { type: "spring", stiffness: 320, damping: 30, mass: 0.8 },
+      opacity: { duration: 0.22, ease: "easeOut" },
+      scale: { duration: 0.22, ease: "easeOut" },
+      filter: { duration: 0.2, ease: "easeOut" }
     }
   },
   exit: (direction) => ({
     x: direction > 0 ? "-100%" : "100%",
     opacity: 0,
+    scale: 0.97,
+    filter: "blur(3px)",
     transition: {
-      x: { type: "spring", stiffness: 300, damping: 30 },
-      opacity: { duration: 0.2 }
+      x: { type: "spring", stiffness: 320, damping: 30, mass: 0.8 },
+      opacity: { duration: 0.18, ease: "easeIn" },
+      scale: { duration: 0.18, ease: "easeIn" },
+      filter: { duration: 0.18, ease: "easeIn" }
     }
   })
 };
@@ -51,8 +61,7 @@ export default function App() {
 
   const scrollContainerRef = useRef(null);
   const lastScrollTickRef = useRef(0);
-
-
+  const navRef = useRef(null);
 
   const handleStartExit = () => {
     setIsExitingLoader(true);
@@ -77,7 +86,7 @@ export default function App() {
     const currentIndex = TABS.indexOf(activePage);
     const targetIndex = TABS.indexOf(pageId);
     
-    if (targetIndex !== currentIndex) {
+    if (targetIndex !== currentIndex && targetIndex !== -1) {
       triggerHaptic(12); // light tap haptic feedback (12ms)
       setDirection(targetIndex > currentIndex ? 1 : -1);
       setActivePage(pageId);
@@ -91,11 +100,38 @@ export default function App() {
     }
   };
 
+  // ── Drag & Swipe gesture for full-screen finger slide page changes ───────────
+  const handleDragEnd = (event, info) => {
+    const swipeDistance = info.offset.x;
+    const swipeVelocity = info.velocity.x;
+    const currentIndex = TABS.indexOf(activePage);
+
+    // Swipe left (dragging finger to left) -> go to next tab
+    if ((swipeDistance < -45 || swipeVelocity < -350) && currentIndex < TABS.length - 1) {
+      handleNavigate(TABS[currentIndex + 1]);
+    }
+    // Swipe right (dragging finger to right) -> go to previous tab
+    else if ((swipeDistance > 45 || swipeVelocity > 350) && currentIndex > 0) {
+      handleNavigate(TABS[currentIndex - 1]);
+    }
+  };
+
+  // ── Navbar touch scrub gesture handler (slide finger along tabs) ───────────
+  const handleNavTouch = (e) => {
+    if (!navRef.current) return;
+    const touch = e.touches ? e.touches[0] : e;
+    if (!touch) return;
+    const navRect = navRef.current.getBoundingClientRect();
+    const touchX = touch.clientX - navRect.left;
+    const tabWidth = navRect.width / TABS.length;
+    const targetIndex = Math.max(0, Math.min(TABS.length - 1, Math.floor(touchX / tabWidth)));
+    const targetTab = TABS[targetIndex];
+    if (targetTab && targetTab !== activePage) {
+      handleNavigate(targetTab);
+    }
+  };
+
   // ── Back button / gesture handler ──────────────────────────────────────────
-  // Intercepts the system back button and swipe-back gesture.
-  // • On any non-root tab: navigates to the previously visited tab.
-  // • On the home tab (root): shows "Press back again to exit" toast;
-  //   a second press within 2 s closes the app.
   useBackHandler(activePage, handleNavigate, TABS);
 
   const getNavLabel = (tab) => {
@@ -180,7 +216,17 @@ export default function App() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                style={{ width: "100%", height: "auto", willChange: "transform, opacity" }}
+                drag="x"
+                dragDirectionLock
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.18}
+                onDragEnd={handleDragEnd}
+                style={{ 
+                  width: "100%", 
+                  height: "auto", 
+                  willChange: "transform, opacity",
+                  touchAction: "pan-y" 
+                }}
               >
                 {activePage === "home" && <Home onNavigate={handleNavigate} />}
                 {activePage === "about" && <About />}
@@ -193,28 +239,68 @@ export default function App() {
             </AnimatePresence>
           </div>
 
-          {/* Bottom Native Tab Navigation */}
-          <nav className="bottom-nav">
+          {/* iOS Instagram Style Liquid Glass Navbar */}
+          <nav 
+            ref={navRef}
+            className="bottom-nav"
+            onTouchStart={handleNavTouch}
+            onTouchMove={handleNavTouch}
+          >
+            {/* Top specular highlight shimmer */}
+            <div className="nav-glass-sheen" />
+
             {TABS.map((tab) => {
               const isActive = activePage === tab;
               return (
-                <button
+                <motion.button
                   key={tab}
                   onClick={() => handleNavigate(tab)}
                   className={`nav-item ${isActive ? "active" : ""}`}
                   aria-label={`Navigate to ${tab}`}
+                  whileTap={{ scale: 0.88 }}
                 >
-                  {getNavIcon(tab)}
-                  <span>{getNavLabel(tab)}</span>
-                  
-                  {/* Neon active tab glow line */}
+                  {/* Liquid Glass morphing pill backdrop */}
                   {isActive && (
                     <motion.div 
-                      className="nav-indicator"
-                      layoutId="activeNavLine"
+                      className="liquid-glass-pill"
+                      layoutId="activeLiquidGlassPill"
+                      transition={{
+                        type: "spring",
+                        stiffness: 440,
+                        damping: 32,
+                        mass: 0.65
+                      }}
+                    >
+                      <div className="liquid-glass-glare" />
+                    </motion.div>
+                  )}
+
+                  <motion.div 
+                    className="nav-icon-wrap"
+                    animate={{
+                      scale: isActive ? 1.14 : 1,
+                      y: isActive ? -2 : 0
+                    }}
+                    transition={{ type: "spring", stiffness: 420, damping: 24 }}
+                  >
+                    {getNavIcon(tab)}
+                  </motion.div>
+
+                  <span className="nav-label">{getNavLabel(tab)}</span>
+                  
+                  {/* Liquid neon active glow dot */}
+                  {isActive && (
+                    <motion.span 
+                      className="liquid-glow-dot"
+                      layoutId="activeLiquidDot"
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30
+                      }}
                     />
                   )}
-                </button>
+                </motion.button>
               );
             })}
           </nav>
