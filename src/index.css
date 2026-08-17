@@ -159,6 +159,7 @@ a {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y; /* Explicitly allow vertical scrolling gestures on mobile */
+  perspective: 1200px;
 }
 
 /* Top Sticky Header */

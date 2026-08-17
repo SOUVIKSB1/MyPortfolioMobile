@@ -59,40 +59,45 @@ const TAB_THEMES = {
   }
 };
 
-// MacBook Dock Genie Effect Page Variants
-// Morphs & uncoils directly from the exact tapped navbar dock icon coordinate
+// Authentic macOS MacBook Dock Genie Effect
+// Smooth fluid uncoiling & vacuum suction with iconic Apple quintic deceleration
 const pageVariants = {
   enter: (direction) => ({
-    scaleX: 0.16,
-    scaleY: 0.06,
+    scaleX: 0.08,
+    scaleY: 0.03,
     y: 50,
     opacity: 0,
-    filter: "brightness(1.6) contrast(1.1)"
+    filter: "brightness(1.5)"
   }),
   center: {
     scaleX: 1,
     scaleY: 1,
     y: 0,
     opacity: 1,
-    filter: "brightness(1) contrast(1)",
+    filter: "brightness(1)",
     transition: {
-      type: "spring",
-      stiffness: 440,
-      damping: 26,
-      mass: 0.55,
-      opacity: { duration: 0.18, ease: "easeOut" },
-      filter: { duration: 0.22, ease: "easeOut" }
+      duration: 0.42,
+      ease: [0.16, 1, 0.3, 1], // Classic Apple fluid deceleration
+      scaleX: { duration: 0.44, ease: [0.16, 1, 0.3, 1] },
+      scaleY: { duration: 0.40, ease: [0.16, 1, 0.3, 1] },
+      y: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
+      opacity: { duration: 0.26, ease: "easeOut" },
+      filter: { duration: 0.35, ease: "easeOut" }
     }
   },
   exit: (direction) => ({
-    scaleX: 0.18,
-    scaleY: 0.06,
-    y: 40,
+    scaleX: 0.08,
+    scaleY: 0.03,
+    y: 45,
     opacity: 0,
-    filter: "brightness(1.5)",
+    filter: "brightness(1.4)",
     transition: {
-      duration: 0.16,
-      ease: [0.32, 0, 0.67, 0] // Downward suction curve into dock
+      duration: 0.32,
+      ease: [0.4, 0, 0.2, 1], // Classic Apple fluid acceleration into dock
+      scaleX: { duration: 0.32, ease: [0.4, 0, 0.2, 1] },
+      scaleY: { duration: 0.30, ease: [0.4, 0, 0.2, 1] },
+      y: { duration: 0.32, ease: [0.4, 0, 0.2, 1] },
+      opacity: { duration: 0.22, ease: "easeIn" }
     }
   })
 };
