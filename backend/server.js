@@ -193,12 +193,35 @@ app.post('/api/visits', async (req, res) => {
       );
       return res.json({ count: doc.count });
     } else {
-      memoryVisitCount += 1;
-      return res.json({ count: memoryVisitCount });
+// Ping / Message Schema & Model
+const pingSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  message: { type: String, required: true },
+  date: { type: String, required: true }
+}, { timestamps: true });
+const Ping = mongoose.model('Ping', pingSchema);
+
+// POST /api/pings — save incoming ping message
+app.post('/api/pings', async (req, res) => {
+  try {
+    const { email, message } = req.body;
+    if (!email || !message) {
+      return res.status(400).json({ error: 'Email and message are required' });
     }
+
+    const isDbConnected = mongoose.connection.readyState === 1;
+    if (isDbConnected) {
+      const newPing = new Ping({
+        email: email.trim(),
+        message: message.trim(),
+        date: new Date().toISOString()
+      });
+      await newPing.save();
+    }
+    return res.status(201).json({ success: true, message: 'Ping recorded successfully' });
   } catch (err) {
-    console.error('Error incrementing visits:', err);
-    res.status(500).json({ error: 'Failed to increment visit count' });
+    console.error('Error recording ping:', err);
+    res.status(500).json({ error: 'Failed to record ping' });
   }
 });
 

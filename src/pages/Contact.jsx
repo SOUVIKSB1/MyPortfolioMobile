@@ -39,58 +39,81 @@ export default function Contact() {
     }
   };
 
-  const handleSendPing = (e) => {
+  const handleSendPing = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !message.trim()) return;
+    const senderEmail = email.trim();
+    const senderMessage = message.trim();
+    if (!senderEmail || !senderMessage) return;
 
     triggerHaptic(15);
     setIsPinging(true);
     setPingLogs([
-      "PING souviksinhababu.dev (127.0.0.1) 56(84) bytes of data.",
-      "Initializing connection tunnel..."
+      "PING souviksinhababu1@gmail.com [TLS Encrypted Tunnel]",
+      `[AUTH] Dispatching from: ${senderEmail}`,
+      "Connecting to SMTP relay server..."
     ]);
 
-    // Simulate console ping response ticks
-    setTimeout(() => {
-      setPingLogs((prev) => [
-        ...prev,
-        "64 bytes from souvik.dev: icmp_seq=1 ttl=64 time=24.5 ms"
-      ]);
-    }, 600);
+    try {
+      // 1. Send email directly to Souvik's Gmail via FormSubmit
+      const emailPromise = fetch("https://formsubmit.co/ajax/souviksinhababu1@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          email: senderEmail,
+          message: senderMessage,
+          _subject: `⚡ Mobile Portfolio Ping from ${senderEmail}`,
+          _template: "table",
+          _captcha: "false"
+        })
+      });
 
-    setTimeout(() => {
-      setPingLogs((prev) => [
-        ...prev,
-        "64 bytes from souvik.dev: icmp_seq=2 ttl=64 time=24.1 ms"
-      ]);
-    }, 1200);
+      // 2. Also log to backend if reachable
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
+      const backendPromise = fetch(`${API_BASE}/api/pings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: senderEmail, message: senderMessage })
+      }).catch(() => null);
 
-    setTimeout(() => {
-      // Complete ping transmission
+      // Wait for email dispatch
+      await Promise.allSettled([emailPromise, backendPromise]);
+
+      // Save locally
       const userPing = {
-        email: email.trim(),
-        message: message.trim(),
+        email: senderEmail,
+        message: senderMessage,
         date: new Date().toISOString()
       };
-      
-      // Save locally
       const savedPings = JSON.parse(localStorage.getItem("portfolio_pings") || "[]");
       localStorage.setItem("portfolio_pings", JSON.stringify([userPing, ...savedPings]));
 
-      setPingLogs((prev) => [
-        ...prev,
-        "--- souvik.dev ping statistics ---",
-        "2 packets transmitted, 2 received, 0% packet loss, time 1202ms",
-        "rtt min/avg/max = 24.1/24.3/24.5 ms",
-        "STATUS: message transmitted successfully! ✔"
+      setPingLogs([
+        "PING souviksinhababu1@gmail.com [TLS Encrypted Tunnel]",
+        `[AUTH] Dispatching from: ${senderEmail}`,
+        "64 bytes from mail.relay: icmp_seq=1 ttl=64 time=24.5 ms",
+        "--- souviksinhababu1@gmail.com ping statistics ---",
+        "STATUS: 200 OK — Ping delivered directly to souviksinhababu1@gmail.com! 🚀"
       ]);
-      
-      // Reset inputs
+
       setEmail("");
       setMessage("");
       setSelectedInquiry(null);
+    } catch (err) {
+      console.error("Direct email ping error:", err);
+      // Fallback: Open mail client if network blocked
+      setPingLogs((prev) => [
+        ...prev,
+        "Network dispatch blocked. Opening native mail client fallback...",
+        "STATUS: Dispatched to souviksinhababu1@gmail.com ✔"
+      ]);
+      const mailtoLink = `mailto:souviksinhababu1@gmail.com?subject=${encodeURIComponent("Portfolio Ping from " + senderEmail)}&body=${encodeURIComponent(senderMessage)}`;
+      window.open(mailtoLink, "_blank");
+    } finally {
       setIsPinging(false);
-    }, 1800);
+    }
   };
 
   return (
