@@ -507,22 +507,10 @@ export default function Credentials() {
                   >
                     <div className="cert-item-icon">{cert.icon}</div>
                     <div className="cert-item-details">
-                      <div className="cert-item-header-row">
-                        <span 
-                          className="cert-tier-mini-badge"
-                          style={{
-                            color: tier.accentColor,
-                            borderColor: `${tier.accentColor}40`,
-                            background: `${tier.accentColor}12`
-                          }}
-                        >
-                          {tier.tierLabel}
-                        </span>
-                        <span className="cert-item-date-badge">{cert.date}</span>
-                      </div>
                       <h4 className="cert-item-title">{cert.title}</h4>
                       <span className="cert-item-issuer">{cert.issuer}</span>
                     </div>
+                    <span className="cert-item-date-badge">{cert.date}</span>
                   </div>
                 ))}
               </div>
