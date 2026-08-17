@@ -59,36 +59,35 @@ const TAB_THEMES = {
   }
 };
 
-// High-fidelity iOS spring page variants with depth and smooth velocity
+// High-fidelity snappy iOS spring page variants - blooms directly up from the bottom navbar
 const pageVariants = {
   enter: (direction) => ({
-    x: direction > 0 ? "100%" : "-100%",
+    x: direction > 0 ? 30 : -30,
+    y: 24,
     opacity: 0,
-    scale: 0.97,
-    filter: "blur(3px)"
+    scale: 0.94
   }),
   center: {
     x: 0,
+    y: 0,
     opacity: 1,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
-      x: { type: "spring", stiffness: 320, damping: 30, mass: 0.8 },
-      opacity: { duration: 0.22, ease: "easeOut" },
-      scale: { duration: 0.22, ease: "easeOut" },
-      filter: { duration: 0.2, ease: "easeOut" }
+      type: "spring",
+      stiffness: 500,
+      damping: 30,
+      mass: 0.5,
+      opacity: { duration: 0.16 }
     }
   },
   exit: (direction) => ({
-    x: direction > 0 ? "-100%" : "100%",
+    x: direction > 0 ? -24 : 24,
+    y: 14,
     opacity: 0,
-    scale: 0.97,
-    filter: "blur(3px)",
+    scale: 0.96,
     transition: {
-      x: { type: "spring", stiffness: 320, damping: 30, mass: 0.8 },
-      opacity: { duration: 0.18, ease: "easeIn" },
-      scale: { duration: 0.18, ease: "easeIn" },
-      filter: { duration: 0.18, ease: "easeIn" }
+      duration: 0.12,
+      ease: "easeIn"
     }
   })
 };
@@ -323,7 +322,7 @@ export default function App() {
             onScroll={handleScroll}
             className="page-scroll-container"
           >
-            <AnimatePresence mode="wait" custom={direction}>
+            <AnimatePresence mode="popLayout" custom={direction}>
               <motion.div
                 key={activePage}
                 custom={direction}
@@ -340,7 +339,8 @@ export default function App() {
                   width: "100%", 
                   height: "auto", 
                   willChange: "transform, opacity",
-                  touchAction: "pan-y"
+                  touchAction: "pan-y",
+                  transformOrigin: "bottom center"
                 }}
               >
                 {activePage === "home" && (

@@ -92,10 +92,10 @@ export default function StartAnimation({ onStartExit, onComplete }) {
     progressRef.current = progress;
   }, [progress]);
 
-  // Simulated progress loader - ultra fast & snappy boot sequence
+  // Simulated progress loader - ultra fast 450ms instant boot sequence
   useEffect(() => {
     let start = null;
-    const duration = 950; // Ultra snappy 950ms boot sequence
+    const duration = 450; // Lightning fast 450ms boot
 
     const updateProgress = (timestamp) => {
       if (!start) start = timestamp;
@@ -107,21 +107,21 @@ export default function StartAnimation({ onStartExit, onComplete }) {
       if (progressValue < 100) {
         requestAnimationFrame(updateProgress);
       } else {
-        // Step 1: Quick fade out content (150ms)
+        // Step 1: Instant fade out of loader content (50ms)
         const timer1 = setTimeout(() => {
           setIsFadingContent(true);
-        }, 120);
+        }, 50);
 
-        // Step 2: Immediate exit transition & reveal main portfolio
+        // Step 2: Immediate exit transition & reveal main portfolio (120ms)
         const timer2 = setTimeout(() => {
           setIsExiting(true);
           if (onStartExitRef.current) onStartExitRef.current();
-        }, 280);
+        }, 120);
 
-        // Step 3: Unmount loader cleanly
+        // Step 3: Unmount loader cleanly (350ms)
         const timer3 = setTimeout(() => {
           if (onCompleteRef.current) onCompleteRef.current();
-        }, 750);
+        }, 350);
 
         return () => {
           clearTimeout(timer1);
@@ -362,7 +362,7 @@ export default function StartAnimation({ onStartExit, onComplete }) {
             className="intro-logo-bracket"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           />
 
           {/* SOUVIK Text */}
@@ -384,8 +384,8 @@ export default function StartAnimation({ onStartExit, onComplete }) {
               textShadow: "0 0 10px rgba(255, 95, 0, 0.6)"
             }}
             transition={{ 
-              stroke: { duration: 0.6, ease: "easeOut" },
-              fill: { delay: 0.3, duration: 0.4 },
+              stroke: { duration: 0.35, ease: "easeOut" },
+              fill: { delay: 0.15, duration: 0.2 },
             }}
           >
             SOUVIK
@@ -401,7 +401,7 @@ export default function StartAnimation({ onStartExit, onComplete }) {
             className="intro-logo-bracket"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
+            transition={{ delay: 0.15, duration: 0.25, ease: "easeOut" }}
           />
           <motion.circle
             cx="205"
@@ -411,7 +411,7 @@ export default function StartAnimation({ onStartExit, onComplete }) {
             className="intro-logo-dot"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.2 }}
+            transition={{ delay: 0.25, duration: 0.15 }}
           />
 
           {/* > right bracket */}
@@ -425,7 +425,7 @@ export default function StartAnimation({ onStartExit, onComplete }) {
             className="intro-logo-bracket"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           />
         </svg>
 

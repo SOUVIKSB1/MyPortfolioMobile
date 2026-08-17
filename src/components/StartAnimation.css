@@ -11,8 +11,8 @@
   font-family: 'JetBrains Mono', 'Consolas', Courier, monospace;
   color: var(--orange);
   
-  /* Smooth opacity fade out transition */
-  transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Instant opacity fade out transition */
+  transition: opacity 0.22s cubic-bezier(0.25, 1, 0.5, 1);
   opacity: 1;
   will-change: opacity;
 }
