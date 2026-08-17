@@ -8,12 +8,12 @@ import { CERTIFICATIONS } from "./Credentials";
 import "./Home.css";
 
 const COMMANDS = [
-  "docker build -t portfolio:v2 .",
-  "gcloud deploy --gke-prod",
-  "npm run build:prod",
-  "kubectl get pods -w",
-  "ping google.com -c 1",
-  "git push origin main --force"
+  "docker build -t app .",
+  "gcloud deploy --gke",
+  "npm run build",
+  "kubectl get pods",
+  "ping cloud.google.com",
+  "git push origin main"
 ];
 
 function CounterTicker({ value, duration = 1200 }) {

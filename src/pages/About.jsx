@@ -29,6 +29,7 @@ const PRINCIPLES = [
 const DOMAINS = [
   {
     id: "fullstack",
+    tabLabel: "Full-Stack",
     name: "Full-Stack & Frontend",
     score: 95,
     level: "High-Fidelity Master",
@@ -38,6 +39,7 @@ const DOMAINS = [
   },
   {
     id: "cloud",
+    tabLabel: "Cloud",
     name: "Cloud, DevOps & K8s",
     score: 92,
     level: "Production Orchestrator",
@@ -47,6 +49,7 @@ const DOMAINS = [
   },
   {
     id: "systems",
+    tabLabel: "Core CS",
     name: "CS Core & Databases",
     score: 88,
     level: "Engineering Specialist",
@@ -56,6 +59,7 @@ const DOMAINS = [
   },
   {
     id: "ai",
+    tabLabel: "AI & GenAI",
     name: "Agentic AI & GenAI",
     score: 85,
     level: "Active Builder",
@@ -146,7 +150,7 @@ export default function About() {
                   }}
                 >
                   <span className="domain-tab-score">{domain.score}%</span>
-                  <span className="domain-tab-name">{domain.name.split(" ")[0]}</span>
+                  <span className="domain-tab-name">{domain.tabLabel || domain.name.split(" ")[0]}</span>
                 </button>
               );
             })}

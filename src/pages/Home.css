@@ -197,11 +197,18 @@
   margin-top: 4px;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: 22px;
+  line-height: 22px;
 }
 
 .c-type-text {
   color: var(--blue);
   margin-left: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .terminal-executed-block {
