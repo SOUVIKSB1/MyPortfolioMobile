@@ -8,6 +8,20 @@ import "./Work.css";
 
 export const PROJECTS = [
   {
+    id: "datalens-ai",
+    icon: "🧠",
+    title: "DataLens AI",
+    tagline: "Grounded intelligence & automated data science platform with predictive AutoML.",
+    description: "An enterprise-grade grounded AI and automated data science platform. Delivers deterministic EDA statistical profiling, automated dataset cleaning pipelines, no-code AutoML with feature importance rankings, zero-trust PII anonymization, executive resume scoring with Google XYZ rewrites, and conversational Gemini analyst with verifiable evidence citations.",
+    tech: ["React", "Gemini 3.7", "AutoML", "Python", "Node.js"],
+    category: "ai",
+    categoryLabel: "AI / GenAI",
+    github: "https://github.com/SOUVIKSB1/DataLens-AI",
+    live: "https://datalensai.onrender.com/",
+    role: "Full-Stack AI Platform",
+    outcomes: "Automates exploratory data analysis, dataset health scoring, and predictive modeling with zero-trust PII sanitization and verifiable mathematical citations."
+  },
+  {
     id: "clinic-os",
     icon: "🏥",
     title: "Clinic OS",
