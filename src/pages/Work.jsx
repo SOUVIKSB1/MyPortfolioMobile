@@ -16,7 +16,7 @@ export const PROJECTS = [
     tech: ["React", "Gemini 3.7", "AutoML", "Python", "Node.js"],
     category: "ai",
     categoryLabel: "AI / GenAI",
-    github: "https://github.com/SOUVIKSB1/DataLens-AI",
+    github: "https://github.com/SOUVIKSB1/DataLensAI",
     live: "https://datalensai.onrender.com/",
     role: "Full-Stack AI Platform",
     outcomes: "Automates exploratory data analysis, dataset health scoring, and predictive modeling with zero-trust PII sanitization and verifiable mathematical citations."
