@@ -22,8 +22,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-
-// Define Schema & Model
+// Define Review Schema & Model
 const reviewSchema = new mongoose.Schema({
   name: { type: String, required: true },
   role: { type: String, default: 'Visitor' },
@@ -41,10 +40,16 @@ const visitorSchema = new mongoose.Schema({
 });
 const Visitor = mongoose.model('Visitor', visitorSchema);
 
-// Memory fallback for visit count
-let memoryVisitCount = 0;
+// Ping / Contact Schema & Model
+const pingSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  message: { type: String, required: true },
+  date: { type: String, required: true }
+}, { timestamps: true });
+const Ping = mongoose.model('Ping', pingSchema);
 
-// Memory database fallback if MongoDB URI is not provided or fails to connect
+// Memory fallback for visit count & reviews
+let memoryVisitCount = 0;
 let memoryReviews = [
   {
     name: "Rajarshi Chatterjee",
@@ -96,7 +101,9 @@ if (!MONGODB_URI) {
     });
 }
 
-// API Endpoints
+// ── API Endpoints ──────────────────────────────────────────────────────────
+
+// GET /api/reviews — fetch all reviews
 app.get('/api/reviews', async (req, res) => {
   try {
     const isDbConnected = mongoose.connection.readyState === 1;
@@ -113,6 +120,7 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
+// POST /api/reviews — submit a new review
 app.post('/api/reviews', async (req, res) => {
   const { name, role, rating, comment, date } = req.body;
 
@@ -136,7 +144,6 @@ app.post('/api/reviews', async (req, res) => {
       const savedReview = await newReview.save();
       return res.status(201).json(savedReview);
     } else {
-      // Add to local memoryReviews
       memoryReviews.unshift(reviewData);
       return res.status(201).json(reviewData);
     }
@@ -162,8 +169,6 @@ app.get('/api/reviews/count', async (req, res) => {
   }
 });
 
-// --- Visitor Counter Endpoints ---
-
 // GET /api/visits — return current visit count
 app.get('/api/visits', async (req, res) => {
   try {
@@ -181,7 +186,7 @@ app.get('/api/visits', async (req, res) => {
   }
 });
 
-// POST /api/visits — increment visit count by 1 and return new total
+// POST /api/visits — increment visit count by 1
 app.post('/api/visits', async (req, res) => {
   try {
     const isDbConnected = mongoose.connection.readyState === 1;
@@ -193,13 +198,14 @@ app.post('/api/visits', async (req, res) => {
       );
       return res.json({ count: doc.count });
     } else {
-// Ping / Message Schema & Model
-const pingSchema = new mongoose.Schema({
-  email: { type: String, required: true },
-  message: { type: String, required: true },
-  date: { type: String, required: true }
-}, { timestamps: true });
-const Ping = mongoose.model('Ping', pingSchema);
+      memoryVisitCount++;
+      return res.json({ count: memoryVisitCount });
+    }
+  } catch (err) {
+    console.error('Error updating visits:', err);
+    res.status(500).json({ error: 'Failed to update visit count' });
+  }
+});
 
 // POST /api/pings — save incoming ping message
 app.post('/api/pings', async (req, res) => {
@@ -231,11 +237,11 @@ const indexHtmlPath = path.join(distPath, 'index.html');
 
 if (fs.existsSync(indexHtmlPath)) {
   app.use(express.static(distPath));
-  app.get('/{*splat}', (req, res) => {
+  app.get('*', (req, res) => {
     res.sendFile(indexHtmlPath);
   });
 } else {
-  app.get('/{*splat}', (req, res) => {
+  app.get('*', (req, res) => {
     res.status(200).json({
       message: "Portfolio Mobile API is running.",
       status: "online",
