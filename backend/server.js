@@ -237,11 +237,11 @@ const indexHtmlPath = path.join(distPath, 'index.html');
 
 if (fs.existsSync(indexHtmlPath)) {
   app.use(express.static(distPath));
-  app.get('*', (req, res) => {
+  app.use((req, res) => {
     res.sendFile(indexHtmlPath);
   });
 } else {
-  app.get('*', (req, res) => {
+  app.use((req, res) => {
     res.status(200).json({
       message: "Portfolio Mobile API is running.",
       status: "online",
