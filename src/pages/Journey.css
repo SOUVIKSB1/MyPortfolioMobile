@@ -278,3 +278,32 @@
   color: var(--blue);
   flex-shrink: 0;
 }
+
+.ach-card-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ach-link-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #ff9d42;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.22);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.ach-link-pill-btn:active {
+  background: rgba(249, 115, 22, 0.2);
+  transform: scale(0.96);
+}

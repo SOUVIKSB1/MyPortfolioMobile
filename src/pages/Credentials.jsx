@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { ExternalLink, Copy, Check, ShieldCheck, Search, X, Sparkles, Layers } from "lucide-react";
+import { SiCredly, SiGooglecloud } from "react-icons/si";
 import BottomSheet from "../components/BottomSheet";
 import { triggerHaptic } from "../hooks/haptics";
 import "./Credentials.css";
@@ -17,6 +18,14 @@ export const CERT_TIERS = [
     gradient: "linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.02) 100%)",
     borderColor: "rgba(245, 158, 11, 0.25)",
     certs: [
+      {
+        title: "Google Cloud Arcade Champion 2025 (Diamond League)",
+        issuer: "Google Cloud Skills Boost",
+        date: "2025",
+        id: "GCP-ARCADE-2025",
+        link: "/certificates/google_cloud_arcade_champion_2025.jpg",
+        icon: "🏆"
+      },
       {
         title: "Azure AI Fundamentals (AI-900)",
         issuer: "Microsoft Certified",
@@ -379,8 +388,122 @@ export default function Credentials() {
         </div>
         <h2 className="section-title">Licenses & Certifications</h2>
         <p className="credentials-subtitle">
-          29 credentials structured into 5 market-aligned engineering tiers.
+          30 credentials structured into 5 market-aligned engineering tiers.
         </p>
+      </div>
+
+      {/* ── VERIFIED PROFILES & PUBLIC HUBS ── */}
+      <div className="public-portals-container">
+        {/* Google Cloud Skills Boost Card */}
+        <div className="portal-card google-portal glass-panel">
+          <div className="portal-card-top">
+            <div className="portal-icon google">
+              <SiGooglecloud size={20} />
+            </div>
+            <div className="portal-meta">
+              <span className="portal-tag">Google Cloud Skills Boost</span>
+              <h4 className="portal-title">Arcade Champion 2025</h4>
+            </div>
+            <span className="portal-badge diamond">Diamond League</span>
+          </div>
+          <p className="portal-desc">
+            107+ Skill Badges • 400+ practiced labs (423 completed) • 72+ courses across Vertex AI &amp; Kubernetes.
+          </p>
+          <div 
+            className="portal-links-scroll"
+            onPointerDownCapture={(e) => e.stopPropagation()}
+            onTouchStartCapture={(e) => e.stopPropagation()}
+            onTouchMoveCapture={(e) => e.stopPropagation()}
+            onTouchEndCapture={(e) => e.stopPropagation()}
+          >
+            <a
+              href="https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc"
+              target="_blank"
+              rel="noreferrer"
+              className="portal-link-btn primary"
+              onClick={() => triggerHaptic(10)}
+            >
+              <span>Skills Profile 1</span>
+              <ExternalLink size={11} />
+            </a>
+            <a
+              href="https://www.skills.google/public_profiles/16ea7d05-4436-4228-b43e-7f2bb2bfb07e"
+              target="_blank"
+              rel="noreferrer"
+              className="portal-link-btn secondary"
+              onClick={() => triggerHaptic(10)}
+            >
+              <span>Skills Profile 2</span>
+              <ExternalLink size={11} />
+            </a>
+            <button
+              type="button"
+              className="portal-link-btn accent"
+              onClick={() => {
+                triggerHaptic(12);
+                setSelectedCert({
+                  title: "Google Cloud Arcade Champion 2025",
+                  issuer: "Google Cloud Skills Boost",
+                  date: "2025",
+                  id: "GCP-ARCADE-2025",
+                  link: "/certificates/google_cloud_arcade_champion_2025.jpg",
+                  icon: "🏆",
+                  tierLabel: "Tier 1",
+                  tierTitle: "Global Flagships & Academic",
+                  tierColor: "#f59e0b"
+                });
+              }}
+            >
+              <span>View Award</span>
+              <Sparkles size={11} />
+            </button>
+          </div>
+        </div>
+
+        {/* Credly Verified Credentials Card */}
+        <div className="portal-card credly-portal glass-panel">
+          <div className="portal-card-top">
+            <div className="portal-icon credly">
+              <SiCredly size={20} />
+            </div>
+            <div className="portal-meta">
+              <span className="portal-tag">Credly by Pearson</span>
+              <h4 className="portal-title">Verified Digital Badges</h4>
+            </div>
+            <span className="portal-badge verified">Verified Earner</span>
+          </div>
+          <p className="portal-desc">
+            Authenticated enterprise badges across Microsoft Azure AI, AWS Academy, and IBM SkillsBuild.
+          </p>
+          <div 
+            className="portal-links-scroll"
+            onPointerDownCapture={(e) => e.stopPropagation()}
+            onTouchStartCapture={(e) => e.stopPropagation()}
+            onTouchMoveCapture={(e) => e.stopPropagation()}
+            onTouchEndCapture={(e) => e.stopPropagation()}
+          >
+            <a
+              href="https://www.credly.com/users/souvik-sinhababu.ccd0d18c/badges/credly"
+              target="_blank"
+              rel="noreferrer"
+              className="portal-link-btn primary"
+              onClick={() => triggerHaptic(10)}
+            >
+              <span>Badges Transcript</span>
+              <ExternalLink size={11} />
+            </a>
+            <a
+              href="https://www.credly.com/users/souvik-sinhababu"
+              target="_blank"
+              rel="noreferrer"
+              className="portal-link-btn secondary"
+              onClick={() => triggerHaptic(10)}
+            >
+              <span>Credly Profile</span>
+              <ExternalLink size={11} />
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* Instant Search Bar */}
@@ -584,6 +707,17 @@ export default function Credentials() {
               </div>
             </div>
 
+            {/* Embedded image preview if available */}
+            {selectedCert.link && (selectedCert.link.endsWith(".jpg") || selectedCert.link.endsWith(".png") || selectedCert.link.endsWith(".jpeg")) && (
+              <div className="cert-preview-img-wrap" style={{ margin: "14px 0 6px 0", textAlign: "center" }}>
+                <img
+                  src={selectedCert.link}
+                  alt={selectedCert.title}
+                  style={{ width: "100%", maxHeight: "240px", objectFit: "contain", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.12)" }}
+                />
+              </div>
+            )}
+
             {/* Direct Verification Action Buttons */}
             <div className="cert-drawer-actions">
               <a
@@ -594,7 +728,7 @@ export default function Credentials() {
                 onClick={() => triggerHaptic(12)}
               >
                 <ExternalLink size={15} />
-                <span>Verify Credential on Portal</span>
+                <span>{selectedCert.link.endsWith(".jpg") ? "View Full Award" : "Verify Credential on Portal"}</span>
               </a>
             </div>
           </div>

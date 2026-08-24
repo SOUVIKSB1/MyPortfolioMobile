@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Download, Mail, ExternalLink } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram, FaEye, FaStar } from "react-icons/fa";
+import { SiCredly, SiGooglecloud } from "react-icons/si";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
 import { PROJECTS } from "./Work";
@@ -372,6 +373,40 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
         </div>
 
         <div className="live-metrics-grid">
+          {/* Google Skills Live */}
+          <a 
+            href="https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box google-skills"
+          >
+            <div className="metric-icon google">
+              <SiGooglecloud size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Google Skills</span>
+              <h4 className="metric-value">107+ Badges</h4>
+            </div>
+            <div className="pulse-glow blue" />
+          </a>
+
+          {/* Credly Live */}
+          <a 
+            href="https://www.credly.com/users/souvik-sinhababu.ccd0d18c/badges/credly" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box credly"
+          >
+            <div className="metric-icon credly-icon">
+              <SiCredly size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Credly Badges</span>
+              <h4 className="metric-value">Verified</h4>
+            </div>
+            <div className="pulse-glow orange" />
+          </a>
+
           {/* GitHub Repos Live */}
           <a 
             href="https://github.com/SOUVIKSB1" 

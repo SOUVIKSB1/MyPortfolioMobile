@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Mail, Phone, ExternalLink, Send, ShieldCheck, Zap } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { SiCredly, SiGooglecloud } from "react-icons/si";
 import { triggerHaptic } from "../hooks/haptics";
 import "./Contact.css";
 
@@ -228,6 +229,26 @@ export default function Contact() {
       <div className="socials-grid-card glass-panel">
         <h4 className="socials-title">Find Me Online</h4>
         <div className="social-links-row">
+          <a 
+            href="https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="social-btn google-skills"
+            aria-label="Google Cloud Skills Boost Profile"
+          >
+            <SiGooglecloud size={20} />
+            <span>Google Skills</span>
+          </a>
+          <a 
+            href="https://www.credly.com/users/souvik-sinhababu.ccd0d18c/badges/credly" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="social-btn credly"
+            aria-label="Credly Verified Badges"
+          >
+            <SiCredly size={20} />
+            <span>Credly</span>
+          </a>
           <a 
             href="https://github.com/SOUVIKSB1" 
             target="_blank" 

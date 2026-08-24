@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, GraduationCap, Calendar, Tag, BrickWallFireIcon, BookOpenCheck } from "lucide-react";
+import { Award, GraduationCap, Calendar, Tag, BrickWallFireIcon, BookOpenCheck, ExternalLink } from "lucide-react";
 import { triggerHaptic } from "../hooks/haptics";
 import "./Journey.css";
 
@@ -50,13 +50,30 @@ const ACHIEVEMENTS = [
     tags: ["Cloud Native", "Leadership", "Kubernetes", "GKE"]
   },
   {
-    title: "Google Cloud Arcade Champion",
-    organization: "Google Cloud Program",
-    date: "DEC 2024",
-    badge: "Cloud Champion",
+    title: "Google Cloud Arcade Champion 2025",
+    organization: "Google Cloud & Google Skills Program",
+    date: "2024 - 2025",
+    badge: "Diamond League",
     icon: "☁️",
-    description: "Achieved Champion tier after completing 140+ skill badges on Kubernetes, cloud network security, BigQuery data analytics, and Vertex AI models.",
-    tags: ["GCP", "Kubernetes", "Cloud Security", "Vertex AI"]
+    description: "Earned Arcade Champion 2025 & Diamond League with 1,00,000+ points. Completed 107+ Skill Badges, 400+ practiced hands-on labs (423 completed), 72+ courses, and 28 arcade games across Kubernetes, Vertex AI, and Cloud Architecture.",
+    tags: ["Arcade Champion 2025", "Diamond League (100k+ Pts)", "107+ Badges", "400+ Labs", "Vertex AI", "GCP"],
+    links: [
+      { label: "Skills Profile 1", url: "https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc" },
+      { label: "Skills Profile 2", url: "https://www.skills.google/public_profiles/16ea7d05-4436-4228-b43e-7f2bb2bfb07e" }
+    ]
+  },
+  {
+    title: "Credly Verified Digital Credentials",
+    organization: "Credly by Pearson",
+    date: "2024 - Present",
+    badge: "Verified Earner",
+    icon: "🎖️",
+    description: "Official transcript of authenticated professional badges and certificates from Microsoft, AWS Academy, IBM SkillsBuild, and DeepLearning.AI verified on Credly.",
+    tags: ["Credly", "Verified Badges", "Microsoft", "AWS", "IBM", "DeepLearning.AI"],
+    links: [
+      { label: "Badges Transcript", url: "https://www.credly.com/users/souvik-sinhababu.ccd0d18c/badges/credly" },
+      { label: "Credly Profile", url: "https://www.credly.com/users/souvik-sinhababu" }
+    ]
   },
   {
     title: "DSA & Problem Solving",
@@ -267,6 +284,30 @@ export default function Journey() {
                       </span>
                     ))}
                   </div>
+
+                  {ach.links && ach.links.length > 0 && (
+                    <div 
+                      className="ach-card-links-row"
+                      onPointerDownCapture={(e) => e.stopPropagation()}
+                      onTouchStartCapture={(e) => e.stopPropagation()}
+                      onTouchMoveCapture={(e) => e.stopPropagation()}
+                      onTouchEndCapture={(e) => e.stopPropagation()}
+                    >
+                      {ach.links.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="ach-link-pill-btn"
+                          onClick={() => triggerHaptic(10)}
+                        >
+                          <span>{link.label}</span>
+                          <ExternalLink size={11} />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </motion.div>
