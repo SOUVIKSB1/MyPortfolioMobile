@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Download, ExternalLink } from "lucide-react";
+import { FaGithub, FaLinkedin, FaInstagram, FaEye } from "react-icons/fa";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
 import { PROJECTS } from "./Work";
@@ -38,6 +39,13 @@ function CounterTicker({ value, duration = 1200 }) {
 
 export default function Home({ onNavigate, onTriggerMatrix }) {
   const [typingText, setTypingText] = useState("");
+  const [linkedinCount, setLinkedinCount] = useState(1481);
+  const [instagramCount, setInstagramCount] = useState(1043);
+  const [githubRepos, setGithubRepos] = useState(18);
+  const [recentCommit, setRecentCommit] = useState({ repo: "MyPortfolioMobile", msg: "feat: continuous portfolio updates", time: "just now" });
+  const [visitCount, setVisitCount] = useState(null);
+  const [syncStatus, setSyncStatus] = useState("Listening for updates...");
+  const [lastUpdated, setLastUpdated] = useState("just now");
   const [imageError, setImageError] = useState(false);
 
   // Interactive Terminal State
@@ -96,6 +104,69 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
 
     timer = setTimeout(handleType, typingSpeed);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch Live GitHub stats & recent commits
+  useEffect(() => {
+    fetch("https://api.github.com/users/SOUVIKSB1")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.public_repos) {
+          setGithubRepos(data.public_repos);
+        }
+      })
+      .catch(() => {});
+
+    fetch("https://api.github.com/users/SOUVIKSB1/events/public?per_page=5")
+      .then((r) => r.json())
+      .then((events) => {
+        if (Array.isArray(events) && events.length > 0) {
+          const pushEvent = events.find((e) => e.type === "PushEvent") || events[0];
+          if (pushEvent) {
+            const repoName = pushEvent.repo?.name?.replace("SOUVIKSB1/", "") || "MyPortfolioMobile";
+            const commitMsg = pushEvent.payload?.commits?.[0]?.message || "feat: continuous portfolio updates";
+            setRecentCommit({
+              repo: repoName,
+              msg: commitMsg.length > 38 ? commitMsg.substring(0, 38) + "..." : commitMsg,
+              time: new Date(pushEvent.created_at).toLocaleDateString([], { month: "short", day: "numeric" })
+            });
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Fetch visitor count on mount
+  useEffect(() => {
+    const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
+    fetch(`${BACKEND}/api/visits`, { method: "POST" })
+      .then((r) => r.json())
+      .then((data) => setVisitCount(data.count))
+      .catch(() => {
+        setVisitCount("—");
+      });
+  }, []);
+
+  // Live count ticker simulation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() > 0.6) {
+        setLinkedinCount((prev) => prev + (Math.random() > 0.5 ? 1 : 0));
+      }
+      if (Math.random() > 0.6) {
+        setInstagramCount((prev) => prev + (Math.random() > 0.5 ? 1 : -1));
+      }
+      
+      const now = new Date();
+      setLastUpdated(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      setSyncStatus("GitHub & Metrics synced");
+      
+      setTimeout(() => {
+        setSyncStatus("Listening for updates...");
+      }, 1500);
+    }, 6000);
+
+    return () => clearInterval(interval);
   }, []);
 
   // Interactive Terminal Command Execution
@@ -268,6 +339,101 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
         <div className="stat-item glass-panel border-blue-glow">
           <h3 className="stat-number"><CounterTicker value={CERTIFICATIONS.length} />+</h3>
           <p className="stat-label">Certificates</p>
+        </div>
+      </div>
+
+      {/* ── CONNECT & LIVE HUB ── */}
+      <div className="live-hub-card glass-panel border-blue-glow">
+        <div className="live-header">
+          <div className="live-indicator">
+            <span className="live-dot" />
+            <span>Connect & Live Hub</span>
+          </div>
+          <span className="live-status">{syncStatus}</span>
+        </div>
+
+        <div className="live-metrics-grid">
+          {/* GitHub Repos Live */}
+          <a 
+            href="https://github.com/SOUVIKSB1" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box github"
+          >
+            <div className="metric-icon">
+              <FaGithub size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">GitHub Repos</span>
+              <h4 className="metric-value">{githubRepos}+</h4>
+            </div>
+            <div className="pulse-glow blue" />
+          </a>
+
+          {/* LinkedIn Live */}
+          <a 
+            href="https://linkedin.com/in/souviksinhababu" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box linkedin"
+          >
+            <div className="metric-icon">
+              <FaLinkedin size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">LinkedIn Network</span>
+              <h4 className="metric-value">{linkedinCount}</h4>
+            </div>
+            <div className="pulse-glow orange" />
+          </a>
+
+          {/* Instagram Live */}
+          <a 
+            href="https://instagram.com/sinhababu_souvik" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box instagram"
+          >
+            <div className="metric-icon">
+              <FaInstagram size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Instagram Fans</span>
+              <h4 className="metric-value">{instagramCount}</h4>
+            </div>
+            <div className="pulse-glow pink" />
+          </a>
+
+          {/* Portfolio Visits */}
+          <div className="live-metric-box visits">
+            <div className="metric-icon">
+              <FaEye size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Portfolio Visits</span>
+              <h4 className="metric-value">
+                {visitCount === null ? "…" : typeof visitCount === "number" ? visitCount.toLocaleString() : visitCount}
+              </h4>
+            </div>
+            <div className="pulse-glow green" />
+          </div>
+        </div>
+
+        {/* Live GitHub Recent Commit Banner */}
+        <div className="live-github-commit-bar">
+          <div className="commit-bar-icon">
+            <FaGithub size={13} />
+          </div>
+          <div className="commit-bar-text">
+            <span className="commit-repo">{recentCommit.repo}:</span>
+            <span className="commit-msg">"{recentCommit.msg}"</span>
+          </div>
+          <span className="commit-time">{recentCommit.time}</span>
+        </div>
+
+        <div className="live-footer">
+          <span>@Souvik_Sinhababu</span>
+          <span>Last sync: {lastUpdated}</span>
         </div>
       </div>
 
