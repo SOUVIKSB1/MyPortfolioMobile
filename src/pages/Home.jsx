@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Download, Mail, ExternalLink } from "lucide-react";
-import { FaGithub, FaLinkedin, FaInstagram, FaEye, FaStar } from "react-icons/fa";
-import { SiCredly, SiGooglecloud } from "react-icons/si";
+import { Download, ExternalLink } from "lucide-react";
 import profileImg from "../assets/hero.png";
 import TiltCard from "../components/TiltCard";
 import { PROJECTS } from "./Work";
@@ -40,20 +38,11 @@ function CounterTicker({ value, duration = 1200 }) {
 
 export default function Home({ onNavigate, onTriggerMatrix }) {
   const [typingText, setTypingText] = useState("");
-  const [linkedinCount, setLinkedinCount] = useState(1481);
-  const [instagramCount, setInstagramCount] = useState(1043);
-  const [githubRepos, setGithubRepos] = useState(18);
-  const [recentCommit, setRecentCommit] = useState({ repo: "MyPortfolioMobile", msg: "style: elevate gaps, card padding, typography", time: "just now" });
-  const [visitCount, setVisitCount] = useState(null);
-  const [reviewCount, setReviewCount] = useState(null);
-  const [syncStatus, setSyncStatus] = useState("Listening for updates...");
-  const [lastUpdated, setLastUpdated] = useState("just now");
   const [imageError, setImageError] = useState(false);
 
   // Interactive Terminal State
   const [terminalLogs, setTerminalLogs] = useState([]);
   const [customInput, setCustomInput] = useState("");
-  const terminalInputRef = useRef(null);
   const lastAvatarTapRef = useRef(0);
 
   const handleAvatarDoubleTap = () => {
@@ -109,78 +98,6 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Fetch Live GitHub stats & recent commits
-  useEffect(() => {
-    fetch("https://api.github.com/users/SOUVIKSB1")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.public_repos) {
-          setGithubRepos(data.public_repos);
-        }
-      })
-      .catch(() => {});
-
-    fetch("https://api.github.com/users/SOUVIKSB1/events/public?per_page=5")
-      .then((r) => r.json())
-      .then((events) => {
-        if (Array.isArray(events) && events.length > 0) {
-          const pushEvent = events.find((e) => e.type === "PushEvent") || events[0];
-          if (pushEvent) {
-            const repoName = pushEvent.repo?.name?.replace("SOUVIKSB1/", "") || "MyPortfolioMobile";
-            const commitMsg = pushEvent.payload?.commits?.[0]?.message || "feat: continuous portfolio updates";
-            setRecentCommit({
-              repo: repoName,
-              msg: commitMsg.length > 38 ? commitMsg.substring(0, 38) + "..." : commitMsg,
-              time: new Date(pushEvent.created_at).toLocaleDateString([], { month: "short", day: "numeric" })
-            });
-          }
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  // Fetch & increment visitor count on mount
-  useEffect(() => {
-    const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
-    fetch(`${BACKEND}/api/visits`, { method: "POST" })
-      .then((r) => r.json())
-      .then((data) => setVisitCount(data.count))
-      .catch(() => {
-        setVisitCount("—");
-      });
-  }, []);
-
-  // Fetch total review count on mount
-  useEffect(() => {
-    const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
-    fetch(`${BACKEND}/api/reviews/count`)
-      .then((r) => r.json())
-      .then((data) => setReviewCount(data.count))
-      .catch(() => setReviewCount("—"));
-  }, []);
-
-  // Live count randomized updates and clock ticker
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (Math.random() > 0.6) {
-        setLinkedinCount((prev) => prev + (Math.random() > 0.5 ? 1 : 0));
-      }
-      if (Math.random() > 0.6) {
-        setInstagramCount((prev) => prev + (Math.random() > 0.5 ? 1 : -1));
-      }
-      
-      const now = new Date();
-      setLastUpdated(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-      setSyncStatus("GitHub & Metrics synced");
-      
-      setTimeout(() => {
-        setSyncStatus("Listening for updates...");
-      }, 1500);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   // Interactive Terminal Command Execution
   const executeTerminalCommand = (cmd) => {
     const cleanCmd = cmd.trim().toLowerCase();
@@ -220,21 +137,13 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
     }
 
     setTerminalLogs((prev) => [
-      ...prev.slice(-3), // keep last 4 outputs for clean mobile space
+      ...prev.slice(-3),
       { cmd, output, isAction }
     ]);
   };
 
   const handleCommandChip = (cmd) => {
     executeTerminalCommand(cmd);
-  };
-
-  const handleCustomSubmit = (e) => {
-    e.preventDefault();
-    if (customInput) {
-      executeTerminalCommand(customInput);
-      setCustomInput("");
-    }
   };
 
   return (
@@ -359,135 +268,6 @@ export default function Home({ onNavigate, onTriggerMatrix }) {
         <div className="stat-item glass-panel border-blue-glow">
           <h3 className="stat-number"><CounterTicker value={CERTIFICATIONS.length} />+</h3>
           <p className="stat-label">Certificates</p>
-        </div>
-      </div>
-
-      {/* Live Social & GitHub Sync Hub */}
-      <div className="live-hub-card glass-panel border-blue-glow">
-        <div className="live-header">
-          <div className="live-indicator">
-            <span className="live-dot" />
-            <span>Connect & Live Hub</span>
-          </div>
-          <span className="live-status">{syncStatus}</span>
-        </div>
-
-        <div className="live-metrics-grid">
-          {/* Google Skills Live */}
-          <a 
-            href="https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="live-metric-box google-skills"
-          >
-            <div className="metric-icon google">
-              <SiGooglecloud size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">Google Skills</span>
-              <h4 className="metric-value">107+ Badges</h4>
-            </div>
-            <div className="pulse-glow blue" />
-          </a>
-
-          {/* Credly Live */}
-          <a 
-            href="https://www.credly.com/users/souvik-sinhababu.ccd0d18c/badges/credly" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="live-metric-box credly"
-          >
-            <div className="metric-icon credly-icon">
-              <SiCredly size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">Credly Badges</span>
-              <h4 className="metric-value">Verified</h4>
-            </div>
-            <div className="pulse-glow orange" />
-          </a>
-
-          {/* GitHub Repos Live */}
-          <a 
-            href="https://github.com/SOUVIKSB1" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="live-metric-box github"
-          >
-            <div className="metric-icon">
-              <FaGithub size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">GitHub Repos</span>
-              <h4 className="metric-value">{githubRepos}+</h4>
-            </div>
-            <div className="pulse-glow blue" />
-          </a>
-
-          {/* LinkedIn Live */}
-          <a 
-            href="https://linkedin.com/in/souviksinhababu" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="live-metric-box linkedin"
-          >
-            <div className="metric-icon">
-              <FaLinkedin size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">LinkedIn Network</span>
-              <h4 className="metric-value">{linkedinCount}</h4>
-            </div>
-            <div className="pulse-glow orange" />
-          </a>
-
-          {/* Instagram Live */}
-          <a 
-            href="https://instagram.com/sinhababu_souvik" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="live-metric-box instagram"
-          >
-            <div className="metric-icon">
-              <FaInstagram size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">Instagram Fans</span>
-              <h4 className="metric-value">{instagramCount}</h4>
-            </div>
-            <div className="pulse-glow pink" />
-          </a>
-
-          {/* Portfolio Visits */}
-          <div className="live-metric-box visits">
-            <div className="metric-icon">
-              <FaEye size={18} />
-            </div>
-            <div className="metric-info">
-              <span className="metric-label">Portfolio Visits</span>
-              <h4 className="metric-value">
-                {visitCount === null ? "…" : typeof visitCount === "number" ? visitCount.toLocaleString() : visitCount}
-              </h4>
-            </div>
-            <div className="pulse-glow green" />
-          </div>
-        </div>
-
-        {/* Live GitHub Recent Commit Banner */}
-        <div className="live-github-commit-bar">
-          <div className="commit-bar-icon">
-            <FaGithub size={13} />
-          </div>
-          <div className="commit-bar-text">
-            <span className="commit-repo">{recentCommit.repo}:</span>
-            <span className="commit-msg">"{recentCommit.msg}"</span>
-          </div>
-          <span className="commit-time">{recentCommit.time}</span>
-        </div>
-
-        <div className="live-footer">
-          <span>@Souvik_Sinhababu</span>
-          <span>Last sync: {lastUpdated}</span>
         </div>
       </div>
 

@@ -1,7 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, BrainCircuit, Cloud, Layers, Cpu, Sparkles, CheckCircle2 } from "lucide-react";
+import { 
+  ChevronRight, 
+  BrainCircuit, 
+  Cloud, 
+  Layers, 
+  Cpu, 
+  Sparkles, 
+  CheckCircle2, 
+  ExternalLink,
+  ShieldCheck,
+  Award
+} from "lucide-react";
+import { FaGithub, FaLinkedin, FaInstagram, FaEye } from "react-icons/fa";
+import { SiCredly, SiGooglecloud } from "react-icons/si";
 import TiltCard from "../components/TiltCard";
+import BottomSheet from "../components/BottomSheet";
 import { triggerHaptic } from "../hooks/haptics";
 import "./About.css";
 
@@ -88,6 +102,79 @@ export default function About() {
   const [expandedPrinciple, setExpandedPrinciple] = useState(0);
   const [selectedDomain, setSelectedDomain] = useState("fullstack");
   const [activeSkillTooltip, setActiveSkillTooltip] = useState(null);
+  const [selectedAward, setSelectedAward] = useState(null);
+
+  // Live Sync & Metric States
+  const [linkedinCount, setLinkedinCount] = useState(1481);
+  const [instagramCount, setInstagramCount] = useState(1043);
+  const [githubRepos, setGithubRepos] = useState(18);
+  const [recentCommit, setRecentCommit] = useState({ repo: "MyPortfolioMobile", msg: "feat: continuous portfolio updates", time: "just now" });
+  const [visitCount, setVisitCount] = useState(null);
+  const [syncStatus, setSyncStatus] = useState("Listening for updates...");
+  const [lastUpdated, setLastUpdated] = useState("just now");
+
+  // Fetch Live GitHub stats & recent commits
+  useEffect(() => {
+    fetch("https://api.github.com/users/SOUVIKSB1")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.public_repos) {
+          setGithubRepos(data.public_repos);
+        }
+      })
+      .catch(() => {});
+
+    fetch("https://api.github.com/users/SOUVIKSB1/events/public?per_page=5")
+      .then((r) => r.json())
+      .then((events) => {
+        if (Array.isArray(events) && events.length > 0) {
+          const pushEvent = events.find((e) => e.type === "PushEvent") || events[0];
+          if (pushEvent) {
+            const repoName = pushEvent.repo?.name?.replace("SOUVIKSB1/", "") || "MyPortfolioMobile";
+            const commitMsg = pushEvent.payload?.commits?.[0]?.message || "feat: continuous portfolio updates";
+            setRecentCommit({
+              repo: repoName,
+              msg: commitMsg.length > 38 ? commitMsg.substring(0, 38) + "..." : commitMsg,
+              time: new Date(pushEvent.created_at).toLocaleDateString([], { month: "short", day: "numeric" })
+            });
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Fetch visitor count on mount
+  useEffect(() => {
+    const BACKEND = import.meta.env.VITE_API_BASE_URL || "https://myportfoliomobile.onrender.com";
+    fetch(`${BACKEND}/api/visits`, { method: "POST" })
+      .then((r) => r.json())
+      .then((data) => setVisitCount(data.count))
+      .catch(() => {
+        setVisitCount("—");
+      });
+  }, []);
+
+  // Live count ticker simulation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() > 0.6) {
+        setLinkedinCount((prev) => prev + (Math.random() > 0.5 ? 1 : 0));
+      }
+      if (Math.random() > 0.6) {
+        setInstagramCount((prev) => prev + (Math.random() > 0.5 ? 1 : -1));
+      }
+      
+      const now = new Date();
+      setLastUpdated(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      setSyncStatus("GitHub & Metrics synced");
+      
+      setTimeout(() => {
+        setSyncStatus("Listening for updates...");
+      }, 1500);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const togglePrinciple = (idx) => {
     triggerHaptic(10);
@@ -114,6 +201,224 @@ export default function About() {
           My passion lies in bridging high-fidelity frontend visual aesthetics with modern, robust cloud environments. I approach engineering with a focus on optimization, containerized scalability, and maintainability.
         </p>
       </TiltCard>
+
+      {/* ── VERIFIED PUBLIC PORTALS & BADGES HUB ── */}
+      <div className="about-portals-section">
+        <div className="aura-header">
+          <div className="aura-title-wrap">
+            <Award size={16} className="aura-icon" style={{ color: "#f59e0b" }} />
+            <h3 className="sub-header-title" style={{ margin: 0 }}>Public Portals & Badges</h3>
+          </div>
+          <span className="aura-live-badge" style={{ borderColor: "rgba(245, 158, 11, 0.4)", color: "#f59e0b", background: "rgba(245, 158, 11, 0.1)" }}>
+            Verified
+          </span>
+        </div>
+
+        <div className="public-portals-container">
+          {/* Google Cloud Skills Boost Card */}
+          <div className="portal-card google-portal glass-panel">
+            <div className="portal-card-top">
+              <div className="portal-icon google">
+                <SiGooglecloud size={20} />
+              </div>
+              <div className="portal-meta">
+                <span className="portal-tag">Google Cloud Skills Boost</span>
+                <h4 className="portal-title">Arcade Champion 2025</h4>
+              </div>
+              <span className="portal-badge diamond">Diamond League</span>
+            </div>
+            <p className="portal-desc">
+              107+ Skill Badges • 400+ practiced labs (423 completed) • 72+ courses across Vertex AI &amp; Kubernetes.
+            </p>
+            <div 
+              className="portal-links-scroll"
+              onPointerDownCapture={(e) => e.stopPropagation()}
+              onTouchStartCapture={(e) => e.stopPropagation()}
+              onTouchMoveCapture={(e) => e.stopPropagation()}
+              onTouchEndCapture={(e) => e.stopPropagation()}
+            >
+              <a
+                href="https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc"
+                target="_blank"
+                rel="noreferrer"
+                className="portal-link-btn primary"
+                onClick={() => triggerHaptic(10)}
+              >
+                <span>Skills Profile 1</span>
+                <ExternalLink size={11} />
+              </a>
+              <a
+                href="https://www.skills.google/public_profiles/16ea7d05-4436-4228-b43e-7f2bb2bfb07e"
+                target="_blank"
+                rel="noreferrer"
+                className="portal-link-btn secondary"
+                onClick={() => triggerHaptic(10)}
+              >
+                <span>Skills Profile 2</span>
+                <ExternalLink size={11} />
+              </a>
+              <button
+                type="button"
+                className="portal-link-btn accent"
+                onClick={() => {
+                  triggerHaptic(12);
+                  setSelectedAward({
+                    title: "Google Cloud Arcade Champion 2025",
+                    issuer: "Google Cloud Skills Boost",
+                    date: "2025",
+                    id: "GCP-ARCADE-2025",
+                    image: "/certificates/google_cloud_arcade_champion_2025.jpg",
+                    stats: "Diamond League • 1,00,000+ Points • 107+ Badges • 400+ Labs"
+                  });
+                }}
+              >
+                <span>View Award</span>
+                <Sparkles size={11} />
+              </button>
+            </div>
+          </div>
+
+          {/* Credly Verified Credentials Card */}
+          <div className="portal-card credly-portal glass-panel">
+            <div className="portal-card-top">
+              <div className="portal-icon credly">
+                <SiCredly size={20} />
+              </div>
+              <div className="portal-meta">
+                <span className="portal-tag">Credly by Pearson</span>
+                <h4 className="portal-title">Verified Digital Badges</h4>
+              </div>
+              <span className="portal-badge verified">Verified Earner</span>
+            </div>
+            <p className="portal-desc">
+              Authenticated enterprise transcripts across Microsoft Azure AI, AWS Academy, and IBM SkillsBuild.
+            </p>
+            <div 
+              className="portal-links-scroll"
+              onPointerDownCapture={(e) => e.stopPropagation()}
+              onTouchStartCapture={(e) => e.stopPropagation()}
+              onTouchMoveCapture={(e) => e.stopPropagation()}
+              onTouchEndCapture={(e) => e.stopPropagation()}
+            >
+              <a
+                href="https://www.credly.com/users/souvik-sinhababu.ccd0d18c/badges/credly"
+                target="_blank"
+                rel="noreferrer"
+                className="portal-link-btn primary"
+                onClick={() => triggerHaptic(10)}
+              >
+                <span>Badges Transcript</span>
+                <ExternalLink size={11} />
+              </a>
+              <a
+                href="https://www.credly.com/users/souvik-sinhababu"
+                target="_blank"
+                rel="noreferrer"
+                className="portal-link-btn secondary"
+                onClick={() => triggerHaptic(10)}
+              >
+                <span>Credly Profile</span>
+                <ExternalLink size={11} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── LIVE SOCIAL & GITHUB SYNC HUB ── */}
+      <div className="live-hub-card glass-panel border-blue-glow">
+        <div className="live-header">
+          <div className="live-indicator">
+            <span className="live-dot" />
+            <span>Connect & Live Hub</span>
+          </div>
+          <span className="live-status">{syncStatus}</span>
+        </div>
+
+        <div className="live-metrics-grid">
+          {/* GitHub Repos Live */}
+          <a 
+            href="https://github.com/SOUVIKSB1" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box github"
+          >
+            <div className="metric-icon">
+              <FaGithub size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">GitHub Repos</span>
+              <h4 className="metric-value">{githubRepos}+</h4>
+            </div>
+            <div className="pulse-glow blue" />
+          </a>
+
+          {/* LinkedIn Live */}
+          <a 
+            href="https://linkedin.com/in/souviksinhababu" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box linkedin"
+          >
+            <div className="metric-icon">
+              <FaLinkedin size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">LinkedIn Network</span>
+              <h4 className="metric-value">{linkedinCount}</h4>
+            </div>
+            <div className="pulse-glow orange" />
+          </a>
+
+          {/* Instagram Live */}
+          <a 
+            href="https://instagram.com/sinhababu_souvik" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="live-metric-box instagram"
+          >
+            <div className="metric-icon">
+              <FaInstagram size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Instagram Fans</span>
+              <h4 className="metric-value">{instagramCount}</h4>
+            </div>
+            <div className="pulse-glow pink" />
+          </a>
+
+          {/* Portfolio Visits */}
+          <div className="live-metric-box visits">
+            <div className="metric-icon">
+              <FaEye size={18} />
+            </div>
+            <div className="metric-info">
+              <span className="metric-label">Portfolio Visits</span>
+              <h4 className="metric-value">
+                {visitCount === null ? "…" : typeof visitCount === "number" ? visitCount.toLocaleString() : visitCount}
+              </h4>
+            </div>
+            <div className="pulse-glow green" />
+          </div>
+        </div>
+
+        {/* Live GitHub Recent Commit Banner */}
+        <div className="live-github-commit-bar">
+          <div className="commit-bar-icon">
+            <FaGithub size={13} />
+          </div>
+          <div className="commit-bar-text">
+            <span className="commit-repo">{recentCommit.repo}:</span>
+            <span className="commit-msg">"{recentCommit.msg}"</span>
+          </div>
+          <span className="commit-time">{recentCommit.time}</span>
+        </div>
+
+        <div className="live-footer">
+          <span>@Souvik_Sinhababu</span>
+          <span>Last sync: {lastUpdated}</span>
+        </div>
+      </div>
 
       {/* Interactive Proficiency Aura Section */}
       <div className="proficiency-aura-section">
@@ -302,6 +607,59 @@ export default function About() {
           ))}
         </div>
       </div>
+
+      {/* Award BottomSheet Modal */}
+      <BottomSheet
+        isOpen={selectedAward !== null}
+        onClose={() => {
+          triggerHaptic(8);
+          setSelectedAward(null);
+        }}
+        title="Official Credential Verification"
+      >
+        {selectedAward && (
+          <div className="cert-drawer-layout" style={{ textAlign: "left" }}>
+            <div className="cert-drawer-header">
+              <span className="cert-drawer-emoji" style={{ fontSize: "28px" }}>🏆</span>
+              <div className="cert-drawer-header-meta">
+                <h3 className="cert-drawer-title" style={{ fontSize: "16px", margin: "0 0 2px 0", color: "#fff" }}>{selectedAward.title}</h3>
+                <h4 className="cert-drawer-issuer" style={{ fontSize: "12px", color: "var(--orange)", margin: 0 }}>{selectedAward.issuer}</h4>
+              </div>
+            </div>
+
+            <div className="cert-status-badge" style={{ display: "flex", alignItems: "center", gap: "6px", background: "rgba(16, 185, 129, 0.1)", border: "1px solid rgba(16, 185, 129, 0.3)", borderRadius: "8px", padding: "6px 10px", margin: "12px 0", fontSize: "11px", color: "#10b981", fontWeight: 600 }}>
+              <ShieldCheck size={14} />
+              <span>Officially Verified &amp; Authenticated • 2025</span>
+            </div>
+
+            <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", padding: "10px 12px", fontSize: "11.5px", color: "#cbd5e1", lineHeight: 1.5, marginBottom: "12px" }}>
+              {selectedAward.stats}
+            </div>
+
+            <div style={{ textAlign: "center", marginBottom: "14px" }}>
+              <img
+                src={selectedAward.image}
+                alt={selectedAward.title}
+                style={{ width: "100%", maxHeight: "260px", objectFit: "contain", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.12)" }}
+              />
+            </div>
+
+            <div className="cert-drawer-actions">
+              <a
+                href="https://www.skills.google/public_profiles/57ce5b2f-6df4-4cf5-83fc-f82528bb51fc"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary cert-action-main"
+                onClick={() => triggerHaptic(12)}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none", width: "100%", padding: "12px", borderRadius: "12px", background: "linear-gradient(135deg, #ff5f00, #ff8c00)", color: "#fff", fontWeight: 700, fontSize: "13px" }}
+              >
+                <ExternalLink size={15} />
+                <span>Verify on Google Skills Portal</span>
+              </a>
+            </div>
+          </div>
+        )}
+      </BottomSheet>
     </div>
   );
 }
