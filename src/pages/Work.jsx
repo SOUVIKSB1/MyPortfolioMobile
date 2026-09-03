@@ -22,6 +22,20 @@ export const PROJECTS = [
     outcomes: "Automates exploratory data analysis, dataset health scoring, and predictive modeling with zero-trust PII sanitization and verifiable mathematical citations."
   },
   {
+    id: "digi-voter",
+    icon: "🗳️",
+    title: "DIGI-VOTER",
+    tagline: "Full-stack online voting & election management system with Docker.",
+    description: "An enterprise-grade election management and online voting platform featuring secure voter authentication, secret ballot casting, constitutional election scheduling, candidate nomination workflows, and real-time voter turnout analytics with Docker containerization.",
+    tech: ["Node.js", "Express", "Docker", "JavaScript", "REST API"],
+    category: "fullstack",
+    categoryLabel: "Full-Stack",
+    github: "https://github.com/SOUVIKSB1/DIGI-VOTER",
+    live: "https://digi-voter.onrender.com/",
+    role: "Full-Stack Web Application",
+    outcomes: "Enables tamper-resistant digital balloting, automates candidate enrollment workflows, and visualizes live participation turnout across active elections."
+  },
+  {
     id: "clinic-os",
     icon: "🏥",
     title: "Clinic OS",
@@ -36,20 +50,6 @@ export const PROJECTS = [
     outcomes: "Streamlines patient check-in times by 40% and aggregates monthly revenue analytics instantly."
   },
   {
-    id: "swarnika",
-    icon: "🛍️",
-    title: "Swarnika",
-    tagline: "Luxury-inspired e-commerce platform with secure digital commerce infrastructure.",
-    description: "Designed and developed a full-stack e-commerce platform focused on premium retail experiences. The application integrates secure Firebase authentication, dynamic product management, real-time inventory handling, and intuitive shopping workflows. Built with a responsive user interface and scalable backend architecture to ensure smooth performance, secure transactions, and an engaging customer journey across all devices.",
-    tech: ["HTML5", "CSS3", "JavaScript", "MongoDB", "Firebase"],
-    category: "fullstack",
-    categoryLabel: "Full-Stack",
-    github: "https://github.com/SOUVIKSB1/Swarnika",
-    live: "https://swarnika-lemon.vercel.app/login",
-    role: "Full-Stack Web Application",
-    outcomes: "Implemented secure Google Sign-In, automated product management workflows, responsive shopping experiences, and scalable database operations supporting efficient retail transactions and customer engagement."
-  },
-  {
     id: "payurupee",
     icon: "₹",
     title: "PayU₹upee",
@@ -62,6 +62,20 @@ export const PROJECTS = [
     live: "https://pay-u-rupee.vercel.app",
     role: "Full-Stack Web Application",
     outcomes: "Secures digital asset transfers with hashed UPI PIN authorization and automates recurring bill executions via polling schedulers."
+  },
+  {
+    id: "swarnika",
+    icon: "🛍️",
+    title: "Swarnika",
+    tagline: "Luxury-inspired e-commerce platform with secure digital commerce infrastructure.",
+    description: "Designed and developed a full-stack e-commerce platform focused on premium retail experiences. The application integrates secure Firebase authentication, dynamic product management, real-time inventory handling, and intuitive shopping workflows. Built with a responsive user interface and scalable backend architecture to ensure smooth performance, secure transactions, and an engaging customer journey across all devices.",
+    tech: ["HTML5", "CSS3", "JavaScript", "MongoDB", "Firebase"],
+    category: "fullstack",
+    categoryLabel: "Full-Stack",
+    github: "https://github.com/SOUVIKSB1/Swarnika",
+    live: "https://swarnika-lemon.vercel.app/login",
+    role: "Full-Stack Web Application",
+    outcomes: "Implemented secure Google Sign-In, automated product management workflows, responsive shopping experiences, and scalable database operations supporting efficient retail transactions and customer engagement."
   },
   {
     id: "piggybank",
