@@ -24,16 +24,16 @@ export const PROJECTS = [
   {
     id: "digi-voter",
     icon: "🗳️",
-    title: "DIGI-VOTER",
-    tagline: "Full-stack online voting & election management system with Docker.",
-    description: "An enterprise-grade election management and online voting platform featuring secure voter authentication, secret ballot casting, constitutional election scheduling, candidate nomination workflows, and real-time voter turnout analytics with Docker containerization.",
-    tech: ["Node.js", "Express", "Docker", "JavaScript", "REST API"],
+    title: "DIGI-VOTER 🇮🇳",
+    tagline: "Enterprise online voting & election management system with live analytics & Docker.",
+    description: "An enterprise-grade Online Voting and Election Management System (OVMS). Engineered with Firebase & JWT authentication, tamper-proof secret EVM ballot casting, strict anti-fraud double-voting verification, 1-click WhatsApp poll sharing deep links with auto-scroll spotlighting, real-time voter turnout analytics, and a mobile-optimized Chief Election Administrator dashboard with Docker containerization.",
+    tech: ["Node.js", "Express", "MongoDB", "Firebase Auth", "Docker", "REST API"],
     category: "fullstack",
-    categoryLabel: "Full-Stack",
+    categoryLabel: "Full-Stack / OVMS",
     github: "https://github.com/SOUVIKSB1/DIGI-VOTER",
     live: "https://digi-voter.onrender.com/",
-    role: "Full-Stack Web Application",
-    outcomes: "Enables tamper-resistant digital balloting, automates candidate enrollment workflows, and visualizes live participation turnout across active elections."
+    role: "Full-Stack OVMS Platform",
+    outcomes: "Eliminates duplicate ballot submissions, delivers 1-click WhatsApp election deep links with auto-scroll spotlighting, and visualizes live voter turnout analytics."
   },
   {
     id: "clinic-os",
