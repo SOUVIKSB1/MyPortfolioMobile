@@ -92,34 +92,6 @@ export const PROJECTS = [
     outcomes: "Solves solvable configurations within milliseconds and details open/closed search nodes."
   },
   {
-    id: "comp-arch",
-    icon: "⚙️",
-    title: "Computer Architecture",
-    tagline: "VHDL structural models for core processor components & ALU.",
-    description: "Hardware description language simulation files modeling registers, Arithmetic Logic Units (ALUs), instruction memory maps, and simulation testbenches for structural analysis (PCC-CS-492).",
-    tech: ["VHDL", "CPU Logic", "ModelSim", "Xilinx ISE"],
-    category: "systems",
-    categoryLabel: "Systems / HW",
-    github: "https://github.com/SOUVIKSB1/PCC-CS-492-ARCHITECTURE-",
-    live: "https://github.com/SOUVIKSB1/PCC-CS-492-ARCHITECTURE-",
-    role: "Hardware Modeler",
-    outcomes: "Simulates complete 8-bit instruction parsing loops inside a digital lab environment."
-  },
-  {
-    id: "cbt-cip",
-    icon: "🖥️",
-    title: "CBT-CIP Interface",
-    tagline: "Computer-based training interface with keyboard navigation & validation.",
-    description: "A computer-based validation checking client panel styled with high contrast grids, focusing on smooth keyboard flow, accessibility compliance, and strict form evaluation rules.",
-    tech: ["JavaScript", "HTML5", "CSS3", "WCAG A11y"],
-    category: "systems",
-    categoryLabel: "Systems / UI",
-    github: "https://github.com/SOUVIKSB1/CBT-CIP",
-    live: "https://souviksb1.github.io/CBT-CIP",
-    role: "UI Engineer",
-    outcomes: "Maintains screen readers compatibility and prevents browser focus leaks."
-  },
-  {
     id: "calc-v3",
     icon: "🫟",
     title: "Calculator Web V3.0",
